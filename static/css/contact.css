@@ -1,0 +1,237 @@
+:root {
+  --primary: #000000;
+  --bg: #ffffff;
+  --primary1: #2b3d51;
+  --primary2: #4a5568;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 32;
+  background-color: var(--bg);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 7%;
+  background-color: rgba(1, 1, 1, 0.8);
+  border-bottom: 1px solid #513c28;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+z .navbar .navbar-logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  font-style: italic;
+}
+
+.navbar .navbar-logo span {
+  color: var(--primary);
+}
+
+.navbar .navbar-nav a {
+  color: #000000;
+  display: inline-block;
+  font-size: 1.3rem;
+  margin: 0 1rem;
+}
+
+.navbar .navbar-nav a:hover {
+  color: var(--primary);
+}
+
+.navbar .navbar-nav a::after {
+  content: "";
+  display: block;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.1rem solid var(--primary);
+  transform: scaleX(0);
+  transition: 0.2s linear;
+}
+
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.5);
+}
+
+.navbar .navbar-extra a {
+  color: #fff;
+  margin: 0 0.5rem;
+}
+
+.navbar .navbar-extra a:hover {
+  color: var(--primary);
+}
+
+#hamburger-menu {
+  display: none;
+}
+
+
+/* Jumbotron */
+/* Jumbotron Khusus Kontak */
+.jumbotron-contact {
+  height: 50vh;
+  background-image: url('/static/images/background_kristal.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.jumbotron-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.jumbotron-contact h2 {
+  font-size: 4rem;
+  color: var(--bg);
+  font-weight: 800;
+}
+
+.jumbotron-contact h2 span {
+  color: var(--primary-blue);
+}
+
+.jumbotron-contact p {
+  color: var(--bg);
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+/* Section Utama */
+.contact-section {
+  padding: 80px 7%;
+  background-color: var(--soft-blue);
+}
+
+.contact-wrapper {
+  display: flex;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  min-height: 600px;
+}
+
+/* Map Box */
+.map-box {
+  flex: 1.2;
+}
+
+.map-box iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Info Box */
+.info-box {
+  flex: 1;
+  background-color: var(--dark-navy);
+  color: white;
+  padding: 60px 50px;
+}
+
+.info-content h3 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.info-content h3 span {
+  color: var(--primary-blue);
+}
+
+.info-content p {
+  color: var(--primary);
+  margin-bottom: 35px;
+  line-height: 1.6;
+}
+
+/* Contact List */
+.contact-details {
+  list-style: none;
+}
+
+.contact-details li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  transition: 0.3s;
+}
+
+.contact-details li:hover {
+  transform: translateX(10px);
+}
+
+.icon-bg {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  color: var(--primary-blue);
+}
+
+.detail-text span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.detail-text strong {
+  font-size: 1.15rem;
+  display: block;
+  margin-top: 2px;
+  color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .contact-wrapper {
+    flex-direction: column;
+  }
+  .map-box {
+    height: 350px;
+  }
+  .jumbotron-contact h2 {
+    font-size: 3rem;
+  }
+}

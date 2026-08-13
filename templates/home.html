@@ -1,0 +1,315 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title > Home - Es Kristal PT. ICESAND KRISTAL PERKASA</title>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons -->
+   <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}"/>
+      
+
+    <!-- AlpineJS -->
+   <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+      <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x.x/dist/alpine.min.js" defer></script>
+
+
+    <!-- App -->
+    <script src="{% static 'src/app.js' %}?v={{ timestamp }}" async></script>
+  </head>
+
+  <body>
+    <!-- Navbar start -->
+    <nav class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
+  <a href="{% url 'home' %}" class="navbar-logos">
+    <img src="{% static 'images/logo.png' %}" alt="Logo Icesand Kristal" style="height: 85px; width: 140px;">
+  </a>
+
+  <div class="navbar-nav">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="#about">Tentang Kami</a>
+    <a href="{% url 'product_list' %}">Produk</a>
+    <a href="{% url 'contact' %}">Kontak</a>
+  </div>
+
+  <div class="navbar-extra">
+    <div class="profile-dropdown">
+      <button class="profile-icon-btn">
+        <i data-feather="user"></i>
+      </button>
+      
+      <div class="dropdown-content">
+        {% if user.is_authenticated %}
+          <div class="user-card-header">
+            <p>Selamat Datang,</p>
+            <strong>{{ user.username }}</strong>
+          </div>
+          <hr>
+          <a href="{% url 'profile' %}"><i data-feather="settings"></i> Profil Saya</a>
+          <a href="{% url 'detail_transaksi' %}" class="menu-item">
+    <i data-feather="file-text"></i> Detail Transaksi</a>
+          <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+              <i data-feather="log-out"></i> Logout
+            </button>
+          </form>
+        {% else %}
+          <div class="user-card-header">
+            <p>Belum punya akun?</p>
+          </div>
+          <a href="{% url 'login' %}">Masuk / Daftar Akun</a>
+        {% endif %}
+      </div>
+    </div>
+    
+
+    <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+  </div>
+</nav>
+    <!-- Navbar end -->
+
+    <!-- Hero Section start -->
+  <section class="hero img-bg">
+  <div class="hero-wrapper"> <div class="hero-text">
+      <div class="hero-content-wrapper">
+        <h2>Selamat Datang di <br>Icesand Kristal</h2>
+        <p>Hari Gini Beli Es Batu Kristal Mahal🤨? Icesand Memberikan Harga Terbaik dan Kualitas Yang Tentunya Teruji loh 😉.<br>Only Sell The Best.</p>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="hero-image-wrapper">
+        <img src="{% static 'images/es-hero.jpg' %}" alt="Produk Es Kristal">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Alasan Memilih Kami Section start -->
+   <section class="features-section">
+    <div class="shape-dots floating"></div>
+    <div class="shape-cloud floating-slow"></div>
+
+    <div class="container-features">
+        <div class="section-header-features">
+            <h2>Alasan Memilih Kami</h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon-box-features">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <h3>Air Murni & Aman</h3>
+                <p>Disaring dengan reverse osmosis dan UV, bebas kontaminan, siap konsumsi.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon-box-features">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <h3>Es Bening & Awet</h3>
+                <p>Es seragam, tanpa bau, mencair lebih lambat, tampil elegan di setiap sajian.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon-box-features">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Halal & Teruji</h3>
+                <p>Lulus uji lab dan bersertifikat halal, aman untuk semua kalangan.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon-box-features">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3>Higienis & Sehat</h3>
+                <p>Bebas klorin dan bahan kimia, cocok untuk rumah tangga hingga medis.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Alasan Memilih Kami Section End -->
+
+<!-- About Section start -->
+    <section id="about" class="about">
+  <h2>Tentang Kami</h2>
+  
+  <div class="row">
+    <div class="about-img">
+      <img src="{% static 'images/about4.webp' %}" alt="Tentang Kami" />
+    </div>
+    
+    <div class="content">
+      <p>
+        Didirikan pada tahun 2025, Icesand Kristal adalah distributor es kristal di Kota Bogor. Dengan memiliki 2 jenis produk, seperti Es Kristal Bulat Besar dan Es Kristal Bulat Kecil. Icesand Kristal selalu berkomitmen untuk memberikan pelayanan terbaik.
+      </p>
+
+      <div class="features-container">
+        <div class="feature-box">
+          <i class="fas fa-check-circle"></i>
+          <p>Es kristal dibuat dari air murni dengan reverse osmosis, jernih, bebas kotoran, kemasan higienis dan pembekuan modern.</p>
+        </div>
+
+        <div class="feature-box">
+          <i class="fas fa-check-circle"></i>
+          <p>Es diproduksi menggunakan mesin berstandar internasional untuk menjamin kualitas terbaik.</p>
+        </div>
+
+        <div class="feature-box">
+          <i class="fas fa-check-circle"></i>
+          <p>Kemasan Icesand menggunakan plastik yang ramah lingkungan dan dapat didaur ulang.</p>
+        </div>
+      </div>
+      </div>
+  </div>
+</section>
+<!-- About Section End -->
+
+    <!-- Products Section start -->
+  <section id="products" class="products">
+  <div class="container">
+    <h2>Produk Kami</h2>
+    <p class="sub-title">Higienis, diproses dengan teknologi filtrasi modern, dan siap antar langsung ke lokasi Anda.</p>
+    
+    <div class="row-exclusive">
+      <div class="product-card featured">
+        <div class="product-image">
+          <img src="{% static 'images/products/bulat_besar.png' %}" alt="Es Kristal Bulat Besar" />
+          <span class="badge">Best Seller</span>
+        </div>
+        <div class="product-content">
+          <h3>Es Kristal Bulat Besar (20kg)</h3>
+          <p class="menu-card-price">Rp 20.000</p>
+          
+          <ul class="quick-features">
+            <li><i data-feather="check-circle"></i> Ukuran kristal 3.2 cm</li>
+            <li><i data-feather="clock"></i> Mencair lebih lambat (Tahan Lama)</li>
+            <li><i data-feather="coffee"></i> Ideal untuk Jus, Beer, Minuman Premium dan lain-lain. </li>
+          </ul>
+
+          <div class="product-status">
+            {% if stok_besar > 0 %}
+              <span class="product-stock in-stock">Stok Tersedia: {{ stok_besar }} Bal</span>
+            {% else %}
+              <span class="product-stock out-of-stock">Stok Habis</span>
+            {% endif %}
+          </div>
+
+          <a href="{% url 'product_list' %}" class="btn-detail">Lihat Detail Produk</a>
+        </div>
+      </div>
+      
+      <div class="product-card featured">
+        <div class="product-image">
+          <img src="{% static 'images/products/bulat_kecil.jpg' %}" alt="Es Kristal Bulat Kecil" />
+          <span class="badge">Best Seller</span>
+        </div>
+        <div class="product-content">
+          <h3>Es Kristal Bulat Kecil (20kg)</h3>
+          <p class="menu-card-price">Rp 20.000</p>
+          
+          <ul class="quick-features">
+            <li><i data-feather="check-circle"></i> Ukuran kristal 2.6 cm</li>
+            <li><i data-feather="zap"></i> Cepat mendinginkan minuman</li>
+            <li><i data-feather="coffee"></i> Ideal untuk Es Kopi, Teh, Es Campur dan lain-lain. </li>
+          </ul>
+
+          <div class="product-status">
+            {% if stok_kecil > 0 %}
+              <span class="product-stock in-stock">Stok Tersedia: {{ stok_kecil }} Bal</span>
+            {% else %}
+              <span class="product-stock out-of-stock">Stok Habis</span>
+            {% endif %}
+          </div>
+
+          <a href="{% url 'product_list' %}" class="btn-detail">Lihat Detail Produk</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="pembelian-info">Melayani pengiriman rutin untuk kafe, restoran, dan acara spesial.</p>
+  </div>
+</section>
+    <!-- Products Section end -->
+
+    <section class="delivery-section">
+    <div class="delivery-container">
+        <div class="delivery-image">
+            <img src="{% static 'images/delivery.png' %}" alt="Icesand Delivery Truck">
+        </div>
+
+        <div class="delivery-content">
+            <span class="badge-delivery">Jasa Pengantaran</span>
+            <h2>Daerah Jangkauan Kami.</h2>
+            <p>
+                Kalau Anda berada di daerah <strong>Kota Bogor</strong>, tidak perlu repot lagi buang waktu untuk pick-up es kristal sendiri.
+            </p>
+            <p>
+                Team delivery kami akan mengantar es langsung ke tempat Anda tepat waktu setiap harinya, dan tanpa biaya jasa pengiriman atau Gratis Ongkir !
+            </p>
+            <p class="order-text">Langsung order di bawah ini!</p>
+
+            <a href="{% url 'product_list' %}" class="view-product-btn">
+              Lihat Produk Kami <i data-feather="shopping-bag"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Footer start -->
+   <div id="footer"></div>
+    <!-- Footer end -->
+
+        <!-- My Javascript -->
+    <script src="{% static 'js/footer.js' %}?v={{ timestamp }}"></script>
+    <script src="{% static 'js/script.js' %}?v={{ timestamp }} "></script>
+
+
+    <!-- Feather Icons -->
+    <script>
+      feather.replace();
+    </script>
+
+<script>
+  window.addEventListener('scroll', function() {
+    const nav = document.querySelector('#navbar-icesand');
+    if (window.scrollY > 50) {
+      nav.classList.add('scroll-aktif');
+    } else {
+      nav.classList.remove('scroll-aktif');
+    }
+  });
+</script>
+
+
+  {% if show_welcome %}
+        {% include 'welcome_popup.html' %}
+
+  {% endif %}
+  </body>
+</html>

@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | PT. ICESAND KRISTAL PERKASA</title>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url("{% static 'images/background_kristal.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            max-height: 95vh; 
+            overflow-y: auto;
+        }
+        /* Custom Scrollbar minimalis */
+        .glass-card::-webkit-scrollbar { width: 4px; }
+        .glass-card::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .swal2-popup { border-radius: 1.5rem !important; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="glass-card w-full max-w-md rounded-[2.5rem] shadow-2xl p-8 border border-white/50 my-4">
+        
+        <div class="text-center mb-6">
+            <img src="{% static 'images/logo-icesand.png' %}" alt="Logo" class="w-20 h-20 mx-auto mb-2">
+            <h2 class="text-2xl font-bold text-slate-800">Daftar Akun</h2>
+            <p class="text-slate-500 text-sm mt-1">Pelanggan PT. ICESAND KRISTAL PERKASA</p>
+        </div>
+
+        {% if form.errors %}
+            <div id="error-data" 
+                 data-errors='[{% for field in form %}{% for error in field.errors %}"{{ field.label|escapejs }}: {{ error|escapejs }}",{% endfor %}{% endfor %}{% for error in form.non_field_errors %}"{{ error|escapejs }}",{% endfor %}]' 
+                 class="hidden">
+            </div>
+        {% endif %}
+
+        <form method="POST" action="" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Nama Lengkap</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-blue-500">
+                        <i data-feather="user" class="w-4 h-4"></i>
+                    </div>
+                    {{ form.nama_lengkap }}
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Nama Usaha / Toko</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-cyan-500">
+                        <i data-feather="briefcase" class="w-4 h-4"></i>
+                    </div>
+                    {{ form.nama_usaha }}
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Email Bisnis</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-red-400">
+                        <i data-feather="mail" class="w-4 h-4"></i>
+                    </div>
+                    {{ form.email }}
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Username</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-blue-500">
+                        <i data-feather="at-sign" class="w-4 h-4"></i>
+                    </div>
+                    {{ form.username }}
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">No Telepon (WhatsApp)</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-green-500">
+                        <i data-feather="phone" class="w-4 h-4"></i>
+                    </div>
+                    {{ form.no_telepon }}
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Alamat Pengiriman</label>
+                <div class="relative">
+                    <div class="absolute top-3 left-4 pointer-events-none text-orange-400">
+                        <i data-feather="map-pin" class="w-4 h-4"></i>
+                    </div>
+                    {{ form.alamat }}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="space-y-1">
+                    <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                            <i data-feather="lock" class="w-4 h-4"></i>
+                        </div>
+                        {{ form.password1 }}
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[9px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Konfirmasi Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                            <i data-feather="check-circle" class="w-4 h-4"></i>
+                        </div>
+                        {{ form.password2 }}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" 
+                    class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/30 transition duration-200 transform active:scale-95 mt-4">
+                Buat Akun Sekarang
+            </button>
+        </form>
+
+        <div class="mt-6 text-center border-t border-slate-100 pt-4">
+            <p class="text-slate-500 text-sm">
+                Sudah punya Akun? 
+                <a href="{% url 'login' %}" class="text-blue-600 font-bold hover:underline">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+
+        // Styling input: Font isi 14px, Font weight normal agar tidak terlalu tebal
+        const allInputs = document.querySelectorAll("input, textarea");
+        allInputs.forEach((el) => {
+            if (el.type !== 'submit' && el.type !== 'hidden') {
+                el.classList.add(
+                    "block", "w-full", "pl-11", "pr-4", "py-2.5", "bg-slate-50",
+                    "border", "border-slate-200", "rounded-xl", "text-slate-900",
+                    "focus:ring-2", "focus:ring-blue-500/20", "focus:border-blue-500",
+                    "outline-none", "transition-all", "text-[14px]", "font-normal" // Ubah dari font-semibold ke font-normal
+                );
+            }
+        });
+
+        const errorDiv = document.getElementById('error-data');
+        if (errorDiv) {
+            const rawErrors = errorDiv.getAttribute('data-errors');
+            const cleanErrorsStr = rawErrors.trim().replace(/,\s*\]$/, ']');
+            try {
+                const errorList = JSON.parse(cleanErrorsStr);
+                if (errorList.length > 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Daftar',
+                        html: `<div class="text-left text-sm space-y-1">${errorList.map(err => `<p>• ${err}</p>`).join('')}</div>`,
+                        confirmButtonColor: '#2563eb',
+                    });
+                }
+            } catch (e) { console.error(e); }
+        }
+    </script>
+</body>
+</html>

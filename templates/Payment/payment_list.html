@@ -1,0 +1,281 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | PT. ICESAND KRISTAL PERKASA</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/payment_list.css' %}?v={{ timestamp }}"/>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
+
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+    <main class="checkout-container">
+        <section class="checkout-form-section">
+            <h1 class="checkout-title">Detail Pengiriman</h1>
+            
+            <form method="post" enctype="multipart/form-data" class="payment-form" id="mainPaymentForm">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_nama_penerima">Nama Penerima</label>
+                    {{ form.nama_penerima }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_telepon">Nomor Telepon/WhatsApp</label>
+                    {{ form.telepon }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_wilayah_tujuan">Wilayah Tujuan Pengiriman</label>
+                    {{ form.wilayah_tujuan }}
+                </div>
+                    
+                <div class="form-group">
+                    <label for="id_alamat_lengkap">Alamat Pengiriman</label>
+                    {{ form.alamat_lengkap }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_metode_pembayaran">Pilih Metode Pembayaran</label>
+                    {{ form.metode_pembayaran }}
+                </div>
+
+                <div id="qris-container" class="qris-box" style="display: none; background: #f8fafc; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+                    <div style="text-align: left; margin-bottom: 15px; font-size: 0.9rem; color: #2c3e50;">
+                        <p><strong><i class="fas fa-university"></i> Transfer Bank:</strong></p>
+                        <p style="background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-top: 5px;">
+                            BCA: <strong>1740589438</strong> <br> 
+                            A/N: Rezon Supriatna
+                        </p>
+                    </div>
+                    
+                    <div style="border-top: 1px dashed #e67e22; padding-top: 15px; text-align: center;">
+                        <p><strong>Atau Scan QRIS:</strong></p>
+                        <img src="{% static 'images/qris.jpg' %}" alt="QRIS Icesand" style="max-width: 180px; margin: 10px 0; border-radius: 10px;">
+                        <p style="font-size: 0.75rem; color: #64748b;">Mendukung All E-Wallet & M-Banking</p>
+                    </div>
+                </div>
+
+                <div class="form-group" id="proof-upload-group">
+                    <label for="id_bukti_pembayaran">Upload Bukti Transfer</label>
+                    <div class="file-input-wrapper">
+                        {{ form.bukti_pembayaran }}
+                    </div>
+                    <small style="color: #94a3b8;" id="helper-text">*Abaikan jika memilih metode Cash</small>
+                </div>
+
+                <button type="submit" class="btn-submit-order">
+                    Konfirmasi & Pesan Sekarang
+                </button>
+            </form>
+
+            <div class="back-to-shop" style="text-align: center; margin-top: 20px;">
+                <form action="{% url 'cancel_transaction' trx.id %}" method="POST" id="cancelForm">
+                    {% csrf_token %}
+                    <button type="button" onclick="confirmCancel()" style="background: none; border: none; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                        <i class="fas fa-times-circle"></i> Kembali & Batalkan Pesanan
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <aside class="checkout-sidebar">
+    <div class="sidebar-card">
+        <h2 class="sidebar-title">Ringkasan Pesanan</h2>
+        {% if trx %}
+        <div class="order-items-list">
+            {% for item in trx.details.all %}
+            <div class="item-row">
+                <div class="item-img-container">
+                    {% if item.produk.foto %}
+                        <img src="{{ item.produk.foto.url }}" alt="{{ item.produk.nama }}" class="checkout-item-img">
+                    {% else %}
+                        <img src="{% static 'images/logo-icesand.png' %}" class="checkout-item-img">
+                    {% endif %}
+                </div>
+                <div class="item-info">
+                    <span class="item-name">{{ item.produk.nama }}</span>
+                    <span class="item-qty">{{ item.jumlah_pesanan }} Bal x Rp {{ item.produk.harga|floatformat:0|intcomma }}</span>
+                </div>
+                <div class="item-subtotal">
+                    <span>Rp {{ item.total_harga|floatformat:0|intcomma }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="order-total-section">
+            <div class="total-row">
+                <span>Subtotal Produk</span>
+                <span>Rp {{ trx.total_harga|floatformat:0|intcomma }}</span>
+            </div>
+            
+            <div class="total-row text-muted" id="row-ongkir" style="font-size: 0.9em; display: none;">
+                <span>Biaya Ongkos Kirim</span>
+                <span id="val-ongkir">Rp 0</span>
+            </div>
+            <div class="total-row text-muted" id="row-kemasan" style="font-size: 0.9em; display: none;">
+                <span>Biaya Kemasan</span>
+                <span id="val-kemasan">Rp 0</span>
+            </div>
+            <div class="total-row text-muted" id="row-layanan" style="font-size: 0.9em; display: none;">
+                <span>Biaya Layanan</span>
+                <span id="val-layanan">Rp 2.000</span>
+            </div>
+            
+            <hr style="margin: 8px 0; border-top: 1px dashed #ccc;">
+            
+            <div class="total-row main-total">
+                <span>Total Bayar</span>
+                <span class="price-tag" id="val-total-akhir">Rp {{ trx.total_harga|floatformat:0|intcomma }}</span>
+            </div>
+        </div>
+        {% else %}
+        <p class="empty-msg">Tidak ada data pesanan.</p>
+        {% endif %}
+    </div>
+</aside>
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // --- 1. LOGIKA VALIDASI METODE PEMBAYARAN & BUTTON CANCEL ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectMetode = document.querySelector('select[name="metode_pembayaran"]');
+        const qrisBox = document.getElementById('qris-container');
+        const fileInput = document.querySelector('input[name="bukti_pembayaran"]');
+        const helperText = document.getElementById('helper-text');
+        const paymentForm = document.getElementById('mainPaymentForm');
+
+        const togglePaymentView = () => {
+            if (!selectMetode) return;
+            const val = selectMetode.value.toLowerCase();
+            const isNonTunai = val.includes('transfer') || val.includes('non') || val.includes('qris');
+
+            if (isNonTunai) {
+                qrisBox.style.display = 'block';
+                helperText.style.color = '#ef4444';
+                helperText.innerHTML = '*Wajib upload bukti transfer';
+            } else {
+                qrisBox.style.display = 'none';
+                helperText.style.color = '#94a3b8';
+                helperText.innerHTML = '*Abaikan jika memilih metode Cash';
+            }
+        };
+
+        if (selectMetode) {
+            selectMetode.addEventListener('change', togglePaymentView);
+            togglePaymentView(); 
+        }
+
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', (e) => {
+                const val = selectMetode.value.toLowerCase();
+                const isNonTunai = val.includes('transfer') || val.includes('non') || val.includes('qris');
+
+                if (isNonTunai && (!fileInput.files || fileInput.files.length === 0)) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Bukti Pembayaran Kosong',
+                        text: 'Silakan upload bukti transfer Anda terlebih dahulu.',
+                        confirmButtonColor: '#2563eb'
+                    });
+                }
+            });
+        }
+    });
+
+    // --- 2. LOGIKA HITUNG RINCIAN BIAYA WILAYAH secara REAL-TIME ---
+    document.addEventListener('DOMContentLoaded', function () {
+        const wilayahSelect = document.getElementById('id_wilayah_tujuan'); 
+        
+        const rowOngkir = document.getElementById('row-ongkir');
+        const rowKemasan = document.getElementById('row-kemasan');
+        const rowLayanan = document.getElementById('row-layanan');
+        
+        const valOngkir = document.getElementById('val-ongkir');
+        const valKemasan = document.getElementById('val-kemasan');
+        const valTotalAkhir = document.getElementById('val-total-akhir');
+        
+        const totalHargaProduk = parseFloat("{{ trx.total_harga|default:0 }}");
+
+        function hitungBiayaOtomatis() {
+    if (!wilayahSelect || wilayahSelect.value === "") {
+        rowOngkir.style.display = 'none';
+        rowKemasan.style.display = 'none';
+        rowLayanan.style.display = 'none';
+        valTotalAkhir.innerText = "Rp " + totalHargaProduk.toLocaleString('id-ID');
+        return;
+    }
+
+    const selectedOption = wilayahSelect.options[wilayahSelect.selectedIndex];
+    const textPilihan = selectedOption.text; 
+
+    // 1. Ambil nominal Ongkos Kirim otomatis dari text dropdown
+    let ongkir = 0;
+    const matchOngkir = textPilihan.match(/Rp\s?([\d,.]+)/i);
+    if (matchOngkir) {
+        ongkir = parseFloat(matchOngkir[1].replace(/[,.]/g, ''));
+    } else {
+        ongkir = 0; 
+    }
+
+    // 2. Logika Penentuan Biaya Kemasan (Gratis vs Styrofoam Rp 25.000)
+    let biayaKemasan = 0; 
+    if (textPilihan.toLowerCase().includes('luar bogor')) {
+        biayaKemasan = 25000; 
+        valKemasan.innerText = "Rp " + biayaKemasan.toLocaleString('id-ID') + " (Styrofoam)";
+    } else {
+        biayaKemasan = 0;
+        valKemasan.innerText = "Gratis (Plastik)"; // Memakai id variabel valKemasan yang sudah dideklarasikan di atas
+    }
+
+    let biayaLayanan = 2000; 
+
+    // 3. Kalkulasi Total Akhir
+    let totalAkhir = totalHargaProduk + ongkir + biayaKemasan + biayaLayanan;
+
+    // 4. Update Tampilan ke Layar
+    valOngkir.innerText = "Rp " + ongkir.toLocaleString('id-ID');
+    valTotalAkhir.innerText = "Rp " + totalAkhir.toLocaleString('id-ID');
+
+    // Munculkan semua baris rincian di sidebar kanan
+    rowOngkir.style.display = 'flex';
+    rowKemasan.style.display = 'flex';
+    rowLayanan.style.display = 'flex';
+}
+        if (wilayahSelect) {
+            wilayahSelect.addEventListener('change', hitungBiayaOtomatis);
+            hitungBiayaOtomatis(); // Jalankan sekali di awal jika field sudah terisi otomatis
+        }
+    });
+
+    function confirmCancel() {
+        Swal.fire({
+            title: 'Batalkan Pesanan?',
+            text: "Jika Anda kembali, data pesanan sementara ini akan dihapus.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Batalkan',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('cancelForm').submit();
+            }
+        });
+    }
+</script>
+</body>
+</html>

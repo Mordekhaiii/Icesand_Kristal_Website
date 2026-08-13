@@ -1,0 +1,247 @@
+/* CSS untuk Checkout PT. ICESAND KRISTAL PERKASA 
+   Tema: Profesional Blue & Wide Layout
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url(/static/images/background_kristal.jpg); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: #333;
+}
+
+/* Container dibuat sangat lebar agar tidak terlihat sempit di monitor besar */
+.checkout-container {
+    max-width: 1400px;
+    margin: 30px auto;
+    display: flex;
+    gap: 25px;
+    padding: 0 30px;
+    align-items: flex-start;
+}
+
+/* Bagian Kiri (Form) */
+.checkout-form-section {
+    flex: 2; /* Form lebih lebar */
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.checkout-title {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+    color: #1a73e8; /* Biru Google/Profesional */
+    font-weight: 600;
+    border-left: 5px solid #1a73e8;
+    padding-left: 15px;
+}
+
+/* Styling Form Input */
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.form-group input, 
+.form-group textarea, 
+.form-group select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-family: 'Poppins';
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+}
+
+/* Box Pembayaran */
+.qris-box {
+    background: #f8fbff; /* Biru sangat muda */
+    border: 1px solid #d1e3ff;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.qris-img {
+    max-width: 200px;
+    margin: 15px 0;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Tombol Utama */
+.btn-submit-order {
+    width: 100%;
+    background-color: #1a73e8; /* Biru Utama */
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-submit-order:hover {
+    background-color: #1557b0; /* Biru lebih gelap saat hover */
+}
+
+/* SIDEBAR STYLING (Ringkasan Pesanan) */
+.checkout-sidebar {
+    flex: 1;
+    position: sticky;
+    top: 30px;
+}
+
+.sidebar-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #202124;
+}
+
+.item-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.item-img-container {
+    width: 65px;
+    height: 65px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f8f9fa;
+    flex-shrink: 0;
+    border: 1px solid #eee;
+}
+
+.checkout-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #3c4043;
+    display: block;
+    line-height: 1.4;
+}
+
+.item-qty {
+    font-size: 0.8rem;
+    color: #70757a;
+}
+
+.item-subtotal {
+    font-weight: 600;
+    color: #1a73e8; /* Harga menggunakan warna biru */
+    font-size: 0.95rem;
+}
+
+/* Bagian Total */
+.order-total-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #5f6368;
+}
+
+.main-total {
+    border-top: 1px solid #dadce0;
+    padding-top: 15px;
+    margin-top: 10px;
+    font-weight: 700;
+    color: #202124;
+}
+
+.price-tag {
+    font-size: 1.3rem;
+    color: #1a73e8; /* Biru untuk total harga */
+}
+
+.back-to-shop a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #1a73e8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.back-to-shop a:hover {
+    text-decoration: underline;
+}
+
+/* Media Query untuk Tablet & HP */
+@media (max-width: 1024px) {
+    .checkout-container {
+        max-width: 95%;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 850px) {
+    .checkout-container {
+        flex-direction: column;
+        margin: 20px auto;
+    }
+    .checkout-form-section {
+        padding: 25px;
+    }
+    .checkout-sidebar {
+        width: 100%;
+        position: static;
+    }
+}

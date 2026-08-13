@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Saya | Icesand Kristal</title>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: url("{% static 'images/background_kristal.jpg' %}")
+          no-repeat center center fixed;
+        background-size: cover;
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        max-height: none; 
+        overflow-y: visible;
+      }
+
+      ::-webkit-scrollbar { display: none; }
+      html { scrollbar-width: none; -ms-overflow-style: none; }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-6">
+    <a
+      href="{% url 'home' %}"
+      class="fixed top-8 left-8 flex items-center gap-2 px-6 py-3 bg-white/90 text-slate-700 font-bold rounded-2xl shadow-xl hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-1 group z-50"
+    >
+      <i
+        data-feather="arrow-left"
+        class="w-5 h-5 group-hover:-translate-x-1 transition-transform"
+      ></i>
+      Kembali
+    </a>
+
+    <div
+      class="glass-card w-full max-w-lg rounded-[3rem] shadow-2xl p-10 md:p-14 transition-all hover:shadow-blue-200/50"
+    >
+      <div class="flex flex-col items-center mb-8">
+        <div class="relative mb-6">
+          <div
+            class="w-32 h-32 rounded-full overflow-hidden flex items-center justify-center shadow-2xl border-4 border-white transform transition hover:rotate-6 bg-gradient-to-br from-blue-600 to-indigo-600"
+          >
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" alt="Profil {{ user.username }}" class="w-full h-full object-cover">
+            {% else %}
+              <span class="text-5xl font-extrabold text-white tracking-tighter">
+                {{ user.nama_lengkap|slice:":1"|upper|default:user.username|slice:":1"|upper }}
+              </span>
+            {% endif %}
+          </div>
+          
+          <a href="{% url 'edit_profile' %}" 
+             class="absolute bottom-1 right-1 bg-white text-slate-600 p-2 rounded-full shadow-md border border-slate-200 hover:text-blue-600 transition-all z-10"
+             title="Ubah Profil">
+            <i data-feather="edit-2" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <h2 class="text-3xl font-bold text-slate-800 tracking-tight text-center">
+          {{ user.username }}
+        </h2>
+        <p
+          class="text-blue-600 font-bold uppercase tracking-[0.2em] text-[10px] mt-2 bg-blue-50 px-4 py-1 rounded-full border border-blue-100"
+        >
+          {{ user.get_role_display|default:"Pelanggan" }} PT. ICESAND KRISTAL PERKASA
+        </p>
+      </div>
+
+      <div class="space-y-4 mb-10">
+        
+        <div class="group flex items-center justify-between p-4 bg-white/50 rounded-3xl border border-slate-100 hover:border-blue-200 hover:bg-white transition-all shadow-sm">
+          <div class="flex items-center">
+              <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+                <i data-feather="briefcase" class="w-5 h-5"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Nama Usaha / Toko</p>
+                <p class="text-[14px] font-bold text-slate-700">{{ user.nama_usaha|default:"Belum diisi" }}</p>
+              </div>
+          </div>
+          <a href="{% url 'edit_profile' %}" class="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-slate-400 hover:text-blue-600">
+              <i data-feather="edit-2" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div class="group flex items-center justify-between p-4 bg-white/50 rounded-3xl border border-slate-100 hover:border-blue-200 hover:bg-white transition-all shadow-sm">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+                  <i data-feather="at-sign" class="w-5 h-5"></i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Nama Lengkap</p>
+                  <p class="text-[14px] font-bold text-slate-700">{{ user.nama_lengkap }}</p>
+                </div>
+            </div>
+            <a href="{% url 'edit_profile' %}" class="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-slate-400 hover:text-blue-600">
+                <i data-feather="edit-2" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+        <div class="group flex items-center justify-between p-4 bg-white/50 rounded-3xl border border-slate-100 hover:border-blue-200 hover:bg-white transition-all shadow-sm">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+                  <i data-feather="phone" class="w-5 h-5"></i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">No Telepon</p>
+                  <p class="text-[14px] font-bold text-slate-700">{{ user.no_telepon|default:"-" }}</p>
+                </div>
+            </div>
+            <a href="{% url 'edit_profile' %}" class="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-slate-400 hover:text-blue-600">
+                <i data-feather="edit-2" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+        <div class="group flex items-center justify-between p-4 bg-white/50 rounded-3xl border border-slate-100 hover:border-blue-200 hover:bg-white transition-all shadow-sm">
+          <div class="flex items-center">
+              <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+                <i data-feather="mail" class="w-5 h-5"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Email</p>
+                <p class="text-[14px] font-bold text-slate-700">{{ user.email }}</p>
+              </div>
+          </div>
+          <a href="{% url 'edit_profile' %}" class="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-slate-400 hover:text-blue-600">
+              <i data-feather="edit-2" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div class="group flex items-start justify-between p-4 bg-white/50 rounded-3xl border border-slate-100 hover:border-blue-200 hover:bg-white transition-all shadow-sm">
+          <div class="flex items-start">
+              <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors mt-1">
+                <i data-feather="map-pin" class="w-5 h-5"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Alamat Pengiriman</p>
+                <p class="text-[14px] font-bold text-slate-700 leading-relaxed">{{ user.alamat|default:"Alamat belum diatur" }}</p>
+              </div>
+          </div>
+          <a href="{% url 'edit_profile' %}" class="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-slate-400 hover:text-blue-600">
+              <i data-feather="edit-2" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+      <p
+        class="text-center text-slate-400 text-[10px] mt-10 uppercase tracking-widest font-medium"
+      >
+        &copy; 2026 PT. ICESAND KRISTAL PERKASA
+      </p>
+    </div>
+      </div>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

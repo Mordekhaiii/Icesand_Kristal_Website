@@ -1,0 +1,472 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produk - Es Kristal PT. ICESAND KRISTAL PERKASA</title>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Alpine JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+
+    <!-- App -->
+    <script src="{% static 'src/app.js' %}?v={{ timestamp }}"></script>
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="{% static 'css/product_list.css' %}?v={{ timestamp }}"
+    />
+  </head>
+
+  <body x-data>
+    <nav
+      class="navbar"
+      x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }"
+      style="height: 100px; background-color: #ffffff"
+    >
+      <a href="{% url 'home' %}" class="navbar-logos">
+        <img
+          src="{% static 'images/logo.png' %}"
+          alt="Logo Icesand Kristal"
+          style="height: 85px; width: 140px"
+        />
+      </a>
+
+      <div class="navbar-nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'home' %}">Tentang Kami</a>
+        <a href="{% url 'product_list' %}">Produk</a>
+        <a href="{% url 'contact' %}">Kontak</a>
+      </div>
+
+      <div class="navbar-extra">
+        <a href="#" id="shopping-cart-button">
+          <i data-feather="shopping-cart"></i>
+          <span
+            class="quantity-badge"
+            x-show="$store.cart.quantity > 0"
+            x-text="$store.cart.quantity"
+          ></span>
+        </a>
+
+        <div class="profile-dropdown">
+          <button class="profile-icon-btn"><i data-feather="user"></i></button>
+          <div class="dropdown-content">
+            {% if user.is_authenticated %}
+            <div class="user-card-header">
+              <p>Halo,</p>
+              <strong>{{ user.username }}</strong>
+            </div>
+            <a href="{% url 'profile' %}"
+              ><i data-feather="settings"></i> Profil Saya</a
+            >
+            <a href="{% url 'detail_transaksi' %}" class="menu-item">
+    <i data-feather="file-text"></i> Detail Transaksi</a>
+            <form
+              action="{% url 'logout' %}"
+              method="post"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="logout-btn">
+                <i data-feather="log-out"></i> Logout
+              </button>
+            </form>
+            {% else %}
+            <div class="user-card-header">
+              <p>Belum punya akun?</p>
+            </div>
+            <a href="{% url 'login' %}">Masuk / Daftar Akun</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+
+      {# Shopping Cart Start #}
+      <div class="shopping-cart">
+        <template x-for="(item, index) in $store.cart.items" :key="index">
+          <div class="cart-item">
+            <img
+              :src="`/static/images/products/${item.img}`"
+              :alt="item.name"
+            />
+            <div class="item-detail">
+              <h3 x-text="item.name"></h3>
+              <div class="item-price">
+                <span x-text="$store.cart.rupiah(item.price)"></span> &times;
+                <button id="remove" @click="$store.cart.remove(item.id)">
+                  &minus;
+                </button>
+                <span x-text="item.quantity"></span>
+                <button id="add" @click="$store.cart.add(item)">&plus;</button>
+                &equals;
+                <span x-text="$store.cart.rupiah(item.total)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem">
+          Cart is Empty
+        </h4>
+        <h4 x-show="$store.cart.items.length">
+          Total: <span x-text="$store.cart.rupiah($store.cart.total)"></span>
+        </h4>
+
+        <div class="form-container" x-show="$store.cart.items.length">
+          <form @submit.prevent="$store.cart.checkout()" id="checkoutForm">
+            {% csrf_token %}
+        <a href="{% url 'payment_list' %}">
+            <button class="checkout-button" type="submit" id="checkout-button">
+              Checkout
+            </button>
+          </form>
+        </a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="product-hero">
+      <div class="hero-content">
+        <h1>Produk</h1>
+        <p>Solusi Es Kristal Terbaik untuk Kota Bogor</p>
+      </div>
+    </section>
+
+    <!-- Produk Kami Start -->
+    <section
+      class="products"
+      id="products"
+      x-data="products"
+      x-init="isLoggedIn = {{ user.is_authenticated|yesno:'true,false' }}"
+    >
+      <div style="text-align: center; margin-bottom: 3rem">
+        <h2>Produk Kami</h2>
+        <p>
+          Pilih ukuran es kristal sesuai dengan kebutuhan Anda di bawah ini.
+        </p>
+      </div>
+      <div class="row-exclusive">
+        <div class="product-card">
+          <div class="product-icons">
+            <a
+  href="#"
+  @click.prevent="
+    {% if stok_besar <= 0 %}
+      Swal.fire({
+  title: 'Stok Habis',
+  text: 'Maaf, produk ini sedang tidak tersedia. Silakan cek ukuran es kristal lainnya!',
+  icon: 'error',
+  confirmButtonText: 'Lihat Produk Lain',
+  confirmButtonColor: '#3085d6',
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Jika ingin scroll otomatis ke section produk agar user sadar ada pilihan lain
+    window.location.href = {% url 'product_list' %} 
+  }
+});
+    {% else %}
+      isLoggedIn ? $store.cart.add({id: 1, name: 'Es Kristal Bulat Besar (20kg)', price: 20000, img: 'bulat_besar.png', stock: {{ stok_besar }} }) : 
+      Swal.fire({
+        title: 'Akses Terbatas',
+        text: 'Silakan login terlebih dahulu untuk melakukan pemesanan!',
+        icon: 'warning',
+        confirmButtonText: 'Login Sekarang',
+        confirmButtonColor: '#3085d6',
+        showCancelButton: true,
+        cancelButtonText: 'Nanti Saja'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href='{% url 'login' %}';
+        }
+      })
+    {% endif %}
+  "
+>
+  <i data-feather="shopping-cart"></i>
+</a>
+          </div>
+          <div class="product-image">
+            <img
+              src="{% static 'images/products/bulat_besar.png' %}"
+              alt="Es Kristal Bulat Besar"
+            />
+          </div>
+          <div class="product-content">
+            <h3>Es Kristal Bulat Besar (20kg)</h3>
+            <div class="product-price">Rp 20.000</div>
+
+            <div class="product-status">
+              {% if stok_besar > 0 %}
+                <span class="product-stock in-stock">Stok Tersedia: {{ stok_besar }} Bal</span>
+              {% else %}
+              <span class="product-stock out-of-stock">Stok Habis</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icons">   
+            <a
+  href="#"
+  @click.prevent="
+    {% if stok_kecil <= 0 %}
+      Swal.fire({
+  title: 'Stok Habis',
+  text: 'Maaf, produk ini sedang tidak tersedia. Silakan cek ukuran es kristal lainnya!',
+  icon: 'error',
+  confirmButtonText: 'Lihat Produk Lain',
+  confirmButtonColor: '#3085d6',
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Jika ingin scroll otomatis ke section produk agar user sadar ada pilihan lain
+    window.location.href = {% url 'product_list' %}; 
+  }
+});
+    {% else %}
+      isLoggedIn ? $store.cart.add({id: 2, name: 'Es Kristal Bulat Kecil (20kg)', price: 20000, img: 'bulat_kecil.jpg', stock: {{ stok_kecil }} }) : 
+      Swal.fire({
+        title: 'Akses Terbatas',
+        text: 'Silakan login terlebih dahulu untuk melakukan pemesanan!',
+        icon: 'warning',
+        confirmButtonText: 'Login Sekarang',
+        confirmButtonColor: '#3085d6',
+        showCancelButton: true,
+        cancelButtonText: 'Nanti Saja'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href='{% url 'login' %}';
+        }
+      })
+    {% endif %}
+  "
+>
+  <i data-feather="shopping-cart"></i>
+</a>
+          </div>
+          <div class="product-image">
+            <img
+              src="{% static 'images/products/bulat_kecil.jpg' %}"
+              alt="Es Kristal Bulat Kecil"
+            />
+          </div>
+          <div class="product-content">
+            <h3>Es Kristal Bulat Kecil (20kg)</h3>
+            <div class="product-price">Rp 20.000</div>
+
+            <div class="product-status">
+              {% if stok_kecil > 0 %}
+              <span class="product-stock in-stock">Stok Tersedia: {{ stok_kecil }} Bal</span>
+              {% else %}
+              <span class="product-stock out-of-stock">Stok Habis</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Produk Kami End -->
+
+    <!-- Perbedaan Jenis Es Start -->
+    <section
+      class="product-comparison"
+      style="padding: 5rem 7%; background-color: #f9f9f9"
+    >
+      <div style="text-align: center; margin-bottom: 4rem">
+        <h2 style="font-size: 45px; margin-top: 0.5rem; color: #000">
+          Pilih Jenis Ukuran yang Tepat untuk Bisnis Anda
+        </h2>
+        <p
+          style="
+            color: #000;
+            font-size: 20px;
+            max-width: 600px;
+            margin: 1rem auto 0;
+          "
+        >
+          Setiap jenis minuman dan tempat usaha membutuhkan jenis es yang
+          berbeda sesuai kebutuhan
+        </p>
+      </div>
+
+      <div
+        class="comparison-row"
+        style="display: flex; gap: 3rem; align-items: center; flex-wrap: wrap"
+      >
+        <div
+          class="comparison-image"
+          style="flex: 1; min-width: 300px; text-align: center"
+        >
+          <img
+            src="{% static 'images/perbedaan_es.png' %}"
+            alt="Perbandingan Es Kristal Besar dan Kecil"
+            style="
+              max-width: 100%;
+              height: auto;
+              border-radius: 15px;
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            "
+          />
+          <p
+            style="
+              font-style: italic;
+              color: #000;
+              margin-top: 1rem;
+              font-size: 0.9rem;
+            "
+          >
+            Visualisasi perbandingan ukuran (kiri: Besar, kanan: Kecil)
+          </p>
+        </div>
+
+        <div class="comparison-text" style="flex: 1.5; min-width: 300px">
+          <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #000">
+            Es Kristal Bulat Besar & Es Kristal Bulat Kecil
+          </h3>
+
+          <div
+            style="
+              background: white;
+              padding: 2rem;
+              border-radius: 10px;
+              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            "
+          >
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li
+                style="
+                  margin-bottom: 1.5rem;
+                  display: flex;
+                  gap: 1rem;
+                  align-items: start;
+                "
+              >
+                <i
+                  data-feather="target"
+                  style="color: #000; margin-top: 3px"
+                ></i>
+                <div>
+                  <strong style="color: #000"
+                    >Bulat Besar (Berukuran 3.2cm):</strong
+                  >
+                  <p style="color: #000; margin-top: 0.3rem">
+                    Sangat lambat mencair. Pilihan terbaik untuk
+                    <strong>Café, Bar, dan Booth Minuman Kekinian</strong> yang
+                    menyajikan Jus, Mocktail, Beer atau Minuman Premium. Menjaga
+                    rasa minuman tetap otentik tanpa cepat tercampur air dari
+                    lelehan es.
+                  </p>
+                </div>
+              </li>
+              <li style="display: flex; gap: 1rem; align-items: start">
+                <i
+                  data-feather="coffee"
+                  style="color: #000; margin-top: 3px"
+                ></i>
+                <div>
+                  <strong style="color: #000"
+                    >Bulat Kecil (Berukuran 2.6cm):</strong
+                  >
+                  <p style="color: #000; margin-top: 0.3rem">
+                    Cepat memberikan suhu dingin instan dan sangat cepat mencair. Sangat
+                    populer di
+                    <strong>R</strong>
+                    untuk menu seperti Es Kopi, Teh, Es Campur danestoran, Rumah Makan, dan Rumah Tangga lain-lain.
+                    Estetikanya membuat minuman terlihat lebih penuh dan
+                    menarik.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Perbedaan Jenis Es End -->
+
+    <!-- Produk Es Premium Start -->
+    <section class="product-info">
+      <div class="info-row">
+        <div class="info-text">
+          <h2>Produk Ice Kristal - Kualitas Premium dari Kami</h2>
+          <p>
+            Ice Tube merupakan salah satu produk unggulan kami yang dirancang
+            untuk memenuhi kebutuhan berbagai jenis bisnis yang membutuhkan es
+            higienis, jernih, dan tahan lama. Dengan teknologi produksi modern
+            dan standar kebersihan tinggi, Ice Tube kami menjadi pilihan utama
+            bagi banyak mitra usaha di Kota Bogor.
+          </p>
+          <div class="info-grid">
+            <div class="info-item">
+              <h4>Ciri Khas Produk:</h4>
+              <ul>
+                <li><i data-feather="check"></i> Jernih seperti kristal</li>
+                <li><i data-feather="check"></i> Tidak berbau & berasa</li>
+                <li><i data-feather="check"></i> Mencair lebih lambat</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="info-image">
+          <img
+            src="{% static 'images/about4.webp' %}"
+            alt="Es Kristal Premium"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="needs-section">
+      <div class="needs-container">
+        <div class="info-image">
+          <img src="{% static 'images/es-hero.jpg' %}" alt="Penggunaan Es" />
+        </div>
+        <div class="info-text">
+          <h2>Cocok Untuk Berbagai Kebutuhan</h2>
+          <p>
+            Pesan sekarang untuk segala kebutuhan mitra bisnis maupun acara
+            spesial Anda!
+          </p>
+          <ul class="needs-list">
+            <li><i data-feather="coffee"></i> Restoran & Café</li>
+            <li><i data-feather="music"></i> Bar & Lounge</li>
+            <li><i data-feather="home"></i> Rumah Tangga</li>
+            <li><i data-feather="users"></i> Event & Catering</li>
+            <li><i data-feather="truck"></i> Distributor Grosir</li>
+            <li><i data-feather="shopping-bag"></i> Supermarket</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div id="footer"></div>
+
+    <script src="{% static 'js/footer.js' %}?v={{ timestamp }}"></script>
+    <script src="{% static 'js/script.js' %}?v={{ timestamp }}"></script>
+
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

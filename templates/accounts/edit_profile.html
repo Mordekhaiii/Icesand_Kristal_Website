@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profil | PT. ICESAND KRISTAL PERKASA</title>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url("{% static 'images/background_kristal.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="glass-card w-full max-w-lg rounded-[2.5rem] shadow-2xl p-8 md:p-10">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-slate-800">Edit Profil</h2>
+            <p class="text-slate-500 text-sm">Lengkapi data untuk kemudahan pengiriman es</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+
+            <div class="flex flex-col items-center mb-6">
+                <div class="relative group">
+                    <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-200">
+                        {% if user.profile_picture %}
+                            <img id="preview-img" src="{{ user.profile_picture.url }}" class="w-full h-full object-cover">
+                        {% else %}
+                            <div id="placeholder-icon" class="w-full h-full flex items-center justify-center text-slate-400">
+                                <i data-feather="user" class="w-12 h-12"></i>
+                            </div>
+                            <img id="preview-img" src="" class="w-full h-full object-cover hidden">
+                        {% endif %}
+                    </div>
+                    <label for="id_profile_picture" class="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700 transition-all">
+                        <i data-feather="camera" class="w-4 h-4"></i>
+                    </label>
+                    <input type="file" name="profile_picture" id="id_profile_picture" class="hidden" accept="image/*" onchange="previewImage(event)">
+                </div>
+                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-wider">Ketuk kamera untuk ganti foto</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+                {% for field in form %}
+                    {% if field.name != 'profile_picture' %}
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1 tracking-wider">
+                            {{ field.label }}
+                        </label>
+                        <div class="relative">
+                            {{ field }}
+                        </div>
+                        {% if field.errors %}
+                            <p class="text-red-500 text-[10px]">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="flex gap-3 mt-8">
+                <a href="{% url 'profile' %}" class="flex-1 py-4 bg-slate-100 text-slate-600 text-center font-bold rounded-2xl hover:bg-slate-200 transition-all">
+                    Batal
+                </a>
+                <button type="submit" class="flex-[2] py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/30 hover:bg-blue-700 transition-all transform active:scale-95">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        feather.replace();
+
+        // Script untuk preview gambar sebelum diupload
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('preview-img');
+                const placeholder = document.getElementById('placeholder-icon');
+                output.src = reader.result;
+                output.classList.remove('hidden');
+                if(placeholder) placeholder.classList.add('hidden');
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Otomatis tambah class Tailwind ke widget Django
+        const formInputs = document.querySelectorAll('input, textarea, select');
+        formInputs.forEach(input => {
+            if (input.type !== 'file') {
+                input.classList.add(
+                    'block', 'w-full', 'px-4', 'py-3', 'rounded-xl', 'bg-white/60',
+                    'border', 'border-slate-200', 'focus:border-blue-500', 'focus:ring-0',
+                    'outline-none', 'transition-all', 'text-sm', 'text-slate-700'
+                );
+            }
+        });
+    </script>
+</body>
+</html>
