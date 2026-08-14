@@ -10,6 +10,7 @@
     <link rel="icon" href="{% static 'images/logo-icesand.png' %}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
         :root {
@@ -355,76 +356,153 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    function openModalSelesai(trxId) {
-            Swal.fire({
-                title: 'Selesaikan Pesanan?',
-                text: 'Apakah es kristal sudah sampai dan sesuai dengan pesanan Anda?',
-                html: `
-                    <div style="text-align: left; margin-top: 15px;">
-                        <label style="font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 0.5px;">
-                            Foto Bukti Penerimaan (Opsional)
-                        </label>
-                        <input type="file" id="swal-foto-bukti" accept="image/*" class="swal2-file" style="width: 100%; margin: 0; border-radius: 12px; font-size: 13px; border: 1px solid #cbd5e1; padding: 8px;">
-                        <p style="font-size: 11px; color: #94a3b8; margin-top: 6px; font-style: italic;">*Anda langsung bisa klik "Ya, Selesai" tanpa upload foto jika tidak ada.</p>
+function openModalSelesai(trxId) {
+    Swal.fire({
+        title: '<span style="font-size: 22px; font-weight: 800; color: #1e293b;">Selesaikan Pesanan?</span>',
+        html: `
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.5;">
+                Pastikan es kristal sudah sampai dan kuantitas sesuai dengan pesanan Anda.
+            </p>
+
+            <div style="text-align: left;">
+                <label style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+                    Foto Bukti Penerimaan <span style="font-weight: 500; color: #94a3b8;">(Opsional)</span>
+                </label>
+
+                <!-- Box Upload Custom -->
+                <div id="upload-box-wrapper" onclick="document.getElementById('swal-foto-bukti').click()" 
+                     style="border: 2px dashed #cbd5e1; border-radius: 18px; padding: 20px; text-align: center; cursor: pointer; background: #f8fafc; transition: all 0.3s ease;">
+                    
+                    <div id="upload-placeholder">
+                        <div style="width: 46px; height: 46px; background: #e0f2fe; color: #0284c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 18px;">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #0284c7;">Klik untuk Ambil / Upload Foto</p>
+                        <p style="margin: 3px 0 0 0; font-size: 11px; color: #94a3b8;">Format: JPG, PNG, atau JPEG</p>
                     </div>
-                `,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#10b981',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: 'Ya, Selesai!',
-                cancelButtonText: 'Batal',
-                borderRadius: '2rem',
-                preConfirm: () => {
-                    const fileInput = document.getElementById('swal-foto-bukti');
-                    return { foto: fileInput.files[0] || null };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+
+                    <!-- Preview Gambar -->
+                    <div id="image-preview-container" style="display: none;">
+                        <img id="image-preview" src="" alt="Preview Bukti" style="max-height: 130px; border-radius: 12px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); object-fit: contain;">
+                        <p id="preview-filename" style="margin: 8px 0 0 0; font-size: 12px; font-weight: 700; color: #10b981;"></p>
+                    </div>
+
+                    <input type="file" id="swal-foto-bukti" accept="image/*" style="display: none;" onchange="previewBuktiFoto(this)">
+                </div>
+
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 8px; font-style: italic; text-align: center;">
+                    *Anda dapat langsung klik tombol selesai tanpa melampirkan foto.
+                </p>
+            </div>
+        `,
+        iconHtml: '<div style="width: 70px; height: 70px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 30px;"><i class="fas fa-box-open"></i></div>',
+        customClass: {
+            icon: 'border-0 p-0 m-0 my-3',
+            popup: 'animate__animated animate__zoomInDown' // Animasi Masuk (Bounce In)
+        },
+        showClass: {
+            popup: 'animate__animated animate__zoomInDown animate__faster'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__zoomOutUp animate__faster' // Animasi Keluar (Zoom Out)
+        },
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: '<i class="fas fa-check-circle mr-2"></i> Ya, Selesai!',
+        cancelButtonText: 'Batal',
+        padding: '30px 25px',
+        borderRadius: '26px',
+        preConfirm: () => {
+            const fileInput = document.getElementById('swal-foto-bukti');
+            return { foto: fileInput.files[0] || null };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Menyimpan...',
+                text: 'Sedang memperbarui status pesanan',
+                allowOutsideClick: false,
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
+                didOpen: () => {
                     Swal.showLoading();
-
-                    const formData = new FormData();
-                    formData.append('aksi', 'selesai');
-                    if (result.value.foto) {
-                        formData.append('foto_bukti', result.value.foto);
-                    }
-
-                    fetch(`/selesai-order/${trxId}/`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Pesanan Selesai!',
-                                text: 'Terima kasih telah mempercayai PT. ICESAND KRISTAL PERKASA.',
-                                borderRadius: '2rem',
-                                showConfirmButton: false,
-                                timer: 2000,
-                                timerProgressBar: true,
-                            }).then(() => {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: data.message || 'Terjadi kesalahan.',
-                                borderRadius: '2rem'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire('Error!', 'Terjadi masalah jaringan atau server.', 'error');
-                    });
                 }
             });
+
+            const formData = new FormData();
+            formData.append('aksi', 'selesai');
+            if (result.value.foto) {
+                formData.append('foto_bukti', result.value.foto);
+            }
+
+            fetch(`/selesai-order/${trxId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pesanan Selesai!',
+                        text: 'Terima kasih telah mempercayai PT. ICESAND KRISTAL PERKASA.',
+                        borderRadius: '24px',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showClass: {
+                            popup: 'animate__animated animate__bounceIn'
+                        }
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: data.message || 'Terjadi kesalahan.',
+                        borderRadius: '24px'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi masalah jaringan atau server.',
+                    borderRadius: '24px'
+                });
+            });
         }
+    });
+}
+
+function previewBuktiFoto(input) {
+    const file = input.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('upload-placeholder').style.display = 'none';
+            const container = document.getElementById('image-preview-container');
+            const preview = document.getElementById('image-preview');
+            const filename = document.getElementById('preview-filename');
+            
+            preview.src = e.target.result;
+            filename.textContent = '✓ ' + file.name;
+            container.style.display = 'block';
+
+            const boxWrapper = document.getElementById('upload-box-wrapper');
+            boxWrapper.style.borderColor = '#10b981';
+            boxWrapper.style.background = '#f0fdf4';
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
         function openModalUlasan(trxId) {
             Swal.fire({

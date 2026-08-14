@@ -300,7 +300,7 @@
         });
 
         // --- 2. LOGIKA HITUNG RINCIAN BIAYA WILAYAH secara REAL-TIME ---
-        document.addEventListener('DOMContentLoaded', function () {
+        {% comment %} document.addEventListener('DOMContentLoaded', function () {
             const wilayahSelect = document.getElementById('id_wilayah_tujuan'); 
             
             const rowOngkir = document.getElementById('row-ongkir');
@@ -362,7 +362,7 @@
                 wilayahSelect.addEventListener('change', hitungBiayaOtomatis);
                 hitungBiayaOtomatis();
             }
-        });
+        }); {% endcomment %}
 
         function confirmCancel() {
             Swal.fire({
