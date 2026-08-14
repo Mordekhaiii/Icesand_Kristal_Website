@@ -343,7 +343,7 @@ z .navbar .navbar-logo {
 }
 
 .hero-content-wrapper h2 {
-  font-size: 3.6rem;
+  font-size: 3.5rem;
   font-weight: 800;
   color: var(--primary1);
   margin-bottom: 20px;
@@ -813,81 +813,140 @@ z .navbar .navbar-logo {
 }
 /* Product Section End */
 
-/* Delivery Section */
 /* --- Delivery Section --- */
 .delivery-section {
-  padding: 8rem 7%;
-  background-color: var(--bg); /* Background putih bersih */
+  padding: 6rem 7%;
+  background-color: var(--bg);
 }
 
 .delivery-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
-  flex-wrap: wrap; /* Supaya responsif di HP */
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
 .delivery-image {
-  flex: 1 1 45rem;
+  flex: 1 1 300px; /* Diubah dari 45rem agar tidak memakan ruang kosong */
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .delivery-image img {
-  width: 200%;
-  max-width: 600px;
+  width: 100%;    /* Diubah dari 200% */
+  max-width: 480px;
+  height: auto;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
 }
 
 .delivery-content {
-  flex: 1 1 35rem;
+  flex: 1 1 300px; /* Diubah dari 35rem */
 }
 
 .badge-delivery {
   display: inline-block;
-  padding: 20px 50px;
+  padding: 10px 24px; /* Diperkecil agar proporsional */
   background-color: #eee;
   color: var(--primary);
   border-radius: 20px;
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
 .delivery-content h2 {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   color: var(--primary);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   line-height: 1.2;
 }
 
 .delivery-content p {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   color: var(--primary);
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   line-height: 1.6;
 }
 
 .order-text {
   font-weight: 600;
   color: #333 !important;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 /* Tombol Lihat Produk Custom */
 .view-product-btn {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   background-color: #0077b6;
   color: #ffffff !important;
-  padding: 16px 35px;
-  border-radius: 50px; /* Membuat tombol lonjong/pill */
-  font-size: 1.4rem;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-top: 25px;
+  margin-top: 20px;
   transition: all 0.3s ease;
   box-shadow: 0 10px 20px rgba(26, 43, 72, 0.2);
+}
+
+.view-product-btn:hover {
+  background-color: #00d2ff;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0, 210, 255, 0.3);
+}
+
+.view-product-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Penyesuaian Khusus HP / Layar Kecil */
+@media (max-width: 576px) {
+  .delivery-section {
+    padding: 3rem 5%;
+  }
+
+  .delivery-container {
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .delivery-image {
+    flex: 1 1 100%;
+  }
+
+  .delivery-image img {
+    max-width: 220px;
+  }
+
+  .delivery-content {
+    flex: 1 1 100%;
+  }
+
+  .delivery-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .delivery-content p {
+    font-size: 0.95rem;
+  }
+
+  .badge-delivery {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .view-product-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
 }
 
 .view-product-btn:hover {

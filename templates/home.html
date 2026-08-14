@@ -175,13 +175,19 @@
     </nav>
     <!-- Navbar end -->
 
-    <!-- Hero Section start (Dengan Animasi Floating ) -->
+    <!-- Hero Section start (Dengan Animasi Floating & Parallax Interaktif) -->
     <section class="hero img-bg relative overflow-hidden">
       <div class="hero-wrapper relative z-10"> 
         <div class="hero-text" data-aos="fade-right">
           <div class="hero-content-wrapper">
             <h2>Selamat Datang di <br>Icesand Kristal</h2>
             <p>Hari Gini Beli Es Batu Kristal Mahal🤨? Icesand Memberikan Harga Terbaik dan Kualitas Yang Tentunya Teruji loh 😉.<br><strong>Only Sell The Best.</strong></p>
+            
+            <div style="margin-top: 25px;">
+              <a href="{% url 'product_list' %}" class="btn-detail btn-glow" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 50px; background: linear-gradient(135deg, #2563eb, #0284c7); color: #fff; font-weight: 700; text-decoration: none;">
+                <span>Pesan Es Sekarang</span> <i data-feather="arrow-right"></i>
+              </a>
+            </div>
           </div>
         </div>
 
