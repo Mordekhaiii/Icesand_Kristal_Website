@@ -2,12 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title > Home - Es Kristal PT. ICESAND KRISTAL PERKASA</title>
-    <link rel="icon" href="{% static "images/logo-icesand.png" %}">
+    <title>Kontak - Es Kristal PT. ICESAND KRISTAL PERKASA</title>
+    <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,176 +18,186 @@
     />
 
     <!-- Feather Icons -->
-   <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- AOS (Animate On Scroll) Library CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
     <!-- My CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}"/>
-      
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}?v={{ timestamp }}" />
 
-    <!-- AlpineJS -->
-   <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
-      <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x.x/dist/alpine.min.js" defer></script>
-
-
-    <!-- App -->
-    <script src="{% static "src/app.js" %}?v={{ timestamp }}" async></script>
-  
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-
-    <!-- My CSS -->
-      <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
-
-    {# JS #}
-      <script src="{% static 'js/kontak.js' %}"></script>
-
-
-    <!-- AlpineJS -->
+    <!-- AlpineJS v3 -->
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- App & Contact JS -->
+    <script src="{% static 'src/app.js' %}?v={{ timestamp }}" async></script>
+    <script src="{% static 'js/kontak.js' %}?v={{ timestamp }}"></script>
   </head>
+
   <body>
     <!-- Navbar start -->
-    <nav class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
-  <a href="{% url 'home' %}" class="navbar-logos">
-    <img src="{% static 'images/logo.png' %}" alt="Logo Icesand Kristal" style="height: 85px; width: 140px;">
-  </a>
+    <nav id="navbar-icesand" class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
+      <a href="{% url 'home' %}" class="navbar-logos">
+        <img src="{% static 'images/logo.png' %}" alt="Logo Icesand Kristal" style="height: 85px; width: 140px;">
+      </a>
 
-  <div class="navbar-nav">
-    <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'home' %}">Tentang Kami</a>
-    <a href="{% url 'product_list' %}">Produk</a>
-    <a href="{% url 'contact' %}">Kontak</a>
-  </div>
-
-  <div class="navbar-extra">
-    <div class="profile-dropdown">
-      <button class="profile-icon-btn">
-        <i data-feather="user"></i>
-      </button>
-      
-      <div class="dropdown-content">
-        {% if user.is_authenticated %}
-          <div class="user-card-header">
-            <p>Selamat Datang,</p>
-            <strong>{{ user.username }}</strong>
-          </div>
-          <hr>
-          <a href="{% url 'profile' %}"><i data-feather="settings"></i> Profil Saya</a>
-          <a href="{% url 'detail_transaksi' %}" class="menu-item">
-    <i data-feather="file-text"></i> Detail Transaksi</a>
-          <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">
-              <i data-feather="log-out"></i> Logout
-            </button>
-          </form>
-        {% else %}
-          <div class="user-card-header">
-            <p>Belum punya akun?</p>
-          </div>
-          <a href="{% url 'login' %}">Masuk / Daftar Akun</a>
-        {% endif %}
+      <div class="navbar-nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'home' %}">Tentang Kami</a>
+        <a href="{% url 'product_list' %}">Produk</a>
+        <a href="{% url 'contact' %}">Kontak</a>
       </div>
-    </div>
 
-    <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
-  </div>
-</nav>
+      <div class="navbar-extra">
+        <div class="profile-dropdown">
+          <button class="profile-icon-btn">
+            <i data-feather="user"></i>
+          </button>
+          
+          <div class="dropdown-content">
+            {% if user.is_authenticated %}
+              <div class="user-card-header">
+                <p>Selamat Datang,</p>
+                <strong>{{ user.username }}</strong>
+              </div>
+              <hr>
+              <a href="{% url 'profile' %}"><i data-feather="settings"></i> Profil Saya</a>
+              <a href="{% url 'detail_transaksi' %}" class="menu-item">
+                <i data-feather="file-text"></i> Detail Transaksi
+              </a>
+              <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                  <i data-feather="log-out"></i> Logout
+                </button>
+              </form>
+            {% else %}
+              <div class="user-card-header">
+                <p>Belum punya akun?</p>
+              </div>
+              <a href="{% url 'login' %}">Masuk / Daftar Akun</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+    </nav>
     <!-- Navbar end -->
 
-    <!-- Jumbotron -->
+    <!-- Jumbotron Start -->
     <section class="jumbotron-contact">
-  <div class="jumbotron-overlay">
-    <div class="container">
-      <h2 class="wow fadeInDown">Kontak <span>Kami</span></h2>
-      <p class="wow fadeInUp">Gunakan sistem kami untuk kemudahan pemesanan es kristal secara cepat dan akurat. Hubungi pusat layanan pelanggan kami jika Anda memerlukan bantuan teknis.</p>
-    </div>
-  </div>
-</section>
-
-<section class="contact-section" id="contact">
-  <div class="contact-wrapper">
-    
-    <div class="map-box">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.596145731519!2d106.7979965!3d-6.572545000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5e8fe686c37%3A0xda7ae210a4af2361!2sIcesand%20ES%20Kristal%20Bogor!5e0!3m2!1sid!2sid!4v1774634682008!5m2!1sid!2sid"
-        allowfullscreen=""
-        loading="lazy">
-      </iframe>
-    </div>
-
-    <div class="info-box">
-      <div class="info-content">
-        <h3>Hubungi <span>Distributor</span></h3>
-        <p>Gunakan informasi di bawah ini untuk pusat bantuan pelanggan PT. ICESAND KRISTAL PERKASA untuk wilayah Kota Bogor.</p>
-        
-        <ul class="contact-details">
-          <li>
-            <div class="icon-bg"><i data-feather="phone"></i></div>
-            <div class="detail-text">
-              <span>Telepon / WhatsApp</span>
-              <strong>0811-1165-221</strong>
-            </div>
-          </li>
-          <li>
-            <div class="icon-bg"><i data-feather="mail"></i></div>
-            <div class="detail-text">
-              <span>Email Bisnis</span>
-              <strong>icesandkristal@gmail.com</strong>
-            </div>
-          </li>
-          <li>
-            <div class="icon-bg"><i data-feather="instagram"></i></div>
-            <div class="detail-text">
-              <span>Instagram</span>
-              <strong>@icesand_kristal</strong>
-            </div>
-          </li>
-          <li>
-            <div class="icon-bg"><i data-feather="clock"></i></div>
-            <div class="detail-text">
-              <span>Jam Operasional</span>
-              <strong>Setiap Hari (08:30 - 17:30)</strong>
-            </div>
-          </li>
-          <li>
-            <div class="icon-bg"><i data-feather="map-pin"></i></div>
-            <div class="detail-text">
-              <span>Kantor Distribusi</span>
-              <strong>Jl. Waliwis No.1, Tanah Sareal, Kota Bogor</strong>
-            </div>
-          </li>
-        </ul>
+      <div class="jumbotron-overlay">
+        <div class="container" data-aos="fade-down">
+          <h2>Kontak <span>Kami</span></h2>
+          <p>Gunakan sistem kami untuk kemudahan pemesanan es kristal secara cepat dan akurat. Hubungi pusat layanan pelanggan kami jika Anda memerlukan bantuan teknis.</p>
+        </div>
       </div>
-    </div>
+    </section>
+    <!-- Jumbotron End -->
 
-  </div>
-</section>
+    <!-- Contact Section Start -->
+    <section class="contact-section" id="contact">
+      <div class="contact-wrapper">
+        
+        <div class="map-box" data-aos="fade-right" data-aos-delay="100">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.596145731519!2d106.7979965!3d-6.572545000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5e8fe686c37%3A0xda7ae210a4af2361!2sIcesand%20ES%20Kristal%20Bogor!5e0!3m2!1sid!2sid!4v1774634682008!5m2!1sid!2sid"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+        </div>
 
-    <!-- Footer -->
+        <div class="info-box" data-aos="fade-left" data-aos-delay="200">
+          <div class="info-content">
+            <h3>Hubungi <span>Distributor</span></h3>
+            <p>Gunakan informasi di bawah ini untuk pusat bantuan pelanggan PT. ICESAND KRISTAL PERKASA untuk wilayah Kota Bogor.</p>
+            
+            <ul class="contact-details">
+              <li data-aos="fade-up" data-aos-delay="250">
+                <div class="icon-bg"><i data-feather="phone"></i></div>
+                <div class="detail-text">
+                  <span>Telepon / WhatsApp</span>
+                  <strong>0811-1165-221</strong>
+                </div>
+              </li>
+              <li data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-bg"><i data-feather="mail"></i></div>
+                <div class="detail-text">
+                  <span>Email Bisnis</span>
+                  <strong>icesandkristal@gmail.com</strong>
+                </div>
+              </li>
+              <li data-aos="fade-up" data-aos-delay="350">
+                <div class="icon-bg"><i data-feather="instagram"></i></div>
+                <div class="detail-text">
+                  <span>Instagram</span>
+                  <strong>@icesand_kristal</strong>
+                </div>
+              </li>
+              <li data-aos="fade-up" data-aos-delay="400">
+                <div class="icon-bg"><i data-feather="clock"></i></div>
+                <div class="detail-text">
+                  <span>Jam Operasional</span>
+                  <strong>Setiap Hari (08:30 - 17:30)</strong>
+                </div>
+              </li>
+              <li data-aos="fade-up" data-aos-delay="450">
+                <div class="icon-bg"><i data-feather="map-pin"></i></div>
+                <div class="detail-text">
+                  <span>Kantor Distribusi</span>
+                  <strong>Jl. Waliwis No.1, Tanah Sareal, Kota Bogor</strong>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- Contact Section End -->
+
+    <!-- Footer Start -->
     <div id="footer"></div>
+    <!-- Footer End -->
 
     <!-- My JS -->
-    <script src="{% static 'js/footer.js' %}"></script>
+    <script src="{% static 'js/footer.js' %}?v={{ timestamp }}"></script>
 
     <!-- Feather Icons -->
     <script>
-  feather.replace();
-</script>
+      feather.replace();
+    </script>
 
+    <!-- AOS Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Unified Script Handler -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Init AOS Animation
+        AOS.init({
+          duration: 800,
+          once: true,
+          easing: 'ease-out-cubic'
+        });
+
+        // Navbar Scroll Handler
+        const nav = document.querySelector('#navbar-icesand');
+        if (nav) {
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+              nav.classList.add('scroll-aktif');
+            } else {
+              nav.classList.remove('scroll-aktif');
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

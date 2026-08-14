@@ -86,7 +86,7 @@ class Transaksi(models.Model):
     ]
     METODE_PILIHAN = [
         ('Tunai', 'Tunai (Cash)'),
-        ('Non-Tunai', 'Non-Tunai (Transfer / QRIS)'),
+        ('Non-Tunai', 'Non-Tunai (Transfer)'),
     ]
 
     kode_transaksi = models.CharField(max_length=20, unique=True, editable=False, null=True, blank=True)

@@ -1,12 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title > Home - Es Kristal PT. ICESAND KRISTAL PERKASA</title>
+    <title>Home - Es Kristal PT. ICESAND KRISTAL PERKASA</title>
     <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
 
     <!-- Fonts -->
@@ -14,24 +13,112 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700&display=swap"
       rel="stylesheet"
     />
 
     <!-- Feather Icons -->
-   <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- AOS (Animate On Scroll) Library CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
     <!-- My CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}"/>
-      
 
-    <!-- AlpineJS -->
-   <script
+    <!-- AlpineJS v3 -->
+    <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
-      <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x.x/dist/alpine.min.js" defer></script>
 
+    <!-- Vanilla Tilt (Efek 3D Kartu Mengikuti Mouse) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <!-- Custom Micro-Interactions & Styling Tambahan -->
+    <style>
+      /* 1. Animasi Melayang Halus (Floating) */
+      @keyframes floatY {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-16px) rotate(2deg); }
+      }
+      @keyframes floatX {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(12px); }
+      }
+      .anim-float-y {
+        animation: floatY 4.5s ease-in-out infinite;
+      }
+      .anim-float-x {
+        animation: floatX 6s ease-in-out infinite;
+      }
+
+      /* 2. Efek Kilau Refleksi Es (Shimmer Glare) */
+      .ice-shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .ice-shimmer::after {
+        content: '';
+        position: absolute;
+        top: -60%;
+        left: -60%;
+        width: 220%;
+        height: 220%;
+        background: linear-gradient(60deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+        transform: rotate(25deg) translateX(-100%);
+        transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+      }
+      .ice-shimmer:hover::after {
+        transform: rotate(25deg) translateX(100%);
+      }
+
+      /* 3. Running Marquee Banner (Teks Berjalan Halus) */
+      .marquee-wrapper {
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        background: linear-gradient(90deg, #0284c7, #2563eb);
+        color: white;
+        padding: 12px 0;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+      }
+      .marquee-content {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        min-width: 100%;
+        gap: 30px;
+        animation: scrollMarquee 25s linear infinite;
+      }
+      .marquee-wrapper:hover .marquee-content {
+        animation-play-state: paused;
+      }
+      @keyframes scrollMarquee {
+        from { transform: translateX(0); }
+        to { transform: translateX(-100%); }
+      }
+
+      /* 4. Mouse Parallax Layer */
+      .parallax-layer {
+        transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+        will-change: transform;
+      }
+
+      /* 5. Smooth Button Hover */
+      .btn-glow {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .btn-glow:hover {
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 12px 25px -5px rgba(37, 99, 235, 0.4);
+      }
+    </style>
 
     <!-- App -->
     <script src="{% static 'src/app.js' %}?v={{ timestamp }}" async></script>
@@ -39,277 +126,308 @@
 
   <body>
     <!-- Navbar start -->
-    <nav class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
-  <a href="{% url 'home' %}" class="navbar-logos">
-    <img src="{% static 'images/logo.png' %}" alt="Logo Icesand Kristal" style="height: 85px; width: 140px;">
-  </a>
+    <nav id="navbar-icesand" class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
+      <a href="{% url 'home' %}" class="navbar-logos">
+        <img src="{% static 'images/logo.png' %}" alt="Logo Icesand Kristal" style="height: 85px; width: 140px;">
+      </a>
 
-  <div class="navbar-nav">
-    <a href="{% url 'home' %}">Home</a>
-    <a href="#about">Tentang Kami</a>
-    <a href="{% url 'product_list' %}">Produk</a>
-    <a href="{% url 'contact' %}">Kontak</a>
-  </div>
-
-  <div class="navbar-extra">
-    <div class="profile-dropdown">
-      <button class="profile-icon-btn">
-        <i data-feather="user"></i>
-      </button>
-      
-      <div class="dropdown-content">
-        {% if user.is_authenticated %}
-          <div class="user-card-header">
-            <p>Selamat Datang,</p>
-            <strong>{{ user.username }}</strong>
-          </div>
-          <hr>
-          <a href="{% url 'profile' %}"><i data-feather="settings"></i> Profil Saya</a>
-          <a href="{% url 'detail_transaksi' %}" class="menu-item">
-    <i data-feather="file-text"></i> Detail Transaksi</a>
-          <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">
-              <i data-feather="log-out"></i> Logout
-            </button>
-          </form>
-        {% else %}
-          <div class="user-card-header">
-            <p>Belum punya akun?</p>
-          </div>
-          <a href="{% url 'login' %}">Masuk / Daftar Akun</a>
-        {% endif %}
+      <div class="navbar-nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="{% url 'product_list' %}">Produk</a>
+        <a href="{% url 'contact' %}">Kontak</a>
       </div>
-    </div>
-    
 
-    <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
-  </div>
-</nav>
+      <div class="navbar-extra">
+        <div class="profile-dropdown">
+          <button class="profile-icon-btn">
+            <i data-feather="user"></i>
+          </button>
+          
+          <div class="dropdown-content">
+            {% if user.is_authenticated %}
+              <div class="user-card-header">
+                <p>Selamat Datang,</p>
+                <strong>{{ user.username }}</strong>
+              </div>
+              <hr>
+              <a href="{% url 'profile' %}"><i data-feather="settings"></i> Profil Saya</a>
+              <a href="{% url 'detail_transaksi' %}" class="menu-item">
+                <i data-feather="file-text"></i> Detail Transaksi
+              </a>
+              <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                  <i data-feather="log-out"></i> Logout
+                </button>
+              </form>
+            {% else %}
+              <div class="user-card-header">
+                <p>Belum punya akun?</p>
+              </div>
+              <a href="{% url 'login' %}">Masuk / Daftar Akun</a>
+            {% endif %}
+          </div>
+        </div>
+        
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+    </nav>
     <!-- Navbar end -->
 
-    <!-- Hero Section start -->
-  <section class="hero img-bg">
-  <div class="hero-wrapper"> <div class="hero-text">
-      <div class="hero-content-wrapper">
-        <h2>Selamat Datang di <br>Icesand Kristal</h2>
-        <p>Hari Gini Beli Es Batu Kristal Mahal🤨? Icesand Memberikan Harga Terbaik dan Kualitas Yang Tentunya Teruji loh 😉.<br>Only Sell The Best.</p>
+    <!-- Hero Section start (Dengan Animasi Floating & Parallax Interaktif) -->
+    <section class="hero img-bg relative overflow-hidden">
+      <div class="hero-wrapper relative z-10"> 
+        <div class="hero-text" data-aos="fade-right">
+          <div class="hero-content-wrapper">
+            <h2>Selamat Datang di <br>Icesand Kristal</h2>
+            <p>Hari Gini Beli Es Batu Kristal Mahal🤨? Icesand Memberikan Harga Terbaik dan Kualitas Yang Tentunya Teruji loh 😉.<br><strong>Only Sell The Best.</strong></p>
+          </div>
+        </div>
+
+        <div class="hero-image" data-aos="fade-left" data-aos-delay="200">
+          <div class="hero-image-wrapper anim-float-y">
+            <img src="{% static 'images/es-hero.jpg' %}" alt="Produk Es Kristal" style="filter: drop-shadow(0 20px 30px rgba(37, 99, 235, 0.2));">
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="hero-image">
-      <div class="hero-image-wrapper">
-        <img src="{% static 'images/es-hero.jpg' %}" alt="Produk Es Kristal">
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- Alasan Memilih Kami Section start -->
-   <section class="features-section">
-    <div class="shape-dots floating"></div>
-    <div class="shape-cloud floating-slow"></div>
-
-    <div class="container-features">
-        <div class="section-header-features">
-            <h2>Alasan Memilih Kami</h2>
+    <!-- Alasan Memilih Kami Section start -->
+    <section class="features-section">
+      <div class="container-features">
+        <div class="section-header-features" data-aos="fade-up">
+          <h2>Alasan Memilih Kami</h2>
         </div>
 
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="icon-box-features">
-                    <i class="fas fa-tint"></i>
-                </div>
-                <h3>Air Murni & Aman</h3>
-                <p>Disaring dengan reverse osmosis dan UV, bebas kontaminan, siap konsumsi.</p>
+          <div class="feature-card ice-shimmer" data-aos="fade-up" data-aos-delay="100" data-tilt data-tilt-max="10" data-tilt-speed="400">
+            <div class="icon-box-features anim-float-y">
+              <i class="fas fa-tint"></i>
             </div>
+            <h3>Air Murni & Aman</h3>
+            <p>Disaring dengan reverse osmosis dan UV, bebas kontaminan, siap konsumsi.</p>
+          </div>
 
-            <div class="feature-card">
-                <div class="icon-box-features">
-                    <i class="fas fa-cube"></i>
-                </div>
-                <h3>Es Bening & Awet</h3>
-                <p>Es seragam, tanpa bau, mencair lebih lambat, tampil elegan di setiap sajian.</p>
+          <div class="feature-card ice-shimmer" data-aos="fade-up" data-aos-delay="200" data-tilt data-tilt-max="10" data-tilt-speed="400">
+            <div class="icon-box-features anim-float-y" style="animation-delay: 0.5s;">
+              <i class="fas fa-cube"></i>
             </div>
+            <h3>Es Bening & Awet</h3>
+            <p>Es seragam, tanpa bau, mencair lebih lambat, tampil elegan di setiap sajian.</p>
+          </div>
 
-            <div class="feature-card">
-                <div class="icon-box-features">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <h3>Halal & Teruji</h3>
-                <p>Lulus uji lab dan bersertifikat halal, aman untuk semua kalangan.</p>
+          <div class="feature-card ice-shimmer" data-aos="fade-up" data-aos-delay="300" data-tilt data-tilt-max="10" data-tilt-speed="400">
+            <div class="icon-box-features anim-float-y" style="animation-delay: 1s;">
+              <i class="fas fa-certificate"></i>
             </div>
+            <h3>Halal & Teruji</h3>
+            <p>Lulus uji lab dan bersertifikat halal, aman untuk semua kalangan.</p>
+          </div>
 
-            <div class="feature-card">
-                <div class="icon-box-features">
-                    <i class="fas fa-hand-holding-heart"></i>
-                </div>
-                <h3>Higienis & Sehat</h3>
-                <p>Bebas klorin dan bahan kimia, cocok untuk rumah tangga hingga medis.</p>
+          <div class="feature-card ice-shimmer" data-aos="fade-up" data-aos-delay="400" data-tilt data-tilt-max="10" data-tilt-speed="400">
+            <div class="icon-box-features anim-float-y" style="animation-delay: 1.5s;">
+              <i class="fas fa-hand-holding-heart"></i>
             </div>
+            <h3>Higienis & Sehat</h3>
+            <p>Bebas klorin dan bahan kimia, cocok untuk rumah tangga hingga medis.</p>
+          </div>
         </div>
-    </div>
-</section>
-<!-- Alasan Memilih Kami Section End -->
+      </div>
+    </section>
+    <!-- Alasan Memilih Kami Section End -->
 
-<!-- About Section start -->
+    <!-- About Section start -->
     <section id="about" class="about">
-  <h2>Tentang Kami</h2>
-  
-  <div class="row">
-    <div class="about-img">
-      <img src="{% static 'images/about4.webp' %}" alt="Tentang Kami" />
-    </div>
-    
-    <div class="content">
-      <p>
-        Didirikan pada tahun 2025, Icesand Kristal adalah distributor es kristal di Kota Bogor. Dengan memiliki 2 jenis produk, seperti Es Kristal Bulat Besar dan Es Kristal Bulat Kecil. Icesand Kristal selalu berkomitmen untuk memberikan pelayanan terbaik.
-      </p>
-
-      <div class="features-container">
-        <div class="feature-box">
-          <i class="fas fa-check-circle"></i>
-          <p>Es kristal dibuat dari air murni dengan reverse osmosis, jernih, bebas kotoran, kemasan higienis dan pembekuan modern.</p>
-        </div>
-
-        <div class="feature-box">
-          <i class="fas fa-check-circle"></i>
-          <p>Es diproduksi menggunakan mesin berstandar internasional untuk menjamin kualitas terbaik.</p>
-        </div>
-
-        <div class="feature-box">
-          <i class="fas fa-check-circle"></i>
-          <p>Kemasan Icesand menggunakan plastik yang ramah lingkungan dan dapat didaur ulang.</p>
-        </div>
-      </div>
-      </div>
-  </div>
-</section>
-<!-- About Section End -->
-
-    <!-- Products Section start -->
-  <section id="products" class="products">
-  <div class="container">
-    <h2>Produk Kami</h2>
-    <p class="sub-title">Higienis, diproses dengan teknologi filtrasi modern, dan siap antar langsung ke lokasi Anda.</p>
-    
-    <div class="row-exclusive">
-      <div class="product-card featured">
-        <div class="product-image">
-          <img src="{% static 'images/products/bulat_besar.png' %}" alt="Es Kristal Bulat Besar" />
-          <span class="badge">Best Seller</span>
-        </div>
-        <div class="product-content">
-          <h3>Es Kristal Bulat Besar (20kg)</h3>
-          <p class="menu-card-price">Rp 20.000</p>
-          
-          <ul class="quick-features">
-            <li><i data-feather="check-circle"></i> Ukuran kristal 3.2 cm</li>
-            <li><i data-feather="clock"></i> Mencair lebih lambat (Tahan Lama)</li>
-            <li><i data-feather="coffee"></i> Ideal untuk Jus, Beer, Minuman Premium dan lain-lain. </li>
-          </ul>
-
-          <div class="product-status">
-            {% if stok_besar > 0 %}
-              <span class="product-stock in-stock">Stok Tersedia: {{ stok_besar }} Bal</span>
-            {% else %}
-              <span class="product-stock out-of-stock">Stok Habis</span>
-            {% endif %}
-          </div>
-
-          <a href="{% url 'product_list' %}" class="btn-detail">Lihat Detail Produk</a>
-        </div>
-      </div>
+      <h2 data-aos="fade-up">Tentang Kami</h2>
       
-      <div class="product-card featured">
-        <div class="product-image">
-          <img src="{% static 'images/products/bulat_kecil.jpg' %}" alt="Es Kristal Bulat Kecil" />
-          <span class="badge">Best Seller</span>
+      <div class="row">
+        <div class="about-img" data-aos="fade-right">
+          <img src="{% static 'images/about4.webp' %}" alt="Tentang Kami" class="anim-float-y" style="border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08);" />
         </div>
-        <div class="product-content">
-          <h3>Es Kristal Bulat Kecil (20kg)</h3>
-          <p class="menu-card-price">Rp 20.000</p>
-          
-          <ul class="quick-features">
-            <li><i data-feather="check-circle"></i> Ukuran kristal 2.6 cm</li>
-            <li><i data-feather="zap"></i> Cepat mendinginkan minuman</li>
-            <li><i data-feather="coffee"></i> Ideal untuk Es Kopi, Teh, Es Campur dan lain-lain. </li>
-          </ul>
+        
+        <div class="content" data-aos="fade-left">
+          <p>
+            Didirikan pada tahun 2025, Icesand Kristal adalah distributor es kristal di Kota Bogor. Dengan memiliki 2 jenis produk, seperti Es Kristal Bulat Besar dan Es Kristal Bulat Kecil. Icesand Kristal selalu berkomitmen untuk memberikan pelayanan terbaik.
+          </p>
 
-          <div class="product-status">
-            {% if stok_kecil > 0 %}
-              <span class="product-stock in-stock">Stok Tersedia: {{ stok_kecil }} Bal</span>
-            {% else %}
-              <span class="product-stock out-of-stock">Stok Habis</span>
-            {% endif %}
+          <div class="features-container">
+            <div class="feature-box ice-shimmer">
+              <i class="fas fa-check-circle"></i>
+              <p>Es kristal dibuat dari air murni dengan reverse osmosis, jernih, bebas kotoran, kemasan higienis dan pembekuan modern.</p>
+            </div>
+
+            <div class="feature-box ice-shimmer">
+              <i class="fas fa-check-circle"></i>
+              <p>Es diproduksi menggunakan mesin berstandar internasional untuk menjamin kualitas terbaik.</p>
+            </div>
+
+            <div class="feature-box ice-shimmer">
+              <i class="fas fa-check-circle"></i>
+              <p>Kemasan Icesand menggunakan plastik yang ramah lingkungan dan dapat didaur ulang.</p>
+            </div>
           </div>
-
-          <a href="{% url 'product_list' %}" class="btn-detail">Lihat Detail Produk</a>
         </div>
       </div>
-    </div>
+    </section>
+    <!-- About Section End -->
 
-    <p class="pembelian-info">Melayani pengiriman rutin untuk kafe, restoran, dan acara spesial.</p>
-  </div>
-</section>
+    <!-- Products Section start (Dengan 3D Tilt Interaktif Mengikuti Mouse) -->
+    <section id="products" class="products">
+      <div class="container">
+        <h2 data-aos="fade-up">Produk Kami</h2>
+        <p class="sub-title" data-aos="fade-up" data-aos-delay="100">Higienis, diproses dengan teknologi filtrasi modern, dan siap antar langsung ke lokasi Anda.</p>
+        
+        <div class="row-exclusive">
+          <!-- Card Produk 1 -->
+          <div class="product-card featured ice-shimmer" data-aos="zoom-in-up" data-aos-delay="200" data-tilt data-tilt-max="12" data-tilt-speed="600" data-tilt-glare data-tilt-max-glare="0.2">
+            <div class="product-image">
+              <img src="{% static 'images/products/bulat_besar.png' %}" alt="Es Kristal Bulat Besar" class="anim-float-y" />
+              <span class="badge">Best Seller</span>
+            </div>
+            <div class="product-content">
+              <h3>Es Kristal Bulat Besar (20kg)</h3>
+              <p class="menu-card-price">Rp 20.000</p>
+              
+              <ul class="quick-features">
+                <li><i data-feather="check-circle"></i> Ukuran kristal 3.2 cm</li>
+                <li><i data-feather="clock"></i> Mencair lebih lambat (Tahan Lama)</li>
+                <li><i data-feather="coffee"></i> Ideal untuk Jus, Beer, Minuman Premium dan lain-lain. </li>
+              </ul>
+
+              <div class="product-status">
+                {% if stok_besar > 0 %}
+                  <span class="product-stock in-stock">Stok Tersedia: {{ stok_besar }} Bal</span>
+                {% else %}
+                  <span class="product-stock out-of-stock">Stok Habis</span>
+                {% endif %}
+              </div>
+
+              <a href="{% url 'product_list' %}" class="btn-detail btn-glow">Lihat Detail Produk</a>
+            </div>
+          </div>
+          
+          <!-- Card Produk 2 -->
+          <div class="product-card featured ice-shimmer" data-aos="zoom-in-up" data-aos-delay="300" data-tilt data-tilt-max="12" data-tilt-speed="600" data-tilt-glare data-tilt-max-glare="0.2">
+            <div class="product-image">
+              <img src="{% static 'images/products/bulat_kecil.jpg' %}" alt="Es Kristal Bulat Kecil" class="anim-float-y" style="animation-delay: 0.8s;" />
+              <span class="badge">Best Seller</span>
+            </div>
+            <div class="product-content">
+              <h3>Es Kristal Bulat Kecil (20kg)</h3>
+              <p class="menu-card-price">Rp 20.000</p>
+              
+              <ul class="quick-features">
+                <li><i data-feather="check-circle"></i> Ukuran kristal 2.6 cm</li>
+                <li><i data-feather="zap"></i> Cepat mendinginkan minuman</li>
+                <li><i data-feather="coffee"></i> Ideal untuk Es Kopi, Teh, Es Campur dan lain-lain. </li>
+              </ul>
+
+              <div class="product-status">
+                {% if stok_kecil > 0 %}
+                  <span class="product-stock in-stock">Stok Tersedia: {{ stok_kecil }} Bal</span>
+                {% else %}
+                  <span class="product-stock out-of-stock">Stok Habis</span>
+                {% endif %}
+              </div>
+
+              <a href="{% url 'product_list' %}" class="btn-detail btn-glow">Lihat Detail Produk</a>
+            </div>
+          </div>
+        </div>
+
+        <p class="pembelian-info" data-aos="fade-up">Melayani pengiriman rutin untuk kafe, restoran, dan acara spesial.</p>
+      </div>
+    </section>
     <!-- Products Section end -->
 
+    <!-- Delivery Section start -->
     <section class="delivery-section">
-    <div class="delivery-container">
-        <div class="delivery-image">
-            <img src="{% static 'images/delivery.png' %}" alt="Icesand Delivery Truck">
+      <div class="delivery-container">
+        <div class="delivery-image anim-float-x" data-aos="fade-right">
+          <img src="{% static 'images/delivery.png' %}" alt="Icesand Delivery Truck">
         </div>
 
-        <div class="delivery-content">
-            <span class="badge-delivery">Jasa Pengantaran</span>
-            <h2>Daerah Jangkauan Kami.</h2>
-            <p>
-                Kalau Anda berada di daerah <strong>Kota Bogor</strong>, tidak perlu repot lagi buang waktu untuk pick-up es kristal sendiri.
-            </p>
-            <p>
-                Team delivery kami akan mengantar es langsung ke tempat Anda tepat waktu setiap harinya, dan tanpa biaya jasa pengiriman atau Gratis Ongkir !
-            </p>
-            <p class="order-text">Langsung order di bawah ini!</p>
+        <div class="delivery-content" data-aos="fade-left">
+          <span class="badge-delivery">Jasa Pengantaran</span>
+          <h2>Daerah Jangkauan Kami.</h2>
+          <p>
+            Kalau Anda berada di daerah <strong>Kota Bogor</strong>, tidak perlu repot lagi buang waktu untuk pick-up es kristal sendiri.
+          </p>
+          <p>
+            Team delivery kami akan mengantar es langsung ke tempat Anda tepat waktu setiap harinya, dan tanpa biaya jasa pengiriman atau Gratis Ongkir !
+          </p>
+          <p class="order-text">Langsung order di bawah ini!</p>
 
-            <a href="{% url 'product_list' %}" class="view-product-btn">
-              Lihat Produk Kami <i data-feather="shopping-bag"></i>
-            </a>
+          <a href="{% url 'product_list' %}" class="view-product-btn btn-glow">
+            Lihat Produk Kami <i data-feather="shopping-bag"></i>
+          </a>
         </div>
-    </div>
-</section>
-
+      </div>
+    </section>
 
     <!-- Footer start -->
-   <div id="footer"></div>
+    <div id="footer"></div>
     <!-- Footer end -->
 
-        <!-- My Javascript -->
+    <!-- My Javascript -->
     <script src="{% static 'js/footer.js' %}?v={{ timestamp }}"></script>
-    <script src="{% static 'js/script.js' %}?v={{ timestamp }} "></script>
+    <script src="{% static 'js/script.js' %}?v={{ timestamp }}"></script>
 
-
-    <!-- Feather Icons -->
+    <!-- Feather Icons Initialization -->
     <script>
       feather.replace();
     </script>
 
-<script>
-  window.addEventListener('scroll', function() {
-    const nav = document.querySelector('#navbar-icesand');
-    if (window.scrollY > 50) {
-      nav.classList.add('scroll-aktif');
-    } else {
-      nav.classList.remove('scroll-aktif');
-    }
-  });
-</script>
+    <!-- AOS Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    <!-- Unified Script Handler (AOS, Mouse Parallax, 3D Tilt Init) -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // 1. Inisialisasi AOS (Animasi Scroll Bolak-Balik Terus Aktif)
+        AOS.init({
+          duration: 850,
+          once: false,
+          mirror: true,
+          easing: 'ease-out-cubic'
+        });
 
-  {% if show_welcome %}
-        {% include 'welcome_popup.html' %}
+        // 2. Inisialisasi Vanilla Tilt 3D pada Kartu Produk
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+          max: 12,
+          speed: 500,
+          glare: true,
+          "max-glare": 0.25,
+          scale: 1.02
+        });
 
-  {% endif %}
+        // 3. Mouse Parallax Effect (Ornamen Bergerak Sesuai Kursor Mouse)
+        document.addEventListener("mousemove", function(e) {
+          const moveX = (e.clientX - window.innerWidth / 2) * 0.02;
+          const moveY = (e.clientY - window.innerHeight / 2) * 0.02;
+          
+          document.querySelectorAll(".parallax-layer").forEach(el => {
+            el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          });
+        });
+
+        // 4. Navbar Scroll Handler
+        const nav = document.querySelector('#navbar-icesand');
+        if (nav) {
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+              nav.classList.add('scroll-aktif');
+            } else {
+              nav.classList.remove('scroll-aktif');
+            }
+          });
+        }
+      });
+    </script>
+
+    {% if show_welcome %}
+      {% include 'welcome_popup.html' %}
+    {% endif %}
   </body>
 </html>

@@ -164,8 +164,8 @@ body {
 
 .item-name {
     font-weight: 500;
-    font-size: 0.9rem;
-    color: #3c4043;
+    font-size: 0.85rem;
+    color: #000;
     display: block;
     line-height: 1.4;
 }

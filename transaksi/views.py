@@ -7,6 +7,9 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Sum, Count, Avg, Q
+from django.urls import reverse
+from django.contrib import messages
+from urllib.parse import quote
 
 # Import Model & Form Lokal (Pastikan nama Form sudah TransaksiForm atau KonfirmasiPembayaran)
 from .models import Transaksi, Produk, LaporanPenjualan, DetailTransaksi, Ulasan, MutasiStok
@@ -534,11 +537,12 @@ def update_status_transaksi(request, transaksi_id):
         transaksi = get_object_or_404(Transaksi, id=transaksi_id)
         
         status_baru = transaksi.status_bayar
-        tab_target = 'Konfirmasi'
+        # Default tab_target memakai nama lengkap sesuai template HTML
+        tab_target = 'Menunggu Konfirmasi'
 
         if aksi == 'terima': 
             status_baru = 'Sedang Diproses'
-            tab_target = 'Diproses'
+            tab_target = 'Sedang Diproses'
         elif aksi == 'kirim': 
             status_baru = 'Dikirim'
             tab_target = 'Dikirim'
@@ -547,23 +551,24 @@ def update_status_transaksi(request, transaksi_id):
             tab_target = 'Selesai'
         elif aksi == 'batalkan': 
             status_baru = 'Dibatalkan'
-            tab_target = 'Batal'
+            tab_target = 'Dibatalkan'
 
         try:
-            # Mengubah status transaksi
+            # Update status transaksi
             transaksi.status_bayar = status_baru
-            
-            # Cukup panggil transaksi.save(), maka pengurangan stok fisik produk
-            # dan pencatatan histori MutasiStok akan dilakukan secara otomatis oleh models.py
             transaksi.save() 
             
-            messages.success(request, f"Status diperbarui ke: {status_baru}")
-            return redirect(f"/dashboard/?menu=Transaksi&tab={tab_target}")
+            messages.success(request, f"Status pesanan {transaksi.kode_transaksi} berhasil diubah ke: {status_baru}")
+            
+            # Redirect menggunakan query parameter 'status' dengan encode URL yang rapi
+            return redirect(f"/dashboard/?menu=Transaksi&status={quote(tab_target)}")
             
         except Exception as e:
-            messages.error(request, f"Gagal: {str(e)}")
+            messages.error(request, f"Gagal memperbarui status: {str(e)}")
+            return redirect(f"/dashboard/?menu=Transaksi&status={quote(transaksi.status_bayar)}")
             
-    return redirect('dashboard')
+    return redirect('/dashboard/?menu=Transaksi')    
+
     
 # Produk CRUD
 @user_passes_test(lambda u: u.is_staff)
