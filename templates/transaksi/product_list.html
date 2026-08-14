@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,8 +10,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700&display=swap"
       rel="stylesheet"
     />
 
@@ -30,6 +31,9 @@
       defer
     ></script>
 
+    <!-- Vanilla Tilt JS (Efek 3D Interaktif Kursor Mouse) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
     <!-- App -->
     <script src="{% static 'src/app.js' %}?v={{ timestamp }}"></script>
 
@@ -38,9 +42,57 @@
       rel="stylesheet"
       href="{% static 'css/product_list.css' %}?v={{ timestamp }}"
     />
+
+    <!-- Custom Visual Effects & Animations -->
+    <style>
+      /* 1. Floating Animation (Atas - Bawah) */
+      @keyframes floatY {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-14px) rotate(1.5deg); }
+      }
+      .anim-float-y {
+        animation: floatY 4.5s ease-in-out infinite;
+      }
+
+      /* 2. Shimmer Glare (Kilau Kaca / Es Kristal) */
+      .ice-shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .ice-shimmer::after {
+        content: '';
+        position: absolute;
+        top: -60%;
+        left: -60%;
+        width: 220%;
+        height: 220%;
+        background: linear-gradient(60deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
+        transform: rotate(25deg) translateX(-100%);
+        transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+      }
+      .ice-shimmer:hover::after {
+        transform: rotate(25deg) translateX(100%);
+      }
+
+      /* 3. Mouse Parallax Layer */
+      .parallax-layer {
+        transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+        will-change: transform;
+      }
+
+      /* 4. Glow Buttons & Cards */
+      .card-glow {
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .card-glow:hover {
+        box-shadow: 0 20px 35px -10px rgba(37, 99, 235, 0.25) !important;
+      }
+    </style>
   </head>
 
   <body x-data>
+    <!-- Navbar start -->
     <nav
       id="navbar-icesand"
       class="navbar"
@@ -57,7 +109,7 @@
 
       <div class="navbar-nav">
         <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'home' %}">Tentang Kami</a>
+        <a href="{% url 'home' %}#about">Tentang Kami</a>
         <a href="{% url 'product_list' %}">Produk</a>
         <a href="{% url 'contact' %}">Kontak</a>
       </div>
@@ -150,17 +202,18 @@
         </div>
       </div>
     </nav>
+    <!-- Navbar end -->
 
     <!-- Hero Section Start -->
-    <section class="product-hero">
+    <section class="product-hero relative overflow-hidden">
       <div class="hero-content" data-aos="fade-down">
-        <h1>Produk</h1>
-        <p>Solusi Es Kristal Terbaik untuk Kota Bogor</p>
+        <h1 class="anim-float-y" style="display: inline-block;">Katalog Produk</h1>
+        <p>Solusi Es Kristal Higienis & Berkualitas Terbaik untuk Kota Bogor</p>
       </div>
     </section>
     <!-- Hero Section End -->
 
-    <!-- Produk Kami Start -->
+    <!-- Produk Kami Start (Dengan 3D Tilt & Refleksi Shimmer) -->
     <section
       class="products"
       id="products"
@@ -168,14 +221,14 @@
       x-init="isLoggedIn = {{ user.is_authenticated|yesno:'true,false' }}"
     >
       <div style="text-align: center; margin-bottom: 3rem" data-aos="fade-up">
-        <h2>Produk Kami</h2>
+        <h2>Pilihan Es Kristal</h2>
         <p>
-          Pilih ukuran es kristal sesuai dengan kebutuhan Anda di bawah ini.
+          Pilih ukuran es kristal yang paling ideal sesuai dengan kebutuhan usaha Anda.
         </p>
       </div>
       <div class="row-exclusive">
         <!-- Card 1: Bulat Besar -->
-        <div class="product-card" data-aos="zoom-in-up" data-aos-delay="100">
+        <div class="product-card ice-shimmer card-glow" data-aos="zoom-in-up" data-aos-delay="100" data-tilt data-tilt-max="10" data-tilt-speed="500" data-tilt-glare data-tilt-max-glare="0.2">
           <div class="product-icons">
             <a
               href="#"
@@ -217,6 +270,7 @@
             <img
               src="{% static 'images/products/bulat_besar.png' %}"
               alt="Es Kristal Bulat Besar"
+              class="anim-float-y"
             />
           </div>
           <div class="product-content">
@@ -234,7 +288,7 @@
         </div>
 
         <!-- Card 2: Bulat Kecil -->
-        <div class="product-card" data-aos="zoom-in-up" data-aos-delay="200">
+        <div class="product-card ice-shimmer card-glow" data-aos="zoom-in-up" data-aos-delay="200" data-tilt data-tilt-max="10" data-tilt-speed="500" data-tilt-glare data-tilt-max-glare="0.2">
           <div class="product-icons">   
             <a
               href="#"
@@ -276,6 +330,8 @@
             <img
               src="{% static 'images/products/bulat_kecil.jpg' %}"
               alt="Es Kristal Bulat Kecil"
+              class="anim-float-y"
+              style="animation-delay: 0.8s;"
             />
           </div>
           <div class="product-content">
@@ -301,19 +357,20 @@
       style="padding: 5rem 7%; background-color: #f9f9f9"
     >
       <div style="text-align: center; margin-bottom: 4rem" data-aos="fade-up">
-        <h2 style="font-size: 45px; margin-top: 0.5rem; color: #000">
+        <h2 style="font-size: 42px; margin-top: 0.5rem; color: #000; font-weight: 800;">
           Pilih Jenis Ukuran yang Tepat untuk Bisnis Anda
         </h2>
         <p
           style="
-            color: #000;
-            font-size: 20px;
-            max-width: 600px;
+            color: #475569;
+            font-size: 18px;
+            max-width: 650px;
             margin: 1rem auto 0;
+            line-height: 1.6;
           "
         >
           Setiap jenis minuman dan tempat usaha membutuhkan jenis es yang
-          berbeda sesuai kebutuhan
+          berbeda sesuai kebutuhan spesifik Anda.
         </p>
       </div>
 
@@ -322,7 +379,7 @@
         style="display: flex; gap: 3rem; align-items: center; flex-wrap: wrap"
       >
         <div
-          class="comparison-image"
+          class="comparison-image parallax-layer"
           style="flex: 1; min-width: 300px; text-align: center"
           data-aos="fade-right"
         >
@@ -332,14 +389,15 @@
             style="
               max-width: 100%;
               height: auto;
-              border-radius: 15px;
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+              border-radius: 20px;
+              box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
             "
+            class="anim-float-y"
           />
           <p
             style="
               font-style: italic;
-              color: #000;
+              color: #64748b;
               margin-top: 1rem;
               font-size: 0.9rem;
             "
@@ -349,60 +407,57 @@
         </div>
 
         <div class="comparison-text" style="flex: 1.5; min-width: 300px" data-aos="fade-left">
-          <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #000">
+          <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #0f172a; font-weight: 800;">
             Es Kristal Bulat Besar & Es Kristal Bulat Kecil
           </h3>
 
           <div
+            class="ice-shimmer card-glow"
             style="
               background: white;
-              padding: 2rem;
-              border-radius: 10px;
-              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+              padding: 2.2rem;
+              border-radius: 16px;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+              border: 1px solid #f1f5f9;
             "
           >
             <ul style="list-style: none; padding: 0; margin: 0">
               <li
                 style="
-                  margin-bottom: 1.5rem;
+                  margin-bottom: 1.8rem;
                   display: flex;
-                  gap: 1rem;
+                  gap: 1.2rem;
                   align-items: start;
                 "
               >
-                <i
-                  data-feather="target"
-                  style="color: #000; margin-top: 3px"
-                ></i>
+                <div style="background: #eff6ff; color: #2563eb; padding: 10px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i data-feather="target"></i>
+                </div>
                 <div>
-                  <strong style="color: #000"
+                  <strong style="color: #0f172a; font-size: 1.05rem;"
                     >Bulat Besar (Berukuran 3.2cm):</strong
                   >
-                  <p style="color: #000; margin-top: 0.3rem">
+                  <p style="color: #475569; margin-top: 0.4rem; line-height: 1.6; font-size: 0.95rem;">
                     Sangat lambat mencair. Pilihan terbaik untuk
                     <strong>Café, Bar, dan Booth Minuman Kekinian</strong> yang
                     menyajikan Jus, Mocktail, Beer atau Minuman Premium. Menjaga
-                    rasa minuman tetap otentik tanpa cepat tercampur air dari
-                    lelehan es.
+                    rasa minuman tetap otentik tanpa cepat tercampur air dari lelehan es.
                   </p>
                 </div>
               </li>
-              <li style="display: flex; gap: 1rem; align-items: start">
-                <i
-                  data-feather="coffee"
-                  style="color: #000; margin-top: 3px"
-                ></i>
+              <li style="display: flex; gap: 1.2rem; align-items: start">
+                <div style="background: #eff6ff; color: #2563eb; padding: 10px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i data-feather="coffee"></i>
+                </div>
                 <div>
-                  <strong style="color: #000"
+                  <strong style="color: #0f172a; font-size: 1.05rem;"
                     >Bulat Kecil (Berukuran 2.6cm):</strong
                   >
-                  <p style="color: #000; margin-top: 0.3rem">
-                    Cepat memberikan suhu dingin instan dan sangat cepat mencair. Sangat
-                    populer di
+                  <p style="color: #475569; margin-top: 0.4rem; line-height: 1.6; font-size: 0.95rem;">
+                    Cepat memberikan suhu dingin instan. Sangat populer di
                     <strong>Restoran, Rumah Makan, dan Rumah Tangga</strong>
                     untuk menu seperti Es Kopi, Teh, Es Campur dan lain-lain.
-                    Estetikanya membuat minuman terlihat lebih penuh dan
-                    menarik.
+                    Estetikanya membuat minuman terlihat lebih penuh dan menarik.
                   </p>
                 </div>
               </li>
@@ -417,29 +472,30 @@
     <section class="product-info">
       <div class="info-row">
         <div class="info-text" data-aos="fade-right">
-          <h2>Produk Ice Kristal - Kualitas Premium dari Kami</h2>
+          <h2>Produk Ice Kristal - Kualitas Premium</h2>
           <p>
             Ice Tube merupakan salah satu produk unggulan kami yang dirancang
             untuk memenuhi kebutuhan berbagai jenis bisnis yang membutuhkan es
-            higienis, jernih, dan tahan lama. Dengan teknologi produksi modern
-            dan standar kebersihan tinggi, Ice Tube kami menjadi pilihan utama
-            bagi banyak mitra usaha di Kota Bogor.
+            higienis, jernih, dan tahan lama. Diproses dengan filtrasi modern
+            dan standar kebersihan tinggi untuk kepuasan pelanggan Anda.
           </p>
           <div class="info-grid">
             <div class="info-item">
-              <h4>Ciri Khas Produk:</h4>
+              <h4>Ciri Khas Keunggulan:</h4>
               <ul>
-                <li><i data-feather="check"></i> Jernih seperti kristal</li>
-                <li><i data-feather="check"></i> Tidak berbau & berasa</li>
-                <li><i data-feather="check"></i> Mencair lebih lambat</li>
+                <li><i data-feather="check-circle" style="color: #2563eb;"></i> Jernih kristal sempurna</li>
+                <li><i data-feather="check-circle" style="color: #2563eb;"></i> 100% Bebas bau & rasa klorin</li>
+                <li><i data-feather="check-circle" style="color: #2563eb;"></i> Kepadatan tinggi, tahan leleh</li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="info-image" data-aos="fade-left">
+        <div class="info-image parallax-layer" data-aos="fade-left">
           <img
             src="{% static 'images/about4.webp' %}"
             alt="Es Kristal Premium"
+            class="anim-float-y"
+            style="border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);"
           />
         </div>
       </div>
@@ -448,14 +504,13 @@
     <!-- Needs Section Start -->
     <section class="needs-section">
       <div class="needs-container">
-        <div class="info-image" data-aos="fade-right">
-          <img src="{% static 'images/es-hero.jpg' %}" alt="Penggunaan Es" />
+        <div class="info-image parallax-layer" data-aos="fade-right">
+          <img src="{% static 'images/es-hero.jpg' %}" alt="Penggunaan Es" class="anim-float-y" style="border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);" />
         </div>
         <div class="info-text" data-aos="fade-left">
-          <h2>Cocok Untuk Berbagai Kebutuhan</h2>
+          <h2>Cocok Untuk Berbagai Kebutuhan Bisnis</h2>
           <p>
-            Pesan sekarang untuk segala kebutuhan mitra bisnis maupun acara
-            spesial Anda!
+            Pesan sekarang untuk segala kebutuhan mitra usaha kuliner maupun acara spesial Anda di Kota Bogor!
           </p>
           <ul class="needs-list">
             <li><i data-feather="coffee"></i> Restoran & Café</li>
@@ -487,14 +542,34 @@
     <!-- Unified Script Handler -->
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        // Init AOS Animation
+        // 1. Init AOS Animation (Berulang bolak-balik saat scroll)
         AOS.init({
-          duration: 800,
-          once: true,
+          duration: 850,
+          once: false,
+          mirror: true,
           easing: 'ease-out-cubic',
         });
 
-        // Navbar Scroll Handler
+        // 2. Init 3D Tilt Effect pada Kartu Produk
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+          max: 10,
+          speed: 500,
+          glare: true,
+          "max-glare": 0.25,
+          scale: 1.02
+        });
+
+        // 3. Mouse Parallax Layer (Elemen bergeser halus mengikuti kursor mouse)
+        document.addEventListener("mousemove", function(e) {
+          const moveX = (e.clientX - window.innerWidth / 2) * 0.015;
+          const moveY = (e.clientY - window.innerHeight / 2) * 0.015;
+          
+          document.querySelectorAll(".parallax-layer").forEach(el => {
+            el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          });
+        });
+
+        // 4. Navbar Scroll Handler
         const nav = document.querySelector('#navbar-icesand');
         if (nav) {
           window.addEventListener('scroll', function () {

@@ -54,8 +54,8 @@ def product_list(request):
             items = data.get('items', [])
             total = data.get('total', 0)
             
-            # --- AMBIL WILAYAH YANG DIPILIH DARI FRONTEND ---
-            wilayah_id = data.get('wilayah_id') # Menangkap pilihan wilayah dari javascript checkout
+            # # --- AMBIL WILAYAH YANG DIPILIH DARI FRONTEND ---
+            # wilayah_id = data.get('wilayah_id') # Menangkap pilihan wilayah dari javascript checkout
             
             # 2. Validasi keranjang kosong
             if not items:
@@ -66,10 +66,14 @@ def product_list(request):
             transaksi = Transaksi.objects.create(
                 user=request.user,
                 total_harga=total,
-                wilayah_tujuan_id=wilayah_id, # Masukkan ID wilayah ke foreignkey
-                status_bayar='Menunggu Konfirmasi'
+                status_bayar='Menunggu Konfirmasi',
+                nama_penerima=getattr(
+                request.user, 'nama_lengkap', request.user.username),
+                telepon=getattr(request.user, 'no_telepon', ''),
+                alamat_lengkap=getattr(request.user, 'alamat', ''),
             )
 
+            request.session['active_checkout_id'] = transaksi.id
             # 4. Simpan Detail Item yang Dibeli
             for item in items:
                 produk = get_object_or_404(Produk, id=item['id'])
@@ -155,30 +159,18 @@ def payment_list(request):
 # --- VIEW: DETAIL & CANCEL ---
 @login_required
 def detail_transaksi(request, transaksi_id=None):
-    if transaksi_id:
-        # Menampilkan Detail Invoice (Satu Transaksi)
-        trx = get_object_or_404(Transaksi, id=transaksi_id, user=request.user)
-        return render(request, 'transaksi/detail_transaksi.html', {'trx': trx})
-    else:
-        # --- LOGIKA AUTO-CLEANUP DI-UPDATE AGAR LEBIH AKURAT ---
-        # Hapus semua transaksi sampah yang statusnya masih 'Menunggu Konfirmasi' 
-        # TAPI user belum memilih wilayah tujuan (wilayah_tujuan=None) atau total_pembayaran masih 0
-        Transaksi.objects.filter(
-            user=request.user, 
-            status_bayar='Menunggu Konfirmasi',
-            wilayah_tujuan__isnull=True
-        ).delete()
-
-        Transaksi.objects.filter(
-            user=request.user, 
-            status_bayar='Menunggu Konfirmasi',
-            total_pembayaran=0
-        ).delete()
-        # --- LOGIKA AUTO-CLEANUP END ---
-
-        # Menampilkan Tabel Riwayat yang sudah bersih dari sampah
-        daftar_trx = Transaksi.objects.filter(user=request.user).order_by('-tanggal')
-        return render(request, 'transaksi/detail_transaksi.html', {'daftar_trx': daftar_trx})
+  if transaksi_id:
+    # Menampilkan Detail Invoice (Satu Transaksi)
+    trx = get_object_or_404(Transaksi, id=transaksi_id, user=request.user)
+    return render(request, 'transaksi/detail_transaksi.html', {'trx': trx})
+  else:
+    # Menampilkan Tabel Riwayat Transaksi (Urutkan dari ID TERBARU)
+    daftar_trx = Transaksi.objects.filter(user=request.user).order_by('-id')
+    return render(
+        request,
+        'transaksi/detail_transaksi.html',
+        {'daftar_trx': daftar_trx, 'trx': None},
+    )
         
 
 @login_required
@@ -568,7 +560,6 @@ def update_status_transaksi(request, transaksi_id):
             return redirect(f"/dashboard/?menu=Transaksi&status={quote(transaksi.status_bayar)}")
             
     return redirect('/dashboard/?menu=Transaksi')    
-
     
 # Produk CRUD
 @user_passes_test(lambda u: u.is_staff)

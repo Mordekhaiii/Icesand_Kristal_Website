@@ -1,12 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Selamat Datang di Icesand Kristal</title>
     <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
       * {
@@ -14,114 +14,132 @@
         box-sizing: border-box;
       }
 
-      /* OVERLAY GRADASI ES (Latar Belakang Halus) */
+      /* OVERLAY LATAR BELAKANG */
       .popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url(/static/images/background_kristal.jpg);
-  background-size: cover;     
-  background-position: center; 
-  background-repeat: no-repeat;
-  display: flex; 
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-}
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url(/static/images/background_kristal.jpg);
+        background-size: cover;     
+        background-position: center; 
+        background-repeat: no-repeat;
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        opacity: 1;
+        /* Transisi agar overlay memudar secara mulus */
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
 
-      /* POP-UP BOX PUTIH BERSIH (Agar Tulisan Jelas) */
+      /* POP-UP BOX */
       .popup-box {
         background: rgba(255, 255, 255, 0.98); 
         padding: 40px;
         text-align: center;
-        border-radius: 20px;
-        box-shadow: 0 20px 50px rgba(0, 100, 200, 0.15);
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(0, 100, 200, 0.2);
         width: 90%;
         max-width: 500px;
         border: 2px solid #90e0ef;
-        animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Animasi masuk */
+        animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        /* Transisi saat ditutup */
+        transition: transform 0.35s ease, opacity 0.35s ease;
       }
 
-      /* Animasi Muncul */
+      /* Class tambahan saat tombol diklik untuk animasi keluar */
+      .popup-box.closing {
+        transform: scale(0.85) translateY(-15px) !important;
+        opacity: 0 !important;
+      }
+
+      /* Animasi Muncul Halus */
       @keyframes slideIn {
-        from { transform: scale(0.7); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
+        from { 
+          transform: scale(0.75) translateY(20px); 
+          opacity: 0; 
+        }
+        to { 
+          transform: scale(1) translateY(0); 
+          opacity: 1; 
+        }
       }
 
-      /* STYLE LOGO DI DALAM KARTU */
+      /* STYLE LOGO */
       .logo-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 15px; /* Jarak antara anjing dan logo */
+        gap: 15px;
         margin-bottom: 25px;
       }
 
-      .logo-husky {
-        max-width: 70px; /* Ukuran anjing husky */
-      }
-
       .logo-icesand {
-        max-width: 130px; /* Ukuran logo utama */
+        max-width: 140px;
       }
 
       .popup-title {
         color: #0077b6;
-        font-weight: 600;
-        font-size: 26px;
-        margin-bottom: 20px;
+        font-weight: 700;
+        font-size: 24px;
+        margin-bottom: 18px;
       }
 
       .popup-content {
-        font-size: 14px;
-        line-height: 1.6;
-        color: #444;
-        margin-bottom: 30px;
+        font-size: 13.5px;
+        line-height: 1.65;
+        color: #555;
+        margin-bottom: 28px;
       }
 
       .popup-content p {
         margin-bottom: 12px;
       }
 
-      /* Tombol Mulai (Biru Dingin) */
+      /* TOMBOL MULAI */
       .btn-start {
         background: linear-gradient(135deg, #48cae4, #0096c7);
         color: white;
         border: none;
-        padding: 12px 35px;
-        font-size: 16px;
-        font-weight: 600;
+        padding: 13px 38px;
+        font-size: 15px;
+        font-weight: 700;
         border-radius: 50px;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 5px 15px rgba(72, 202, 228, 0.4);
+        box-shadow: 0 6px 18px rgba(0, 150, 199, 0.35);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
 
       .btn-start:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(72, 202, 228, 0.6);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(0, 150, 199, 0.5);
+      }
+
+      .btn-start:active {
+        transform: scale(0.95);
       }
 
       .popup-footer {
         font-size: 12px;
         color: #00b4d8;
-        font-weight: 600;
+        font-weight: 700;
         margin-top: 25px;
+        letter-spacing: 0.5px;
       }
     </style>
   </head>
   <body>
 
-    <body>
     {% if show_welcome %}
-    <div class="popup-overlay" id="welcomePopup" style="display: flex;">
-      <div class="popup-box">
+    <div class="popup-overlay" id="welcomePopup">
+      <div class="popup-box" id="popupBox">
         <div class="logo-container">
           <img src="{% static 'images/logo.png' %}" alt="Logo Icesand" class="logo-icesand">
         </div>
-        <div class="popup-title">Halo, {{ user.username}} ! ❄️</div>
+        <div class="popup-title">Halo, {{ user.username }}! ❄️</div>
         <div class="popup-content">
           <p>
             Berawal dari satu pesanan, kini kita melangkah bersama. Ada semangat yang kami tuangkan dalam setiap kepingan es kristal yang kami antar sampai ke depan pintu Anda...
@@ -141,22 +159,20 @@
     <script>
       function closePopup() {
         const popupOverlay = document.getElementById("welcomePopup");
-        if (popupOverlay) {
+        const popupBox = document.getElementById("popupBox");
+
+        if (popupOverlay && popupBox) {
+          // 1. Picu animasi mengecil dan memudar pada kotak
+          popupBox.classList.add("closing");
+          // 2. Picu animasi memudar pada latar belakang overlay
           popupOverlay.style.opacity = "0";
+
+          // 3. Setelah animasi selesai (350ms), sembunyikan elemen secara total
           setTimeout(() => {
             popupOverlay.style.display = "none";
-            // Tidak perlu redirect lagi karena kita sudah di halaman Home
-          }, 300);
+          }, 350);
         }
       }
-
-      // Pastikan pop-up muncul saat halaman load jika elemennya ada
-      window.onload = function() {
-        const popup = document.getElementById("welcomePopup");
-        if (popup) {
-          popup.style.display = "flex";
-        }
-      };
     </script>
   </body>
 </html>
