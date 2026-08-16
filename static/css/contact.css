@@ -187,11 +187,9 @@ body {
 }
 
 /* Jumbotron */
-/* =========================================
-   JUMBOTRON KONTAK
-   ========================================= */
+/* Jumbotron Khusus Kontak */
 .jumbotron-contact {
-  min-height: 45vh;
+  height: 50vh;
   background-image: url('/static/images/background_kristal.jpg');
   background-size: cover;
   background-position: center;
@@ -200,41 +198,34 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 60px;
 }
 
 .jumbotron-overlay {
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
+  padding-top: 80px;
 }
 
-.jumbotron-contact h2 {
-  font-size: 3rem;
-  color: #fff;
+.jumbotron-contact h1 {
+  font-size: 40px;
+  color: var(--bg);
   font-weight: 800;
-  margin-bottom: 10px;
 }
 
 .jumbotron-contact p {
-  color: #f1f1f1;
-  font-size: 1.1rem;
-  max-width: 650px;
-  margin: 0 auto;
-  line-height: 1.6;
+  color: var(--bg);
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 10px auto;
 }
 
-/* =========================================
-   SECTION KONTAK
-   ========================================= */
+/* Contact Section Utama */
 .contact-section {
-  padding: 60px 7%;
-  background-color: var(--soft-blue);
+  padding: 80px 7%;
 }
 
 .contact-wrapper {
@@ -242,40 +233,41 @@ body {
   background: white;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-  min-height: 500px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  min-height: 600px;
 }
 
+/* Map Box */
 .map-box {
   flex: 1.2;
-  min-height: 350px;
 }
 
 .map-box iframe {
   width: 100%;
   height: 100%;
-  min-height: 350px;
   border: 0;
 }
 
+/* Info Box */
 .info-box {
   flex: 1;
   background-color: var(--dark-navy);
   color: white;
-  padding: 50px 40px;
+  padding: 60px 50px;
 }
 
 .info-content h3 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 15px;
 }
 
 .info-content p {
-  color: #e0e0e0;
-  margin-bottom: 30px;
+  color: var(--bg);
+  margin-bottom: 35px;
   line-height: 1.6;
 }
 
+/* Contact List */
 .contact-details {
   list-style: none;
 }
@@ -288,36 +280,34 @@ body {
 }
 
 .contact-details li:hover {
-  transform: translateX(8px);
+  transform: translateX(10px);
 }
 
 .icon-bg {
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.12);
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 18px;
+  margin-right: 20px;
   color: var(--primary-blue);
-  font-size: 1.2rem;
-  flex-shrink: 0;
 }
 
 .detail-text span {
   display: block;
-  font-size: 0.8rem;
-  color: #aaa;
+  font-size: 0.85rem;
+  color: var(--bg);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .detail-text strong {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   display: block;
   margin-top: 2px;
-  color: #ffffff;
+  color: var(--bg);
 }
 
 /* Footer */

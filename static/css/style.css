@@ -505,9 +505,9 @@ body {
   gap: 4rem;
 }
 
-.about .row .about-img {
+/* .about .row .about-img {
   flex: 1 1 45rem;
-}
+} */
 
 .about .row .about-img img {
   width: 100%;
@@ -555,7 +555,6 @@ body {
 }
 
 .feature-box p {
-  font-size: 1rem !important;
   margin-bottom: 0 !important;
   line-height: 1.5 !important;
   color: var(--primary) !important;
@@ -715,8 +714,9 @@ body {
 
 .pembelian-info {
   margin-top: 50px;
-  color: #888;
+  color: #5b5959;
   font-style: italic;
+  font-size: 12.5px;
 }
 
 /* =========================================
@@ -781,7 +781,7 @@ body {
 
 .order-text {
   font-weight: 600;
-  color: #333 !important;
+  color: var(--primary) !important;
   margin-top: 15px;
 }
 
@@ -933,6 +933,7 @@ body {
 }
 
 /* Footer */
+
 .footer {
   padding: 30px 15px;
   background-image: url(/static/images/background_kristal.jpg);
@@ -951,7 +952,6 @@ body {
   z-index: 1;
   color: var(--primary);
   text-align: center;
-  padding-bottom: 20px;
 }
 
 .footer-title h1 {
@@ -1165,6 +1165,9 @@ body {
     flex-wrap: wrap;
   }
 
+  .about h2 {
+    font-size: 2.2rem;
+  }
   .about .row .about-img img {
     height: 24rem;
     object-fit: cover;
@@ -1178,10 +1181,6 @@ body {
   .about .row .content h3 {
     margin-top: 1rem;
     font-size: 2rem;
-  }
-
-  .about .row .content p {
-    font-size: 1.6rem;
   }
 
   .features-container {
@@ -1240,15 +1239,25 @@ body {
   }
 
   .footer-title h1 {
-    font-size: 1.5rem;
+    font-size: 12px;
   }
 
+  .footer-title li {
+    font-size: 10px;
+  }
+  
   .footer-title span {
-    font-size: 1rem;
+    font-size: 10px;
+  }
+
+  .footer-title span svg,
+  .footer-title span i {
+    width: 14px !important;
+    height: 14px !important;
   }
 
   .text-footer {
-    font-size: 0.8rem;
+    font-size: 7.5px;
   }
 }
 
@@ -1279,10 +1288,6 @@ body {
     font-size: 1.6rem;
   }
 
-  .delivery-content p {
-    font-size: 0.95rem;
-  }
-
   .badge-delivery {
     padding: 8px 18px;
     font-size: 0.9rem;
@@ -1300,20 +1305,19 @@ body {
     padding: 8px 12px;
     font-size: 12px;
   }
+  
 }
 
 /* 4. EXTRA SMALL / IPHONE 4/5/SE (max-width: 450px & down to 320px) */
 @media (max-width: 450px) {
-  
-  
   html {
     font-size: 70%;
   }
 
   .navbar {
-   padding: 0.8rem 4%;
+    padding: 0.8rem 4%;
   }
-
+  
   .navbar .navbar-nav {
     position: absolute;
     top: 100%;
@@ -1331,7 +1335,7 @@ body {
   }
 
   .hero-content-wrapper h2 {
-    font-size: 2.6rem;
+    font-size: 2.2rem;
   }
 
   .hero-content-wrapper p {
