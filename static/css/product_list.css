@@ -15,6 +15,13 @@
   text-decoration: none;
 }
 
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -884,7 +891,7 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
   }
 
   .navbar .navbar-nav a {
-    color: var(--bg);
+    color: var(--primary);
     display: block;
     margin: 1.5rem;
     padding: 0.5rem;

@@ -15,19 +15,28 @@
   text-decoration: none;
 }
 
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   font-family: "Poppins", sans-serif;
-  font-size: 32;
+  font-size: 16px;
   background-color: var(--bg);
   color: #fff;
   overflow-x: hidden;
 }
 
-/* Navbar */
+/* =========================================
+   NAVBAR & DROPDOWN
+   ========================================= */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -42,7 +51,7 @@ body {
   z-index: 9999;
 }
 
-z .navbar .navbar-logo {
+.navbar .navbar-logo {
   font-size: 2rem;
   font-weight: 700;
   color: #fff;
@@ -90,16 +99,15 @@ z .navbar .navbar-logo {
   display: none;
 }
 
-/* Container Dropdown */
+/* Profile Dropdown */
 .profile-dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Tombol Icon User */
 .profile-icon-btn {
   background: none;
-  color: #333; /* Warna hitam agar terlihat di navbar putih */
+  color: #333;
   cursor: pointer;
   padding: 10px;
   border: 1px solid #eee;
@@ -113,7 +121,6 @@ z .navbar .navbar-logo {
   background-color: #f7f7f7;
 }
 
-/* Kotak Dropdown */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -128,12 +135,10 @@ z .navbar .navbar-logo {
   overflow: hidden;
 }
 
-/* Munculkan saat hover */
 .profile-dropdown:hover .dropdown-content {
   display: block;
 }
 
-/* Header di dalam Card */
 .user-card-header {
   padding: 15px;
   background-color: #fafafa;
@@ -151,7 +156,6 @@ z .navbar .navbar-logo {
   display: block;
 }
 
-/* Link & Tombol di dalam dropdown */
 .dropdown-content a,
 .logout-btn {
   color: #333 !important;
@@ -175,7 +179,7 @@ z .navbar .navbar-logo {
 }
 
 .logout-btn {
-  color: #ff4d4d !important; /* Warna merah logout */
+  color: #ff4d4d !important;
   border-top: 1px solid #eee;
 }
 
@@ -187,7 +191,9 @@ z .navbar .navbar-logo {
   justify-content: center;
 }
 
-/* Shopping Cart */
+/* =========================================
+   SHOPPING CART & CHECKOUT
+   ========================================= */
 #shopping-cart-button {
   position: relative;
 }
@@ -260,7 +266,6 @@ z .navbar .navbar-logo {
   text-align: center;
 }
 
-/* Checkout Form */
 .form-container {
   width: 100%;
   display: flex;
@@ -314,10 +319,12 @@ z .navbar .navbar-logo {
   cursor: not-allowed;
 }
 
-/* Hero Section */
+/* =========================================
+   HERO SECTION
+   ========================================= */
 .hero.img-bg {
   min-height: 100vh;
-  width: 107%;
+  width: 100%;
   background-image: url("/static/images/hero-bg.svg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -327,18 +334,17 @@ z .navbar .navbar-logo {
   justify-content: center;
 }
 
-/* --- WRAPPER UNTUK MEMBAGI DUA (KIRI & KANAN) --- */
 .hero-wrapper {
   display: flex;
-  width: 100%; /* Memberi jarak dari pinggir layar */
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  align-items: center; /* Teks & Es sejajar tengah */
+  align-items: center;
+  padding: 0 7%;
 }
 
-/* --- BAGIAN TEKS (50% KIRI) --- */
 .hero-text {
-  flex: 1; /* Mengambil setengah layar */
+  flex: 1;
   text-align: left;
 }
 
@@ -357,64 +363,34 @@ z .navbar .navbar-logo {
   line-height: 1.6;
 }
 
-/* --- BAGIAN GAMBAR (50% KANAN) --- */
 .hero-image {
-  flex: 1; /* Mengambil setengah layar sisanya */
+  flex: 1;
   display: flex;
-  justify-content: flex-end; /* Dorong es ke pojok kanan */
-  padding-right: 90px;
-  padding-top: 90px;
+  justify-content: flex-end;
+  padding-right: 20px;
+  padding-top: 40px;
 }
 
 .hero-image-wrapper img {
   width: 100%;
   max-width: 550px;
   height: auto;
-  /* Tambahkan sedikit animasi mengapung agar es terlihat segar */
   animation: floating 3s ease-in-out infinite;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
 }
 
-@keyframes floating {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-/* --- RESPONSIVE MOBILE (DITUMPUK ATAS BAWAH) --- */
-@media (max-width: 768px) {
-  .hero-wrapper {
-    flex-direction: column; /* Di HP teks di atas, es di bawah */
-    text-align: center;
-    padding-top: 80px;
-  }
-  .hero-text {
-    margin-bottom: 40px;
-  }
-  .hero-image {
-    justify-content: center;
-  }
-}
-/* Hero Section End */
-
-/* Alasan Memilih Kami Start */
+/* =========================================
+   FEATURES SECTION
+   ========================================= */
 .features-section {
-  padding: 127px 60px 285px;
+  padding: 127px 7% 150px;
   position: relative;
   background-image: url("/static/images/background_kristal1.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   overflow: hidden;
   width: 100%;
-  overflow: hidden;
 }
 
 .container-features {
@@ -428,15 +404,15 @@ z .navbar .navbar-logo {
 }
 
 .subtitle-features {
-  color: #00d2ff; /* Warna biru sesuai gambar */
+  color: #00d2ff;
   font-weight: 600;
   font-size: 1.4rem;
 }
 
 .section-header-features h2 {
   font-size: 3rem;
-  color: var(--primary); /* Menggunakan variabel hitam kamu */
-  margin: 20px 25px;
+  color: var(--primary);
+  margin: 20px 0;
 }
 
 .features-grid {
@@ -447,10 +423,9 @@ z .navbar .navbar-logo {
 
 .feature-card {
   background: #fff;
-  padding: 20px 25px;
+  padding: 25px 20px;
   border-radius: 15px;
   text-align: center;
-  /* Paksa border muncul karena ada reset border:none di atas */
   border: 1px solid #eee !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   transition: 0.3s ease;
@@ -481,12 +456,11 @@ z .navbar .navbar-logo {
 }
 
 .feature-card p {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: #666;
   line-height: 1.6;
 }
 
-/* --- Dekorasi Animasi --- */
 .shape-dots {
   position: absolute;
   top: 50px;
@@ -505,45 +479,13 @@ z .navbar .navbar-logo {
   right: -50px;
   width: 300px;
   height: 300px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 210, 255, 0.1) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.1) 0%, transparent 70%);
   z-index: 1;
 }
 
-@keyframes floating {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-.floating {
-  animation: floating 5s ease-in-out infinite;
-}
-.floating-slow {
-  animation: floating 8s ease-in-out infinite;
-}
-
-/* Responsive Tablet */
-@media (max-width: 768px) {
-  .section-header-features h2 {
-    font-size: 2.2rem;
-  }
-  .features-section {
-    padding: 5rem 7%;
-  }
-}
-/* Features Section */
-
-/* About Section Styles */
+/* =========================================
+   ABOUT SECTION
+   ========================================= */
 .about {
   padding: 8rem 7% 1.4rem;
   background-color: #fff;
@@ -559,21 +501,21 @@ z .navbar .navbar-logo {
 
 .about .row {
   display: flex;
-  align-items: center; /* Menjaga konten tetap di tengah secara vertikal */
-  gap: 4rem; /* Memberikan jarak antara gambar dan teks */
+  align-items: center;
+  gap: 4rem;
 }
 
 .about .row .about-img {
-  flex: 1 1 45rem; /* Memberikan porsi ruang untuk gambar */
+  flex: 1 1 45rem;
 }
 
 .about .row .about-img img {
   width: 100%;
-  border-radius: 2rem; /* Membuat sudut gambar lebih smooth */
+  border-radius: 2rem;
 }
 
 .about .row .content {
-  flex: 1 1 45rem; /* Memberikan porsi ruang untuk teks */
+  flex: 1 1 45rem;
 }
 
 .about .row .content p {
@@ -583,12 +525,11 @@ z .navbar .navbar-logo {
   margin-bottom: 2rem;
 }
 
-/* Container untuk feature box agar tidak terlalu lebar */
 .features-container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 550px; /* Membatasi lebar box agar teks tidak melar ke samping */
+  max-width: 550px;
 }
 
 .feature-box {
@@ -604,7 +545,7 @@ z .navbar .navbar-logo {
 
 .feature-box:hover {
   border-color: #2563eb;
-  transform: translateX(10px); /* Efek geser sedikit saat hover */
+  transform: translateX(10px);
 }
 
 .feature-box i {
@@ -621,24 +562,14 @@ z .navbar .navbar-logo {
   font-weight: 500;
 }
 
-/* Responsive: Jika dibuka di HP, gambar pindah ke atas */
-@media (max-width: 768px) {
-  .about .row {
-    flex-direction: column;
-  }
-  .features-container {
-    max-width: 100%;
-  }
-}
-/* About Section End */
-
-/* Product Section */
-/* --- Global Products Section --- */
+/* =========================================
+   PRODUCTS SECTION
+   ========================================= */
 .products {
   background-image: url("/static/images/background_kristal.jpg");
   background-size: cover;
   background-position: center;
-  padding: 80px 0 120px;
+  padding: 80px 7% 120px;
   text-align: center;
 }
 
@@ -655,7 +586,6 @@ z .navbar .navbar-logo {
   margin: 0 auto 50px;
 }
 
-/* --- Layout 2 Produk --- */
 .row-exclusive {
   display: flex;
   justify-content: center;
@@ -663,16 +593,14 @@ z .navbar .navbar-logo {
   flex-wrap: wrap;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
 }
 
-/* --- Card Style (Premium & Large) --- */
 .products .product-card.featured {
   background: #ffffff;
   padding: 35px;
   border-radius: 25px;
   box-shadow: 0 15px 35px rgba(0, 80, 150, 0.1);
-  width: 420px; /* Diperlebar karena cuma 2 produk */
+  width: 420px;
   border: 2px solid #e0f2fe;
   transition: all 0.4s ease;
   position: relative;
@@ -686,7 +614,6 @@ z .navbar .navbar-logo {
   border-color: #00b4d8;
 }
 
-/* Badge 'Best Seller' */
 .badge {
   position: absolute;
   top: 20px;
@@ -700,7 +627,6 @@ z .navbar .navbar-logo {
   z-index: 10;
 }
 
-/* Gambar Produk */
 .products .product-image img {
   width: 100%;
   height: 320px;
@@ -710,7 +636,6 @@ z .navbar .navbar-logo {
   transition: 0.3s;
 }
 
-/* --- Content & Features --- */
 .products .product-content h3 {
   font-size: 1.7rem;
   color: var(--primary);
@@ -747,7 +672,6 @@ z .navbar .navbar-logo {
   height: 18px;
 }
 
-/* --- Stok Label --- */
 .product-stock {
   font-size: 1rem;
   font-weight: 700;
@@ -758,16 +682,15 @@ z .navbar .navbar-logo {
 }
 
 .in-stock {
-  background-color: rgba(46, 204, 113, 0.9); /* Hijau Transparan */
+  background-color: rgba(46, 204, 113, 0.9);
   color: white;
 }
 
 .out-of-stock {
-  background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
+  background-color: rgba(231, 76, 60, 0.9);
   color: white;
 }
 
-/* --- Button Detail --- */
 .btn-detail {
   padding: 15px;
   background: #0077b6;
@@ -785,14 +708,9 @@ z .navbar .navbar-logo {
   box-shadow: 0 8px 20px rgba(0, 180, 216, 0.4);
 }
 
-/* State jika stok habis */
 .product-card:has(.out-of-stock) .product-image img {
   filter: grayscale(1);
   opacity: 0.5;
-}
-
-.product-card:has(.out-of-stock) .btn-detail {
-  background: #0077b6;
 }
 
 .pembelian-info {
@@ -801,19 +719,9 @@ z .navbar .navbar-logo {
   font-style: italic;
 }
 
-/* --- Responsive --- */
-@media (max-width: 768px) {
-  .products .product-card.featured {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  .products h2 {
-    font-size: 2.2rem;
-  }
-}
-/* Product Section End */
-
-/* --- Delivery Section --- */
+/* =========================================
+   DELIVERY SECTION
+   ========================================= */
 .delivery-section {
   padding: 6rem 7%;
   background-color: var(--bg);
@@ -828,7 +736,7 @@ z .navbar .navbar-logo {
 }
 
 .delivery-image {
-  flex: 1 1 300px; /* Diubah dari 45rem agar tidak memakan ruang kosong */
+  flex: 1 1 300px;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -836,19 +744,19 @@ z .navbar .navbar-logo {
 }
 
 .delivery-image img {
-  width: 100%;    /* Diubah dari 200% */
+  width: 100%;
   max-width: 480px;
   height: auto;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
 }
 
 .delivery-content {
-  flex: 1 1 300px; /* Diubah dari 35rem */
+  flex: 1 1 300px;
 }
 
 .badge-delivery {
   display: inline-block;
-  padding: 10px 24px; /* Diperkecil agar proporsional */
+  padding: 10px 24px;
   background-color: #eee;
   color: var(--primary);
   border-radius: 20px;
@@ -877,7 +785,6 @@ z .navbar .navbar-logo {
   margin-top: 15px;
 }
 
-/* Tombol Lihat Produk Custom */
 .view-product-btn {
   display: inline-flex;
   align-items: center;
@@ -904,77 +811,14 @@ z .navbar .navbar-logo {
   height: 18px;
 }
 
-/* Penyesuaian Khusus HP / Layar Kecil */
-@media (max-width: 576px) {
-  .delivery-section {
-    padding: 3rem 5%;
-  }
-
-  .delivery-container {
-    gap: 1.25rem;
-    text-align: center;
-  }
-
-  .delivery-image {
-    flex: 1 1 100%;
-  }
-
-  .delivery-image img {
-    max-width: 220px;
-  }
-
-  .delivery-content {
-    flex: 1 1 100%;
-  }
-
-  .delivery-content h2 {
-    font-size: 1.6rem;
-  }
-
-  .delivery-content p {
-    font-size: 0.95rem;
-  }
-
-  .badge-delivery {
-    padding: 8px 18px;
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-  }
-
-  .view-product-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 12px 20px;
-    font-size: 1rem;
-  }
+/* =========================================
+   MENU, CONTACT & MODAL
+   ========================================= */
+.menu,
+.contact {
+  padding: 127px 7% 100px;
 }
 
-.view-product-btn:hover {
-  background-color: #00d2ff; /* Berubah jadi Biru Es saat hover */
-  transform: translateY(-3px); /* Sedikit naik saat di-hover */
-  box-shadow: 0 15px 25px rgba(0, 210, 255, 0.3);
-}
-
-.view-product-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Responsive Mobile */
-@media (max-width: 768px) {
-  .delivery-section {
-    padding: 4rem 7%;
-  }
-  .delivery-content {
-    text-align: center;
-  }
-  .delivery-content h2 {
-    font-size: 2.8rem;
-  }
-}
-/* Delivery Section End */
-
-/* Menu Section */
 .menu h2,
 .contact h2 {
   text-align: center;
@@ -988,14 +832,6 @@ z .navbar .navbar-logo {
   color: var(--primary);
 }
 
-.menu,
-.contact {
-  padding: 127px 0px 100px;
-}
-
-/* Menu Section End */
-
-/* Hubungi Section */
 .hubungi-kami {
   text-align: center;
   margin-top: 20px;
@@ -1006,12 +842,9 @@ z .navbar .navbar-logo {
   background-color: var(--primary) !important;
   color: #ffffff !important;
   padding: 10px 20px;
-  border: none;
   border-radius: 5px;
-  cursor: pointer;
   font-size: 16px;
   font-weight: bold;
-  text-decoration: none;
   transition: background-color 0.3s ease;
 }
 
@@ -1019,31 +852,12 @@ z .navbar .navbar-logo {
   background-color: #513c28;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hubungi-kami-button {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .hubungi-kami-button {
-    padding: 10px 10px;
-    font-size: 12px;
-  }
-}
-
-/* Hubungin Section End */
-
-/* Tombol Untuk tidak login */
 .disabled-link {
   pointer-events: none;
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Lihat Selengkapnya */
 .elementor-button {
   display: inline-block;
   background-color: var(--primary);
@@ -1052,32 +866,27 @@ z .navbar .navbar-logo {
   font-weight: 600;
   padding: 10px 20px;
   border-radius: 5px;
-  text-decoration: none;
   transition: all 0.3s ease;
 }
 
-/* Hover Effect */
 .elementor-button:hover {
-  background-color: #fd7e14; /* Warna latar belakang saat hover */
-  color: #ffffff; /* Warna teks saat hover */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan saat hover */
+  background-color: #fd7e14;
+  color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Button Content Styling */
 .elementor-button-content-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Text Styling */
 .elementor-button-text {
-  font-family: "Poppins", sans-serif; /* Font family untuk teks */
-  text-transform: uppercase; /* Mengubah teks menjadi huruf kapital */
-  letter-spacing: 1px; /* Spasi antar huruf */
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Contact Section */
 .contact .row {
   display: flex;
   margin-top: 2rem;
@@ -1123,11 +932,7 @@ z .navbar .navbar-logo {
   cursor: pointer;
 }
 
-/* Footer Styles */
-#footer {
-  margin-top: 1px;
-}
-
+/* Footer */
 .footer {
   padding: 30px 15px;
   background-image: url(/static/images/background_kristal.jpg);
@@ -1139,16 +944,6 @@ z .navbar .navbar-logo {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.footer::after {
-  content: ""; /* Semi-transparent overlay */
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
 }
 
 .footer-content {
@@ -1168,9 +963,6 @@ z .navbar .navbar-logo {
 
 .footer-title ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 1rem;
 }
 
 .footer-title li {
@@ -1200,13 +992,6 @@ z .navbar .navbar-logo {
 
 .text-footer a {
   color: var(--primary);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.text-footer a span {
-  color: var(--primary);
-  text-decoration: none;
   font-weight: bold;
 }
 
@@ -1214,31 +999,7 @@ z .navbar .navbar-logo {
   text-decoration: underline;
 }
 
-/* Footer End */
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .footer {
-    min-height: 25vh;
-    padding: 20px 10px;
-  }
-
-  .footer-title h1 {
-    font-size: 1.5rem;
-  }
-
-  .footer-title span {
-    font-size: 1rem;
-  }
-
-  .text-footer {
-    font-size: 0.8rem;
-  }
-}
-/* Footer End */
-
 /* Modal Box */
-/* Item Detail */
 .modal {
   display: none;
   position: fixed;
@@ -1260,18 +1021,6 @@ z .navbar .navbar-logo {
   border: 1px solid #666;
   width: 80%;
   animation: animateModal 0.5s;
-}
-
-/* Modal Animation */
-@keyframes animateModal {
-  from {
-    top: -300px;
-    opacity: 0;
-  }
-  to {
-    top: 0;
-    opacity: 1;
-  }
 }
 
 .modal-container .close-icon {
@@ -1306,16 +1055,39 @@ z .navbar .navbar-logo {
   padding: 1rem 1.6rem;
 }
 
-/* Media Queries */
-/* Laptop */
+/* Keyframes Global */
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes animateModal {
+  from { top: -300px; opacity: 0; }
+  to { top: 0; opacity: 1; }
+}
+
+.floating {
+  animation: floating 5s ease-in-out infinite;
+}
+
+.floating-slow {
+  animation: floating 8s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   CONSOLIDATED MEDIA QUERIES (RESPONSIVE)
+   ========================================================================== */
+
+/* 1. LAPTOP & DESKTOP (max-width: 1366px) */
 @media (max-width: 1366px) {
   html {
     font-size: 75%;
   }
 }
 
-/* Tablet */
-@media (max-width: 758px) {
+/* 2. TABLET & IPAD (max-width: 768px) */
+@media (max-width: 768px) {
   html {
     font-size: 62.5%;
   }
@@ -1324,13 +1096,15 @@ z .navbar .navbar-logo {
     display: inline-block;
   }
 
+  /* Navbar Mobile */
   .navbar .navbar-nav {
     position: absolute;
     top: 100%;
     right: -100%;
     background-color: #fff;
-    width: 30rem;
-    height: 50vh;
+    width: 25rem;
+    max-width: 80vw;
+    height: 100vh;
     transition: 0.3s;
   }
 
@@ -1354,12 +1128,40 @@ z .navbar .navbar-logo {
     transform: scaleX(0.2);
   }
 
-  .navbar .search-form {
-    width: 90%;
-    right: 2rem;
+  /* Shopping Cart Drawer */
+  .shopping-cart {
+    width: 100%;
+    max-width: 32rem;
   }
 
+  /* Hero Section */
+  .hero-wrapper {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 80px;
+  }
+
+  .hero-text {
+    margin-bottom: 40px;
+  }
+
+  .hero-image {
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  /* Features Section */
+  .section-header-features h2 {
+    font-size: 2.2rem;
+  }
+
+  .features-section {
+    padding: 5rem 7%;
+  }
+
+  /* About Section */
   .about .row {
+    flex-direction: column;
     flex-wrap: wrap;
   }
 
@@ -1382,10 +1184,35 @@ z .navbar .navbar-logo {
     font-size: 1.6rem;
   }
 
-  .menu p {
-    font-size: 1.2rem;
+  .features-container {
+    max-width: 100%;
   }
 
+  /* Products Section */
+  .products .product-card.featured {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 20px;
+  }
+
+  .products h2 {
+    font-size: 2.2rem;
+  }
+
+  /* Delivery Section */
+  .delivery-section {
+    padding: 4rem 7%;
+  }
+
+  .delivery-content {
+    text-align: center;
+  }
+
+  .delivery-content h2 {
+    font-size: 2.2rem;
+  }
+
+  /* Contact, Modal & Footer */
   .contact .row {
     flex-wrap: wrap;
   }
@@ -1401,11 +1228,148 @@ z .navbar .navbar-logo {
   .modal-content {
     flex-wrap: wrap;
   }
+
+  .hubungi-kami-button {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .footer {
+    min-height: 25vh;
+    padding: 20px 10px;
+  }
+
+  .footer-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .footer-title span {
+    font-size: 1rem;
+  }
+
+  .text-footer {
+    font-size: 0.8rem;
+  }
 }
 
-/* Mobile Phone */
+/* 3. MOBILE REGULER (max-width: 576px) */
+@media (max-width: 576px) {
+  .delivery-section {
+    padding: 3rem 5%;
+  }
+
+  .delivery-container {
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .delivery-image {
+    flex: 1 1 100%;
+  }
+
+  .delivery-image img {
+    max-width: 220px;
+  }
+
+  .delivery-content {
+    flex: 1 1 100%;
+  }
+
+  .delivery-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .delivery-content p {
+    font-size: 0.95rem;
+  }
+
+  .badge-delivery {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .view-product-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+
+  .hubungi-kami-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 4. EXTRA SMALL / IPHONE 4/5/SE (max-width: 450px & down to 320px) */
 @media (max-width: 450px) {
+  
+  
   html {
-    font-size: 55%;
+    font-size: 70%;
+  }
+
+  .navbar {
+   padding: 0.8rem 4%;
+  }
+
+  .navbar .navbar-nav {
+    position: absolute;
+    top: 100%;
+    right: -100%;
+    background-color: #fff;
+    width: 25rem;
+    max-width: 50vw;
+    height: 100vh;
+    transition: 0.3s;
+  }
+
+  .hero.img-bg {
+    min-height: 80vh;
+    padding: 80px 4% 40px;
+  }
+
+  .hero-content-wrapper h2 {
+    font-size: 2.6rem;
+  }
+
+  .hero-content-wrapper p {
+    font-size: 1.1rem;
+  }
+
+  .products .product-card.featured {
+    padding: 20px 15px;
+    width: 100%;
+  }
+
+  .products .product-image img {
+    height: 220px;
+  }
+
+  .shopping-cart {
+    width: 100%;
+  }
+
+  .form-container input {
+    width: 100%;
+  }
+
+  .form-container label {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .modal-container {
+    width: 95%;
+    margin: 25% auto;
+    padding: 1rem;
+  }
+
+  .modal-content img {
+    height: 14rem;
+    margin-right: 0;
+    width: 100%;
+    object-fit: cover;
   }
 }

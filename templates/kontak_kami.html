@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
     <!-- My CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}"/>
     <link rel="stylesheet" href="{% static 'css/contact.css' %}?v={{ timestamp }}" />
 
     <!-- AlpineJS v3 -->
@@ -32,22 +31,21 @@
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
-
-    <!-- App & Contact JS -->
-    <script src="{% static 'src/app.js' %}?v={{ timestamp }}" async></script>
-    <script src="{% static 'js/kontak.js' %}?v={{ timestamp }}"></script>
+    
+    <!-- App -->
+    <script src="{% static 'js/kontak.js' %}?v={{ timestamp }}" async></script>
   </head>
 
   <body>
     <!-- Navbar start -->
-    <nav id="navbar-icesand" class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
+   <nav id="navbar-icesand" class="navbar" x-data="{ isLoggedIn: {{ user.is_authenticated|yesno:'true,false' }} }" style="height: 100px; background-color: #ffffff;">
       <a href="{% url 'home' %}" class="navbar-logos">
         <img src="{% static 'images/logo.png' %}" alt="Logo Icesand Kristal" style="height: 85px; width: 140px;">
       </a>
 
       <div class="navbar-nav">
         <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'home' %}">Tentang Kami</a>
+        <a href="#about">Tentang Kami</a>
         <a href="{% url 'product_list' %}">Produk</a>
         <a href="{% url 'contact' %}">Kontak</a>
       </div>
@@ -83,7 +81,7 @@
             {% endif %}
           </div>
         </div>
-
+        
         <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
       </div>
     </nav>
@@ -114,7 +112,7 @@
 
         <div class="info-box" data-aos="fade-left" data-aos-delay="200">
           <div class="info-content">
-            <h3>Hubungi <span>Distributor</span></h3>
+            <h3>Hubungi <span>Kami</span></h3>
             <p>Gunakan informasi di bawah ini untuk pusat bantuan pelanggan PT. ICESAND KRISTAL PERKASA untuk wilayah Kota Bogor.</p>
             
             <ul class="contact-details">
