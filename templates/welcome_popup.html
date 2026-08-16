@@ -12,100 +12,101 @@
       * {
         font-family: 'Poppins', sans-serif;
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
       /* OVERLAY LATAR BELAKANG */
       .popup-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url(/static/images/background_kristal.jpg);
-        background-size: cover;     
-        background-position: center; 
-        background-repeat: no-repeat;
-        display: flex; 
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        background: url("{% static 'images/background_kristal.jpg' %}") center/cover no-repeat;
+        display: flex;
         justify-content: center;
         align-items: center;
         z-index: 10000;
-        opacity: 1;
-        /* Transisi agar overlay memudar secara mulus */
-        transition: opacity 0.4s ease, visibility 0.4s ease;
+        padding: 16px;
+        overflow-y: auto;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
       }
 
       /* POP-UP BOX */
       .popup-box {
-        background: rgba(255, 255, 255, 0.98); 
-        padding: 40px;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 24px 20px;
         text-align: center;
-        border-radius: 25px;
+        border-radius: 20px;
         box-shadow: 0 20px 50px rgba(0, 100, 200, 0.2);
-        width: 90%;
-        max-width: 500px;
+        width: 100%;
+        max-width: 430px;
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
+        overflow-y: auto;
         border: 2px solid #90e0ef;
-        /* Animasi masuk */
-        animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        /* Transisi saat ditutup */
-        transition: transform 0.35s ease, opacity 0.35s ease;
+        margin: auto;
+        animation: zoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transition: transform 0.3s ease, opacity 0.3s ease;
       }
 
-      /* Class tambahan saat tombol diklik untuk animasi keluar */
       .popup-box.closing {
-        transform: scale(0.85) translateY(-15px) !important;
+        transform: scale(0.9) !important;
         opacity: 0 !important;
       }
 
-      /* Animasi Muncul Halus */
-      @keyframes slideIn {
-        from { 
-          transform: scale(0.75) translateY(20px); 
-          opacity: 0; 
+      @keyframes zoomIn {
+        from {
+          transform: scale(0.88);
+          opacity: 0;
         }
-        to { 
-          transform: scale(1) translateY(0); 
-          opacity: 1; 
+        to {
+          transform: scale(1);
+          opacity: 1;
         }
       }
 
-      /* STYLE LOGO */
+      /* LOGO */
       .logo-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 15px;
-        margin-bottom: 25px;
-      }
-
-      .logo-icesand {
-        max-width: 140px;
-      }
-
-      .popup-title {
-        color: #0077b6;
-        font-weight: 700;
-        font-size: 24px;
-        margin-bottom: 18px;
-      }
-
-      .popup-content {
-        font-size: 13.5px;
-        line-height: 1.65;
-        color: #555;
-        margin-bottom: 28px;
-      }
-
-      .popup-content p {
         margin-bottom: 12px;
       }
 
-      /* TOMBOL MULAI */
+      .logo-icesand {
+        width: 110px;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* KONTEN TEKS */
+      .popup-title {
+        color: #0077b6;
+        font-weight: 700;
+        font-size: clamp(17px, 4.2vw, 21px);
+        margin-bottom: 10px;
+      }
+
+      .popup-content {
+        font-size: clamp(12px, 3.2vw, 13.5px);
+        line-height: 1.55;
+        color: #555;
+        margin-bottom: 18px;
+      }
+
+      .popup-content p {
+        margin-bottom: 8px;
+      }
+
+      /* TOMBOL */
       .btn-start {
         background: linear-gradient(135deg, #48cae4, #0096c7);
         color: white;
         border: none;
-        padding: 13px 38px;
-        font-size: 15px;
+        padding: 12px 30px;
+        font-size: 14px;
         font-weight: 700;
         border-radius: 50px;
         cursor: pointer;
@@ -119,15 +120,49 @@
       }
 
       .btn-start:active {
-        transform: scale(0.95);
+        transform: scale(0.96);
       }
 
       .popup-footer {
-        font-size: 12px;
+        font-size: 11px;
         color: #00b4d8;
         font-weight: 700;
-        margin-top: 25px;
+        margin-top: 14px;
         letter-spacing: 0.5px;
+      }
+
+      /* OPTIMASI LAYAR SANGAT KECIL (iPhone 4/5/SE 1st gen atau Tinggi Layar < 540px) */
+      @media (max-width: 360px), (max-height: 540px) {
+        .popup-box {
+          padding: 16px 14px;
+          border-radius: 16px;
+        }
+
+        .logo-icesand {
+          width: 90px;
+        }
+
+        .logo-container {
+          margin-bottom: 8px;
+        }
+
+        .popup-title {
+          margin-bottom: 6px;
+        }
+
+        .popup-content {
+          margin-bottom: 12px;
+          line-height: 1.45;
+        }
+
+        .btn-start {
+          padding: 10px 20px;
+          width: 100%;
+        }
+
+        .popup-footer {
+          margin-top: 10px;
+        }
       }
     </style>
   </head>
@@ -162,12 +197,9 @@
         const popupBox = document.getElementById("popupBox");
 
         if (popupOverlay && popupBox) {
-          // 1. Picu animasi mengecil dan memudar pada kotak
           popupBox.classList.add("closing");
-          // 2. Picu animasi memudar pada latar belakang overlay
           popupOverlay.style.opacity = "0";
 
-          // 3. Setelah animasi selesai (350ms), sembunyikan elemen secara total
           setTimeout(() => {
             popupOverlay.style.display = "none";
           }, 350);
