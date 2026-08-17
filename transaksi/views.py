@@ -301,7 +301,7 @@ def selesai_order(request, trx_id):
 # --- VIEW: DASHBOARD ADMIN ---
 @user_passes_test(lambda u: u.is_authenticated)
 def dashboard(request):
-    is_owner = request.user.is_staff and not request.user.is_superuser 
+    is_owner = request.user.role == 'owner' or (request.user.is_staff and not request.user.is_superuser)
     waktu_sekarang = timezone.localtime(timezone.now())
     hari_ini = waktu_sekarang.date()
 
