@@ -1,6 +1,7 @@
 /* =========================================================
    DASHBOARD PT. ICESAND KRISTAL PERKASA
    Tema: Modern Blue, Slate & Clean Multi-Device Layout
+   (Full Responsive: Mobile 450px, Tablet 768px, Desktop 1200px)
    ========================================================= */
 
 * {
@@ -138,18 +139,31 @@ button:active, a:active {
     animation: iconPulseRing 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
 
+/* Table Scrollbar Styling */
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
 /* =========================================================
    RESPONSIVE BREAKPOINTS (450px, 576px, 768px, 1024px, 1200px)
    ========================================================= */
 
-/* 1. Layar Desktop / Laptop Standar (>= 1200px / 1280px) */
+/* 1. Layar Desktop / Laptop Standar (>= 1200px) */
 @media (min-width: 1200px) {
     .main-content {
         margin-left: 260px;
         padding: 2.5rem;
-    }
-    .grid-dashboard-activity {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
 
@@ -185,54 +199,40 @@ button:active, a:active {
 /* 4. Layar HP Besar / Landscape (576px - 767px) */
 @media (max-width: 767px) {
     .header-company-title {
-        display: none;
+        display: none !important;
     }
-    .grid-stats-mobile {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
+    .report-filter-form {
+        flex-direction: column !important;
+        align-items: stretch !important;
     }
-    .table-container-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+    .report-filter-btn {
+        width: 100% !important;
     }
 }
 
-/* 5. Layar Smartphone Standar / Kecil (<= 576px & <= 450px) */
+/* 5. Layar Smartphone Standar / Ringkas (<= 576px & <= 450px) */
 @media (max-width: 576px) {
     .main-content {
-        padding: 1rem 0.75rem;
-        padding-top: 5rem;
+        padding: 0.75rem !important;
+        padding-top: 4.75rem !important;
     }
     .interactive-card {
-        padding: 1rem !important;
+        padding: 1.1rem !important;
         border-radius: 1.25rem !important;
     }
-    .btn-action-mobile {
-        font-size: 10px !important;
-        padding: 8px 10px !important;
+    .report-card-container {
+        padding: 1.25rem 0.75rem !important;
+        border-radius: 1.5rem !important;
     }
 }
 
-/* 6. Layar Khusus Smartphone Sangat Ringkas (<= 450px) */
 @media (max-width: 450px) {
     header h1 {
-        font-size: 12px !important;
+        font-size: 11.5px !important;
     }
     .dash-card h3,
     .bg-white.p-5 p.text-2xl {
         font-size: 1.25rem !important;
-    }
-    .modal-content-mobile {
-        padding: 1rem !important;
-        border-radius: 1.25rem !important;
-    }
-    .form-filter-responsive {
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
-    .form-filter-responsive button,
-    .form-filter-responsive a {
-        width: 100% !important;
     }
 }
 
