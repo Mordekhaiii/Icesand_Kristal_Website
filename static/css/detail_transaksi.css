@@ -7,26 +7,19 @@
     --white: #ffffff;
     --border-color: #e2e8f0;
 
-    /* Palette Warna Badge Status */
+    /* Warna Status Spesifik */
+    --color-menunggu: #d97706;
+    --color-proses: #0284c7;
+    --color-dikirim: #7c3aed;
+    --color-selesai: #16a34a;
+    --color-batal: #dc2626;
+
+    /* Background Soft Badge */
     --status-menunggu-bg: #fef3c7;
-    --status-menunggu-text: #92400e;
-    --status-menunggu-border: #fcd34d;
-
     --status-proses-bg: #e0f2fe;
-    --status-proses-text: #0369a1;
-    --status-proses-border: #bae6fd;
-
     --status-dikirim-bg: #ede9fe;
-    --status-dikirim-text: #5b21b6;
-    --status-dikirim-border: #ddd6fe;
-
     --status-selesai-bg: #dcfce7;
-    --status-selesai-text: #166534;
-    --status-selesai-border: #86efac;
-
     --status-batal-bg: #fee2e2;
-    --status-batal-text: #991b1b;
-    --status-batal-border: #fca5a5;
 }
 
 * {
@@ -131,7 +124,9 @@ body {
     color: #cbd5e1;
 }
 
-/* Status Badge */
+/* ===================================================
+   BADGE STATUS & WARNA
+   =================================================== */
 .status-badge {
     display: inline-flex !important;
     align-items: center;
@@ -151,39 +146,34 @@ body {
     padding: 6px 14px;
 }
 
-.status-badge i {
-    font-size: 1.1em;
-}
-
-/* Modifier Warna Khusus Tiap Status */
 .status-menunggu {
     background-color: var(--status-menunggu-bg) !important;
-    color: var(--status-menunggu-text) !important;
-    border: 1.5px solid var(--status-menunggu-border) !important;
+    color: var(--color-menunggu) !important;
+    border: 1.5px solid #fcd34d !important;
 }
 
 .status-proses {
     background-color: var(--status-proses-bg) !important;
-    color: var(--status-proses-text) !important;
-    border: 1.5px solid var(--status-proses-border) !important;
+    color: var(--color-proses) !important;
+    border: 1.5px solid #bae6fd !important;
 }
 
 .status-dikirim {
     background-color: var(--status-dikirim-bg) !important;
-    color: var(--status-dikirim-text) !important;
-    border: 1.5px solid var(--status-dikirim-border) !important;
+    color: var(--color-dikirim) !important;
+    border: 1.5px solid #ddd6fe !important;
 }
 
 .status-selesai {
     background-color: var(--status-selesai-bg) !important;
-    color: var(--status-selesai-text) !important;
-    border: 1.5px solid var(--status-selesai-border) !important;
+    color: var(--color-selesai) !important;
+    border: 1.5px solid #86efac !important;
 }
 
 .status-batal {
     background-color: var(--status-batal-bg) !important;
-    color: var(--status-batal-text) !important;
-    border: 1.5px solid var(--status-batal-border) !important;
+    color: var(--color-batal) !important;
+    border: 1.5px solid #fca5a5 !important;
 }
 
 /* Link ID Invoice */
@@ -202,10 +192,6 @@ body {
 .link-invoice:hover {
     color: var(--primary-dark);
     transform: scale(1.02);
-}
-
-.link-invoice i {
-    font-size: 13.5px;
 }
 
 /* Grid Informasi Pemesan */
@@ -264,7 +250,7 @@ body {
     gap: 8px;
 }
 
-/* Tabel Desktop */
+/* Tabel */
 .table-responsive {
     width: 100%;
 }
@@ -339,7 +325,9 @@ body {
     font-style: italic;
 }
 
-/* Status Pesanan Detail Transaksi */
+/* ===================================================
+   STEPPER STATUS PESANAN & PENYESUAIAN WARNA
+   =================================================== */
 .status-container {
     display: flex;
     justify-content: space-between;
@@ -370,43 +358,71 @@ body {
     transition: all 0.35s ease;
 }
 
-.step.active i {
-    background: var(--primary-blue);
-    color: white;
-    box-shadow: 0 0 0 0 rgba(0, 168, 232, 0.6);
-    animation: activeStepPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
-}
-
-.step.active.step-menunggu i {
-    background: #f59e0b;
-    animation: waitingPulse 2s infinite ease-in-out;
-}
-
-.step.active.step-proses i {
-    background: #0284c7;
-    animation: rotateSlow 4s linear infinite;
-}
-
-.step.active.step-dikirim i {
-    background: #7c3aed;
-    animation: driveTruck 1.8s infinite ease-in-out;
-}
-
-.step.active.step-selesai i {
-    background: #10b981;
-    animation: popSuccess 0.6s ease-out;
-}
-
 .step p {
     font-size: 11.5px;
     color: var(--text-muted);
     margin: 0;
     font-weight: 700;
     text-transform: uppercase;
+    transition: color 0.3s ease;
 }
 
-.step.active p {
-    color: var(--primary-blue);
+/* 1. Menunggu Konfirmasi (Kuning/Oranye) */
+.step.active.step-menunggu i {
+    background: var(--color-menunggu);
+    color: white;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    animation: waitingPulse 2s infinite ease-in-out;
+}
+.step.active.step-menunggu p {
+    color: var(--color-menunggu);
+    font-weight: 800;
+}
+
+/* 2. Sedang Diproses (Biru) */
+.step.active.step-proses i {
+    background: var(--color-proses);
+    color: white;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+    animation: rotateSlow 4s linear infinite;
+}
+.step.active.step-proses p {
+    color: var(--color-proses);
+    font-weight: 800;
+}
+
+/* 3. Dikirim (Ungu) */
+.step.active.step-dikirim i {
+    background: var(--color-dikirim);
+    color: white;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+    animation: driveTruck 1.8s infinite ease-in-out;
+}
+.step.active.step-dikirim p {
+    color: var(--color-dikirim);
+    font-weight: 800;
+}
+
+/* 4. Selesai (Hijau) */
+.step.active.step-selesai i {
+    background: var(--color-selesai);
+    color: white;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+    animation: popSuccess 0.6s ease-out;
+}
+.step.active.step-selesai p {
+    color: var(--color-selesai);
+    font-weight: 800;
+}
+
+/* 5. Dibatalkan (Merah) */
+.step.active.step-batal i {
+    background: var(--color-batal);
+    color: white;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+}
+.step.active.step-batal p {
+    color: var(--color-batal);
     font-weight: 800;
 }
 
@@ -478,7 +494,7 @@ body {
     filter: brightness(1.08);
 }
 
-/* Ulasan & Rating */
+/* Ulasan */
 .review-card {
     background: #fffdf5;
     border: 2px solid #fde68a;
@@ -535,86 +551,40 @@ body {
     padding: 50px 20px;
 }
 
-/* ===================================================
-   ANIMATION KEYFRAMES
-   =================================================== */
-@keyframes activeStepPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(0, 168, 232, 0.5);
-    }
-    70% {
-        box-shadow: 0 0 0 12px rgba(0, 168, 232, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 168, 232, 0);
-    }
-}
-
+/* Animations */
 @keyframes waitingPulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
-    }
-    50% {
-        transform: scale(1.08);
-        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
-    }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
 }
 
 @keyframes rotateSlow {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 @keyframes driveTruck {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(4px);
-    }
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
 }
 
 @keyframes popSuccess {
-    0% {
-        transform: scale(0.7);
-    }
-    70% {
-        transform: scale(1.15);
-    }
-    100% {
-        transform: scale(1);
-    }
+    0% { transform: scale(0.7); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ===================================================
-   RESPONSIVE BREAKPOINTS KHUSUS MOBILE
+   RESPONSIVE BREAKPOINTS MOBILE
    =================================================== */
 @media (max-width: 768px) {
     body {
@@ -651,7 +621,6 @@ body {
         font-size: 20px;
     }
 
-    /* Card List Riwayat Transaksi */
     .history-card {
         background: transparent !important;
         border: none !important;
@@ -726,7 +695,7 @@ body {
         text-align: right;
     }
 
-    /* Stepper Status Vertikal di Layar HP */
+    /* Stepper Status Vertikal di HP */
     .status-container {
         flex-direction: column;
         gap: 0;
@@ -756,7 +725,7 @@ body {
     }
 
     .step.active:not(:last-child)::after {
-        background: var(--primary-blue);
+        background: #cbd5e1;
     }
 
     .step i {
