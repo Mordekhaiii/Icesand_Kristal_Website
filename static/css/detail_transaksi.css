@@ -1,22 +1,32 @@
 :root {
     --bg-light: #f4f7f9;
     --primary-blue: #00a8e8;
+    --primary-dark: #0077a8;
     --text-dark: #1e293b;
     --text-muted: #64748b;
     --white: #ffffff;
     --border-color: #e2e8f0;
 
-    /* Warna Status */
+    /* Palette Warna Badge Status */
     --status-menunggu-bg: #fef3c7;
     --status-menunggu-text: #b45309;
+    --status-menunggu-border: #fcd34d;
+
     --status-proses-bg: #e0f2fe;
     --status-proses-text: #0369a1;
+    --status-proses-border: #bae6fd;
+
     --status-dikirim-bg: #ede9fe;
     --status-dikirim-text: #6d28d9;
+    --status-dikirim-border: #ddd6fe;
+
     --status-selesai-bg: #dcfce7;
     --status-selesai-text: #15803d;
+    --status-selesai-border: #86efac;
+
     --status-batal-bg: #fee2e2;
     --status-batal-text: #b91c1c;
+    --status-batal-border: #fca5a5;
 }
 
 * {
@@ -30,7 +40,7 @@ body {
     background-size: cover;
     background-attachment: fixed;
     color: var(--text-dark);
-    padding: 30px 20px;
+    padding: 30px 16px;
     margin: 0;
 }
 
@@ -71,7 +81,7 @@ body {
 .section-title {
     text-align: center;
     font-weight: 800;
-    font-size: 2.2rem;
+    font-size: 2.1rem;
     margin-bottom: 25px;
     color: #0f172a;
     letter-spacing: -0.5px;
@@ -83,14 +93,15 @@ body {
     border-radius: 24px;
     padding: 32px;
     margin-bottom: 22px;
-    box-shadow: 0 10px 30px rgba(0, 168, 232, 0.06);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 168, 232, 0.07);
+    border: 1px solid rgba(226, 232, 240, 0.9);
 }
 
+/* Header Invoice Card */
 .card-header-flex {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 25px;
     gap: 15px;
 }
@@ -100,6 +111,7 @@ body {
     color: var(--primary-blue);
     font-weight: 800;
     font-size: 24px;
+    letter-spacing: -0.5px;
 }
 
 .invoice-datetime {
@@ -115,19 +127,20 @@ body {
 }
 
 /* ===================================================
-   WARNA-WARNA BADGE STATUS
+   BADGE STATUS DINAMIS & WARNA-WARNA KHUSUS
    =================================================== */
 .status-badge {
-    padding: 8px 18px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    padding: 7px 18px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
     white-space: nowrap;
     letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .status-badge.badge-sm {
@@ -135,38 +148,38 @@ body {
     padding: 5px 12px;
 }
 
-/* Modifier Warna Khusus Tiap Status */
+/* Class Warna Status */
 .status-menunggu {
-    background-color: var(--status-menunggu-bg);
-    color: var(--status-menunggu-text);
-    border: 1px solid #fde68a;
+    background-color: var(--status-menunggu-bg) !important;
+    color: var(--status-menunggu-text) !important;
+    border: 1px solid var(--status-menunggu-border) !important;
 }
 
 .status-proses {
-    background-color: var(--status-proses-bg);
-    color: var(--status-proses-text);
-    border: 1px solid #bae6fd;
+    background-color: var(--status-proses-bg) !important;
+    color: var(--status-proses-text) !important;
+    border: 1px solid var(--status-proses-border) !important;
 }
 
 .status-dikirim {
-    background-color: var(--status-dikirim-bg);
-    color: var(--status-dikirim-text);
-    border: 1px solid #ddd6fe;
+    background-color: var(--status-dikirim-bg) !important;
+    color: var(--status-dikirim-text) !important;
+    border: 1px solid var(--status-dikirim-border) !important;
 }
 
 .status-selesai {
-    background-color: var(--status-selesai-bg);
-    color: var(--status-selesai-text);
-    border: 1px solid #bbf7d0;
+    background-color: var(--status-selesai-bg) !important;
+    color: var(--status-selesai-text) !important;
+    border: 1px solid var(--status-selesai-border) !important;
 }
 
 .status-batal {
-    background-color: var(--status-batal-bg);
-    color: var(--status-batal-text);
-    border: 1px solid #fecaca;
+    background-color: var(--status-batal-bg) !important;
+    color: var(--status-batal-text) !important;
+    border: 1px solid var(--status-batal-border) !important;
 }
 
-/* Link ID Invoice & Icon Sejajar */
+/* Link ID Invoice */
 .link-invoice {
     display: inline-flex;
     align-items: center;
@@ -179,7 +192,7 @@ body {
 }
 
 .link-invoice i {
-    font-size: 14px;
+    font-size: 13.5px;
 }
 
 /* Grid Informasi Pemesan */
@@ -238,7 +251,7 @@ body {
     gap: 8px;
 }
 
-/* Tabel Utama */
+/* Tabel Desktop */
 .table-responsive {
     width: 100%;
 }
@@ -313,7 +326,7 @@ body {
     font-style: italic;
 }
 
-/* Stepper Status Pesanan (Desktop Default) */
+/* Stepper Status Pesanan (Desktop) */
 .status-container {
     display: flex;
     justify-content: space-between;
@@ -489,7 +502,7 @@ body {
 }
 
 /* ===================================================
-   RESPONSIVE MOBILE / PHONE BREAKPOINTS
+   RESPONSIVE BREAKPOINTS KHUSUS MOBILE
    =================================================== */
 
 @media (max-width: 768px) {
@@ -506,12 +519,6 @@ body {
         border-radius: 20px;
     }
 
-    .card-header-flex {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
     .info-grid {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -522,8 +529,20 @@ body {
     }
 }
 
-/* Tampilan Mobile Card List Riwayat Transaksi */
+/* Tampilan Khusus Mobile Phone (Card List & Header Vertikal) */
 @media (max-width: 640px) {
+    /* Header Card di Mobile agar rapi & tidak terpotong */
+    .card-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .invoice-number {
+        font-size: 20px;
+    }
+
+    /* Transformasi Tabel Riwayat Transaksi ke Card List */
     .history-card {
         background: transparent !important;
         border: none !important;
@@ -547,7 +566,6 @@ body {
         width: 100%;
     }
 
-    /* Tiap baris tabel menjadi Card Elegan */
     .history-card .table-custom tr {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -556,17 +574,11 @@ body {
             "date total";
         align-items: center;
         gap: 8px 12px;
-        padding: 18px 16px;
+        padding: 16px 14px;
         background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 18px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .history-card .table-custom tr:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 168, 232, 0.08);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
     }
 
     .history-card .table-custom td {
@@ -576,12 +588,12 @@ body {
 
     .history-card .table-custom td:nth-child(1) {
         grid-area: invoice;
-        font-size: 14px;
+        font-size: 13.5px;
     }
 
     .history-card .table-custom td:nth-child(2) {
         grid-area: date;
-        font-size: 12px;
+        font-size: 11.5px;
         color: var(--text-muted);
         font-weight: 500;
     }
@@ -589,7 +601,7 @@ body {
     .history-card .table-custom td:nth-child(3) {
         grid-area: total;
         text-align: right;
-        font-size: 14px;
+        font-size: 13.5px;
         font-weight: 800;
         color: #0f172a;
     }
@@ -599,7 +611,7 @@ body {
         text-align: right;
     }
 
-    /* Stepper Status Pesanan Vertikal di Mobile */
+    /* Stepper Status Pesanan Vertikal dengan Garis Alur */
     .status-container {
         flex-direction: column;
         gap: 0;
@@ -617,7 +629,6 @@ body {
         position: relative;
     }
 
-    /* Garis Alur Step Vertikal */
     .step:not(:last-child)::after {
         content: '';
         position: absolute;
@@ -643,13 +654,13 @@ body {
     }
 
     .step p {
-        font-size: 12.5px;
+        font-size: 12px;
     }
 }
 
 @media (max-width: 450px) {
     body {
-        padding: 16px 12px;
+        padding: 16px 10px;
     }
 
     .top-nav-wrapper {
@@ -658,7 +669,7 @@ body {
 
     .btn-back {
         padding: 8px 14px;
-        font-size: 11.5px;
+        font-size: 11px;
     }
 
     .section-title {
@@ -666,12 +677,18 @@ body {
     }
 
     .invoice-card {
-        padding: 18px 14px;
-        border-radius: 18px;
+        padding: 16px 12px;
+        border-radius: 16px;
     }
 
     .invoice-number {
-        font-size: 19px;
+        font-size: 18px;
+    }
+
+    .table-custom th, 
+    .table-custom td {
+        padding: 10px 6px;
+        font-size: 12px;
     }
 
     .total-val {

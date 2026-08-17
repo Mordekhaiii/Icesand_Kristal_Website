@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <!-- Tombol Kembali Statis agar tidak menimpa header di Mobile -->
+    <!-- Tombol Navigasi Kembali -->
     <div class="top-nav-wrapper">
         <a href="{% url 'home' %}" class="btn-back">
             <i class="fas fa-arrow-left"></i> Kembali Ke Beranda
@@ -37,7 +37,19 @@
                             <i class="far fa-clock mr-1"></i> {{ trx.tanggal|date:"H:i" }} WIB
                         </p>
                     </div>
-                    <span class="status-badge">{{ trx.get_status_bayar_display }}</span>
+                    
+                    <!-- Badge Status Dinamis Berdasarkan Nilai Status -->
+                    {% if trx.status_bayar|lower == 'selesai' %}
+                        <span class="status-badge status-selesai">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
+                    {% elif trx.status_bayar|lower == 'sedang diproses' or trx.status_bayar|lower == 'diproses' %}
+                        <span class="status-badge status-proses">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
+                    {% elif trx.status_bayar|lower == 'dikirim' %}
+                        <span class="status-badge status-dikirim">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
+                    {% elif trx.status_bayar|lower == 'dibatalkan' or trx.status_bayar|lower == 'batal' %}
+                        <span class="status-badge status-batal">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
+                    {% else %}
+                        <span class="status-badge status-menunggu">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
+                    {% endif %}
                 </div>
                 
                 <div class="info-grid">
@@ -73,7 +85,7 @@
             </div>
 
             <div class="invoice-card">
-                <p class="section-subtitle"><i class="fas fa-shopping-basket mr-2" style="color: var(--primary-blue);"></i> Rincian Produk</p>
+                <p class="section-subtitle"><i class="fas fa-shopping-basket" style="color: var(--primary-blue);"></i> Rincian Produk</p>
                 
                 <div class="table-responsive">
                     <table class="table-custom">
@@ -109,14 +121,14 @@
                 </div>
             </div>
 
-            {% if trx.status_bayar == 'Selesai' %}
+            {% if trx.status_bayar|lower == 'selesai' %}
                 <div class="invoice-card review-card">
                     {% if not trx.ulasan_set.exists %}
-                        <p class="label-text" style="color: #856404; margin-bottom: 12px;">Bagaimana Kualitas Es dan Layanan Kami?</p>
+                        <p class="label-text" style="color: #92400e; margin-bottom: 12px;">Bagaimana Kualitas Es dan Layanan Kami?</p>
                         <button onclick="openModalUlasan('{{ trx.id }}')" class="btn-review">
                             <i class="fas fa-star"></i> Beri Ulasan & Saran
                         </button>
-                        <p style="font-size: 11px; color: #b7950b; margin-top: 12px; font-style: italic; font-weight: 600;">*Saran Anda sangat berarti bagi evaluasi layanan kami.</p>
+                        <p style="font-size: 11px; color: #b45309; margin-top: 12px; font-style: italic; font-weight: 600;">*Saran Anda sangat berarti bagi evaluasi layanan kami.</p>
                     {% else %}
                         <div class="review-done">
                             <i class="fas fa-check-circle fa-lg"></i> TERIMA KASIH ATAS ULASAN & SARAN ANDA!
@@ -126,7 +138,7 @@
             {% endif %}
 
             <div class="invoice-card">
-                <p class="section-subtitle"><i class="fas fa-truck-fast mr-2" style="color: var(--primary-blue);"></i> Status Pesanan</p>
+                <p class="section-subtitle"><i class="fas fa-truck-fast" style="color: var(--primary-blue);"></i> Status Pesanan</p>
                 
                 <div class="status-container">
                     <div class="step active">
@@ -134,23 +146,23 @@
                         <p>Menunggu Konfirmasi</p>
                     </div>
 
-                    <div class="step {% if trx.status_bayar in 'Sedang Diproses,Dikirim,Selesai' %}active{% endif %}">
+                    <div class="step {% if trx.status_bayar|lower == 'sedang diproses' or trx.status_bayar|lower == 'diproses' or trx.status_bayar|lower == 'dikirim' or trx.status_bayar|lower == 'selesai' %}active{% endif %}">
                         <i class="fas fa-box-open"></i>
                         <p>Sedang Diproses</p>
                     </div>
 
-                    <div class="step {% if trx.status_bayar in 'Dikirim,Selesai' %}active{% endif %}">
+                    <div class="step {% if trx.status_bayar|lower == 'dikirim' or trx.status_bayar|lower == 'selesai' %}active{% endif %}">
                         <i class="fas fa-truck"></i>
                         <p>Dikirim</p>
                     </div>
 
-                    {% if trx.status_bayar == 'Dibatalkan' %}
+                    {% if trx.status_bayar|lower == 'dibatalkan' or trx.status_bayar|lower == 'batal' %}
                         <div class="step active">
                             <i class="fas fa-times-circle" style="background: #ef4444; color: white;"></i>
                             <p style="color: #ef4444;">Dibatalkan</p>
                         </div>
                     {% else %}
-                        <div class="step {% if trx.status_bayar == 'Selesai' %}active{% endif %}">
+                        <div class="step {% if trx.status_bayar|lower == 'selesai' %}active{% endif %}">
                             <i class="fas fa-check-circle"></i>
                             <p>Selesai</p>
                         </div>
@@ -158,13 +170,13 @@
                 </div>
 
                 <div class="action-buttons-wrapper">
-                    {% if trx.status_bayar == 'Menunggu Konfirmasi' %}
+                    {% if trx.status_bayar|lower == 'menunggu konfirmasi' %}
                     <button onclick="confirmCancel('{{ trx.id }}')" class="btn-action-cancel">
                         <i class="fas fa-times-circle"></i> Batalkan Pesanan
                     </button>
                     {% endif %} 
 
-                    {% if trx.status_bayar == 'Dikirim' %}
+                    {% if trx.status_bayar|lower == 'dikirim' %}
                     <button onclick="openModalSelesai('{{ trx.id }}')" class="btn-action-complete">
                         <i class="fas fa-check-circle"></i> Selesaikan Pesanan 
                     </button>
@@ -183,13 +195,13 @@
 
             <div class="bottom-nav-link">
                 <a href="{% url 'detail_transaksi' %}">
-                    <i class="fas fa-arrow-left mr-2"></i> Kembali ke Riwayat Transaksi
+                    <i class="fas fa-arrow-left mr-1"></i> Kembali ke Riwayat Transaksi
                 </a>
             </div>
 
         {% elif daftar_trx is not None %}
             <h2 class="section-title">Riwayat Transaksi</h2>
-            <div class="invoice-card history-card" style="padding: 16px;">
+            <div class="invoice-card history-card">
                 <div class="table-responsive">
                     <table class="table-custom">
                         <thead>
@@ -205,17 +217,29 @@
                             <tr>
                                 <td>
                                     <a href="{% url 'detail_transaksi_detail' item.id %}" class="link-invoice">
-                                        <i class="fas fa-file-invoice mr-1"></i> {{ item.kode_transaksi }}
+                                        <i class="fas fa-file-invoice"></i> {{ item.kode_transaksi }}
                                     </a>
                                 </td>
-                                <td style="font-weight: 600; color: var(--text-muted); white-space: nowrap;">{{ item.tanggal|date:"d F Y" }}</td>
-                                <td style="font-weight: 800; white-space: nowrap;">Rp {{ item.total_harga|floatformat:0|intcomma }}</td>
-                                <td><span class="status-badge badge-sm">{{ item.status_bayar }}</span></td>
+                                <td>{{ item.tanggal|date:"d F Y" }}</td>
+                                <td>Rp {{ item.total_harga|floatformat:0|intcomma }}</td>
+                                <td>
+                                    {% if item.status_bayar|lower == 'selesai' %}
+                                        <span class="status-badge badge-sm status-selesai">{{ item.status_bayar }}</span>
+                                    {% elif item.status_bayar|lower == 'sedang diproses' or item.status_bayar|lower == 'diproses' %}
+                                        <span class="status-badge badge-sm status-proses">{{ item.status_bayar }}</span>
+                                    {% elif item.status_bayar|lower == 'dikirim' %}
+                                        <span class="status-badge badge-sm status-dikirim">{{ item.status_bayar }}</span>
+                                    {% elif item.status_bayar|lower == 'dibatalkan' or item.status_bayar|lower == 'batal' %}
+                                        <span class="status-badge badge-sm status-batal">{{ item.status_bayar }}</span>
+                                    {% else %}
+                                        <span class="status-badge badge-sm status-menunggu">{{ item.status_bayar }}</span>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% empty %}
                             <tr>
                                 <td colspan="4" class="empty-state">
-                                    <i class="fas fa-receipt" style="font-size: 3.5rem; color: #e2e8f0; margin-bottom: 15px; display: block;"></i>
+                                    <i class="fas fa-receipt" style="font-size: 3.5rem; color: #cbd5e1; margin-bottom: 15px; display: block;"></i>
                                     <h3 style="color: var(--text-dark); font-weight: 800; margin-bottom: 8px;">BELUM ADA TRANSAKSI</h3>
                                     <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Anda belum pernah melakukan pemesanan es kristal.</p>
                                     <a href="{% url 'home' %}" class="btn-print" style="display: inline-flex; width: auto; padding: 12px 30px; background: var(--primary-blue);">Mulai Pesan Sekarang</a>
@@ -381,7 +405,7 @@
                 showCancelButton: true,
                 confirmButtonText: 'Kirim Masukan',
                 cancelButtonText: 'Batal',
-                confirmButtonColor: '#f59f00',
+                confirmButtonColor: '#f59e0b',
                 borderRadius: '20px',
                 preConfirm: () => {
                     const rating = document.getElementById('swal-rating').value;
