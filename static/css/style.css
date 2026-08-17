@@ -273,7 +273,7 @@ body {
   justify-content: center;
   border-top: 1px dashed black;
   margin-top: 1rem;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .form-container h5 {
@@ -1319,14 +1319,14 @@ body {
   .navbar {
     padding: 0.8rem 4%;
   }
-  
+  /* max-width 60vw lebar untuk si content navbar nav active */
   .navbar .navbar-nav {
     position: absolute;
     top: 100%;
     right: -100%;
     background-color: #fff;
     width: 25rem;
-    max-width: 50vw;
+    max-width: 60vw; 
     height: 100vh;
     transition: 0.3s;
   }
