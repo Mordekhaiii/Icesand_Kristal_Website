@@ -1319,14 +1319,14 @@ body {
   .navbar {
     padding: 0.8rem 4%;
   }
-  /* max-width 60vw lebar untuk si content navbar nav active */
+
   .navbar .navbar-nav {
     position: absolute;
     top: 100%;
     right: -100%;
     background-color: #fff;
     width: 25rem;
-    max-width: 60vw; 
+    max-width: 55vw;
     height: 100vh;
     transition: 0.3s;
   }

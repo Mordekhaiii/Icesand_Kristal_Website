@@ -35,7 +35,6 @@ body {
 }
 
 /* Navbar */
-/* --- NAVBAR (Agar tidak menabrak konten) --- */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -62,7 +61,7 @@ body {
 }
 
 .navbar .navbar-nav a {
-  color: var(--primary);
+  color: #000000;
   display: inline-block;
   font-size: 1.3rem;
   margin: 0 1rem;
@@ -83,6 +82,19 @@ body {
 
 .navbar .navbar-nav a:hover::after {
   transform: scaleX(0.5);
+}
+
+.navbar .navbar-extra a {
+  color: var(--primary);
+  margin: 0 0.5rem;
+}
+
+.navbar .navbar-extra a:hover {
+  color: var(--primary);
+}
+
+#hamburger-menu {
+  display: none;
 }
 
 /* --- NAVBAR EXTRA (Icons) --- */
@@ -481,7 +493,6 @@ body {
 /* Hero End */
 
 /* Products Section */
-/* --- Products Section --- */
 .products {
   padding: 120px 7% 5rem; 
   background: url(/static/images/background_kristal.jpg);
@@ -532,12 +543,11 @@ body {
   border-color: #00d2ff;
 }
 
-/* Mengatur Ikon agar rapi di pojok */
 .product-icons {
   position: absolute;
-  margin-bottom: -0.1px;
-  bottom: 1.5rem;
-  left: 330px;
+  bottom: 25px; 
+  right: 25px;  
+  left: auto;  
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -652,6 +662,32 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
   min-width: 300px
 }
 
+.comparison-text h3 {
+  font-size: 1.8rem; 
+  margin-bottom: 1.5rem; 
+  color: #0f172a; 
+  font-weight: 800;
+}
+
+.comparison-text strong {
+  color: #0f172a; 
+  font-size: 1.05rem;
+}
+
+.comparison-text .paragraf {
+  color: var(--primary); 
+  margin-top: 0.4rem; 
+  line-height: 1.6; 
+  font-size: 0.95rem;
+}
+
+.comparison-text .paragraf2 {
+  color: var(--primary); 
+  margin-top: 0.4rem; 
+  line-height: 1.6; 
+  font-size: 0.95rem;
+}
+
 
 
 
@@ -702,10 +738,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
 }
 
 /* Footer Styles */
-#footer {
-  margin-top: 1px;
-}
-
 .footer {
   padding: 30px 15px;
   background-image: url(/static/images/background_kristal.jpg);
@@ -719,22 +751,11 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
   align-items: center;
 }
 
-.footer::after {
-  content: ""; /* Semi-transparent overlay */
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-}
-
 .footer-content {
   position: relative;
   z-index: 1;
   color: var(--primary);
   text-align: center;
-  padding-bottom: 20px;
 }
 
 .footer-title h1 {
@@ -746,9 +767,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
 
 .footer-title ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 1rem;
 }
 
 .footer-title li {
@@ -778,13 +796,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
 
 .text-footer a {
   color: var(--primary);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.text-footer a span {
-  color: var(--primary);
-  text-decoration: none;
   font-weight: bold;
 }
 
@@ -885,14 +896,14 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
 }
 
 /* Media Queries */
-/* Laptop */
+/* 1. Laptop */
 @media (max-width: 1366px) {
   html {
     font-size: 75%;
   }
 }
 
-/* Tablet */
+/* 2. Tablet */
 @media (max-width: 768px) {
   html {
     font-size: 62.5%;
@@ -902,12 +913,14 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
     display: inline-block;
   }
 
+  /* Navbar Mobile */
   .navbar .navbar-nav {
     position: absolute;
     top: 100%;
     right: -100%;
     background-color: #fff;
-    width: 30rem;
+    width: 25rem;
+    max-width: 80vw;
     height: 100vh;
     transition: 0.3s;
   }
@@ -930,11 +943,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
 
   .navbar .navbar-nav a:hover::after {
     transform: scaleX(0.2);
-  }
-
-  .navbar .search-form {
-    width: 90%;
-    right: 2rem;
   }
 
   .about .row {
@@ -991,11 +999,109 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
   .product-comparison p {
     font-size: 12.32px;
   }
+
+  .comparison-text h3 {
+    font-size: 20px
+  }
+
+  .comparison-text .paragraf,
+  .comparison-text .paragraf2 {
+    font-size: 10.5px;
+    text-align: justify;
+  }
+
+  .product-info h2 {
+    font-size: 24.64px;
+    text-align: center;
+  }
+
+  .product-info p {
+    font-size: 12.32px;
+    text-align: justify;
+    padding-top: 15px;
+  }
+
+  .product-info h4 {
+    font-size: 12px;
+  }
+
+  .product-info li {
+    font-size: 10.5px;
+  }
+
+  .needs-section h2 {
+    font-size: 24.64px;
+    text-align: center;
+  }
+
+  .needs-section p {
+    font-size: 12.32px;
+    text-align: justify;
+    padding-top: 15px;
+  }
+
+  .footer {
+    min-height: 25vh;
+    padding: 20px 10px;
+  }
+
+  .footer-title h1 {
+    font-size: 12px;
+  }
+
+  .footer-title li {
+    font-size: 10px;
+  }
+  
+  .footer-title span {
+    font-size: 10px;
+  }
+
+  .footer-title span svg,
+  .footer-title span i {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .text-footer {
+    font-size: 8.5px;
+  }
+  
 }
 
-/* Mobile Phone */
+/* 3. MOBILE REGULER (max-width: 576px) */
+@media (max-width: 576px) {
+
+} 
+
+/* 4. Mobile Phone */
 @media (max-width: 450px) {
   html {
     font-size: 55%;
   }
+
+  .product-card {
+    padding: 20px; /* Kurangi padding 40px agar gambar dan konten lebih lega */
+  }
+
+  .product-icons {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .product-icons a {
+    width: 38px;
+    height: 38px;
+  }
+
+  .product-icons svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .product-price {
+    font-size: 1.8rem;
+    margin-bottom: 0; /* Reset margin negatif agar teks tidak tertabrak */
+  }
+
 }
