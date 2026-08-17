@@ -1,0 +1,630 @@
+:root {
+    --bg-light: #f4f7f9;
+    --primary-blue: #00a8e8;
+    --secondary-yellow: #ffc107;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --white: #ffffff;
+    --border-color: #e1e8ed;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-image: url("/static/images/background_kristal.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    color: var(--text-dark);
+    padding: 30px 20px;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Navigasi Tombol Kembali */
+.top-nav-wrapper {
+    max-width: 1100px;
+    margin: 0 auto 20px auto;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: var(--text-dark);
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background: var(--primary-blue);
+    color: #fff;
+}
+
+.section-title {
+    text-align: center;
+    font-weight: 800;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+/* Card Container */
+.invoice-card {
+    background: var(--white);
+    border-radius: 26px;
+    padding: 35px;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 35px rgba(0, 168, 232, 0.08);
+    border: 1px solid rgba(0, 168, 232, 0.1);
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+    gap: 15px;
+}
+
+.invoice-number {
+    margin: 0;
+    color: var(--primary-blue);
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.invoice-datetime {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.divider-pipe {
+    margin: 0 8px;
+    color: #cbd5e1;
+}
+
+.status-badge {
+    background: var(--secondary-yellow);
+    color: #000;
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.status-badge.badge-sm {
+    font-size: 10px;
+    padding: 6px 14px;
+}
+
+/* Link ID Invoice & Icon Sejajar */
+.link-invoice {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 800;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.link-invoice i {
+    font-size: 14px;
+}
+
+/* Grid Informasi Pemesan */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+.info-icon {
+    width: 44px;
+    height: 44px;
+    background: #f0f9ff;
+    color: var(--primary-blue);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.15rem;
+}
+
+.label-text {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 4px 0;
+}
+
+.value-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+    word-break: break-word;
+}
+
+.section-subtitle {
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+/* Tabel Utama */
+.table-responsive {
+    width: 100%;
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-custom th {
+    text-align: left;
+    padding: 16px 12px;
+    border-bottom: 3px solid #f0f7ff;
+    font-size: 11px;
+    color: var(--primary-blue);
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.table-custom td {
+    padding: 16px 12px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13.5px;
+}
+
+/* Ringkasan Pembayaran */
+.summary-box {
+    margin-top: 25px;
+    padding: 22px;
+    background: #f8fafc;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.summary-val {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.summary-divider {
+    border: 0;
+    border-top: 2px dashed #e2e8f0;
+    margin: 8px 0;
+}
+
+.total-label {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.total-val {
+    color: var(--primary-blue);
+    font-size: 22px;
+    font-weight: 900;
+    font-style: italic;
+}
+
+/* Stepper Status Pesanan */
+.status-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+    padding: 20px;
+    background: #fcfdfe;
+    border-radius: 18px;
+}
+
+.step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.step i {
+    background: #e2e8f0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    color: #94a3b8;
+    font-size: 1.15rem;
+    transition: 0.4s;
+}
+
+.step.active i {
+    background: var(--primary-blue);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 168, 232, 0.3);
+}
+
+.step p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.step.active p {
+    color: var(--primary-blue);
+}
+
+/* Tombol Aksi */
+.action-buttons-wrapper {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-dual-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-action-cancel,
+.btn-action-complete,
+.btn-wa,
+.btn-print {
+    padding: 16px;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 13.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-action-cancel {
+    width: 100%;
+    background: #ef4444;
+    color: white;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.2);
+}
+
+.btn-action-complete {
+    width: 100%;
+    background: #10b981;
+    color: white;
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.2);
+}
+
+.btn-wa {
+    background: #25d366;
+    color: white;
+    flex: 1;
+}
+
+.btn-print {
+    background: #334155;
+    color: white;
+    flex: 1;
+}
+
+.btn-wa:hover,
+.btn-print:hover,
+.btn-action-cancel:hover,
+.btn-action-complete:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+/* Ulasan & Rating */
+.review-card {
+    background: #fffdf0;
+    border: 2px solid #ffec99;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.btn-review {
+    background: #f59f00;
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(245, 159, 0, 0.2);
+    transition: 0.3s;
+}
+
+.review-done {
+    color: #059669;
+    font-weight: 800;
+    font-size: 14.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bottom-nav-link {
+    text-align: center;
+    margin-top: 30px;
+    padding-bottom: 50px;
+}
+
+.bottom-nav-link a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* ===================================================
+   RESPONSIVE BREAKPOINTS (1366px, 768px, 576px, 450px)
+   =================================================== */
+
+@media (max-width: 1366px) {
+    .container {
+        max-width: 1050px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 20px 14px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .invoice-card {
+        padding: 24px 18px;
+        border-radius: 20px;
+    }
+
+    .card-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .status-container {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 14px;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        gap: 14px;
+    }
+
+    .step i {
+        margin: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .action-dual-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Transformasi Tabel Riwayat Jadi Card List di Layar HP */
+@media (max-width: 640px) {
+    .history-card .table-custom {
+        display: block;
+        width: 100%;
+    }
+
+    .history-card .table-custom thead {
+        display: none;
+    }
+
+    .history-card .table-custom tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .history-card .table-custom tr {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: 
+            "invoice status"
+            "date total";
+        align-items: center;
+        gap: 8px 12px;
+        padding: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+    }
+
+    .history-card .table-custom td {
+        padding: 0;
+        border: none;
+    }
+
+    .history-card .table-custom td:nth-child(1) {
+        grid-area: invoice;
+        font-size: 14px;
+    }
+
+    .history-card .table-custom td:nth-child(2) {
+        grid-area: date;
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    .history-card .table-custom td:nth-child(3) {
+        grid-area: total;
+        text-align: right;
+        font-size: 13.5px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .history-card .table-custom td:nth-child(4) {
+        grid-area: status;
+        text-align: right;
+    }
+
+    .history-card .status-badge.badge-sm {
+        font-size: 9.5px;
+        padding: 5px 12px;
+        border-radius: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .invoice-card {
+        padding: 20px 15px;
+    }
+
+    .invoice-number {
+        font-size: 20px;
+    }
+
+    .info-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .table-custom th,
+    .table-custom td {
+        padding: 12px 8px;
+        font-size: 12.5px;
+    }
+
+    .btn-wa,
+    .btn-print,
+    .btn-action-cancel,
+    .btn-action-complete {
+        padding: 14px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 450px) {
+    body {
+        padding: 16px 10px;
+    }
+
+    .top-nav-wrapper {
+        margin-bottom: 15px;
+    }
+
+    .btn-back {
+        padding: 8px 14px;
+        font-size: 11.5px;
+    }
+
+    .section-title {
+        font-size: 1.45rem;
+    }
+
+    .invoice-card {
+        padding: 16px 12px;
+        border-radius: 16px;
+    }
+
+    .status-badge {
+        font-size: 10px;
+        padding: 6px 14px;
+    }
+
+    .total-val {
+        font-size: 19px;
+    }
+
+    .btn-review {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 12px;
+        justify-content: center;
+    }
+}

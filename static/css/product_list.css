@@ -803,28 +803,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
   text-decoration: underline;
 }
 
-/* Footer End */
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .footer {
-    min-height: 25vh;
-    padding: 20px 10px;
-  }
-
-  .footer-title h1 {
-    font-size: 1.5rem;
-  }
-
-  .footer-title span {
-    font-size: 1rem;
-  }
-
-  .text-footer {
-    font-size: 0.8rem;
-  }
-}
-/* Footer End */
 
 /* Modal Box */
 /* Item Detail */
