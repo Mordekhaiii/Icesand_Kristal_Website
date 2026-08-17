@@ -945,49 +945,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
     transform: scaleX(0.2);
   }
 
-  .about .row {
-    flex-wrap: wrap;
-  }
-
-  .about .row .about-img img {
-    height: 24rem;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .about .row .content {
-    padding: 0;
-  }
-
-  .about .row .content h3 {
-    margin-top: 1rem;
-    font-size: 2rem;
-  }
-
-  .about .row .content p {
-    font-size: 1.6rem;
-  }
-
-  .menu p {
-    font-size: 1.2rem;
-  }
-
-  .contact .row {
-    flex-wrap: wrap;
-  }
-
-  .contact .row .map {
-    height: 30rem;
-  }
-
-  .contact .row form {
-    padding-top: 0;
-  }
-
-  .modal-content {
-    flex-wrap: wrap;
-  }
-
   .product-hero h1,
   .products h2,
   .product-comparison h2 {
@@ -1066,7 +1023,6 @@ background-color: rgba(231, 76, 60, 0.9); /* Merah Transparan */
   .text-footer {
     font-size: 8.5px;
   }
-  
 }
 
 /* 3. MOBILE REGULER (max-width: 576px) */

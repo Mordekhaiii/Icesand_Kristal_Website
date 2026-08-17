@@ -245,7 +245,9 @@ body {
 .map-box iframe {
   width: 100%;
   height: 100%;
+  min-height: 350px;
   border: 0;
+  display: block;
 }
 
 /* Info Box */
@@ -254,11 +256,13 @@ body {
   background-color: var(--dark-navy);
   color: white;
   padding: 60px 50px;
+  box-sizing: border-box;
 }
 
 .info-content h3 {
   font-size: 2.2rem;
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .info-content p {
@@ -270,6 +274,8 @@ body {
 /* Contact List */
 .contact-details {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .contact-details li {
@@ -277,6 +283,7 @@ body {
   align-items: center;
   margin-bottom: 25px;
   transition: 0.3s;
+  width: 100%;
 }
 
 .contact-details li:hover {
@@ -286,6 +293,7 @@ body {
 .icon-bg {
   width: 50px;
   height: 50px;
+  flex-shrink: 0; /* Mencegah icon gepeng saat teks panjang */
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   display: flex;
@@ -295,12 +303,18 @@ body {
   color: var(--primary-blue);
 }
 
+.detail-text {
+  flex: 1;
+  min-width: 0; /* KUNCI: Menjaga teks tetap di dalam batas kartu */
+}
+
 .detail-text span {
   display: block;
   font-size: 0.85rem;
   color: var(--bg);
   text-transform: uppercase;
   letter-spacing: 1px;
+  opacity: 0.8;
 }
 
 .detail-text strong {
@@ -308,6 +322,69 @@ body {
   display: block;
   margin-top: 2px;
   color: var(--bg);
+  word-break: break-word; /* Mencegah email/alamat panjang memotong layar */
+}
+
+/* --- Media Query Responsif Mobile & Tablet (< 992px) --- */
+@media (max-width: 992px) {
+  .contact-section {
+    padding: 50px 1rem;
+  }
+
+  /* Ubah susunan flex menjadi tumpuk ke bawah */
+  .contact-wrapper {
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 16px;
+  }
+
+  .map-box {
+    width: 100%;
+    height: 300px;
+  }
+
+  .info-box {
+    padding: 30px 20px;
+    width: 100%;
+  }
+
+  .info-content h3 {
+    font-size: 1.6rem;
+  }
+
+  .info-content p {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+  }
+
+  .contact-details li {
+    align-items: flex-start; /* Sejajar atas agar teks multi-baris tetap rapi */
+    margin-bottom: 18px;
+  }
+
+  .contact-details li:hover {
+    transform: none; /* Matikan efek geser di HP agar tidak bug touch */
+  }
+
+  .icon-bg {
+    width: 42px;
+    height: 42px;
+    margin-right: 14px;
+  }
+
+  .icon-bg svg,
+  .icon-bg i {
+    width: 20px;
+    height: 20px;
+  }
+
+  .detail-text span {
+    font-size: 0.75rem;
+  }
+
+  .detail-text strong {
+    font-size: 0.95rem;
+  }
 }
 
 /* Footer */
@@ -329,7 +406,6 @@ body {
   z-index: 1;
   color: var(--primary);
   text-align: center;
-  padding-bottom: 20px;
 }
 
 .footer-title h1 {
@@ -445,6 +521,58 @@ body {
     max-width: 32rem;
   }
 
+  .jumbotron-contact h1{
+    font-size: 24.64px;
+  }
+
+  .jumbotron-contact p {
+    font-size: 12.32px;
+  }
+
+  .info-content h3 {
+    font-size: 24.64px;
+    text-align: center;
+   }
+   
+  .info-content p {
+    font-size: 12.32px;
+    text-align: justify;
+   }
+  
+  .detail-text span {
+    font-size: 10px;
+  }
+
+  .detail-text strong {
+    font-size: 12.5px;
+  }
+
+  .footer {
+    min-height: 25vh;
+    padding: 20px 10px;
+  }
+
+  .footer-title h1 {
+    font-size: 12px;
+  }
+
+  .footer-title li {
+    font-size: 10px;
+  }
+  
+  .footer-title span {
+    font-size: 10px;
+  }
+
+  .footer-title span svg,
+  .footer-title span i {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .text-footer {
+    font-size: 8.5px;
+  }
 }
 
 /* 4. EXTRA SMALL / IPHONE 4/5/SE (max-width: 450px & down to 320px) */
