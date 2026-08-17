@@ -7,113 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICESAND | Dashboard</title>
     <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS Terpisah -->
+    <link rel="stylesheet" href="{% static 'css/dashboard_admin.css' %}?v={{ timestamp|default:'1.0' }}">
+    
+    <!-- Core JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
-        [x-cloak] { display: none !important; }
-        .sidebar { width: 260px; }
-        .sidebar-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; font-size: 13px; font-weight: 600; color: #64748b; border-left: 4px solid transparent; transition: all 0.2s; cursor: pointer; }
-        .sidebar-item.active { background-color: #eff6ff; color: #2563eb; border-left-color: #2563eb; }
-        .sidebar-item:hover:not(.active) { background-color: #f8fafc; color: #1e293b; }
-        .main-content { margin-left: 260px; }
-        .badge-red { background-color: #ef4444; color: white; font-size: 10px; padding: 1px 6px; border-radius: 99px; font-weight: 800; min-width: 18px; text-align: center; }
-        
-        @media print {
-            aside, header, .no-print, button, form { display: none !important; }
-            main, .main-content { margin-left: 0 !important; padding: 0 !important; }
-            body { background-color: white !important; }
-        }
-
-        /* =========================================================
-           ANIMASI & MIKRO-INTERAKSI TAMBAHAN (INTERAKTIF)
-           ========================================================= */
-
-        /* 1. Efek Kartu Ringkasan & Statistik saat Diarahkan Kursor (Hover) */
-        .bg-white.p-5, 
-        .bg-white.p-6, 
-        .bg-white.p-4,
-        .dash-card {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                        border-color 0.3s ease !important;
-        }
-
-        .bg-white.p-5:hover, 
-        .bg-white.p-6:hover,
-        .bg-white.p-4:hover {
-            transform: translateY(-4px) !important;
-            box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
-        }
-
-        /* 2. Animasi Ikon Melayang Halus Saat Kartu Di-hover */
-        .bg-white.p-5:hover i,
-        .bg-white.p-6:hover i {
-            transform: scale(1.12) rotate(4deg);
-            transition: transform 0.3s ease;
-        }
-
-        /* 3. Animasi Item Sidebar Saat Di-hover */
-        .sidebar-item {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .sidebar-item:hover {
-            padding-left: 28px !important;
-        }
-
-        /* 4. Animasi Memudar Halus untuk Pop-up Modal */
-        .fixed.inset-0 {
-            animation: fadeIn 0.25s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* 5. Efek Tombol Action Lebih Membal / Smooth Button */
-        button, a {
-            transition: all 0.2s ease-in-out !important;
-        }
-
-        button:active, a:active {
-            transform: scale(0.96) !important;
-        }
-        /* Animasi Pop Bouncy untuk SweetAlert */
-    .swal2-show {
-        animation: swalPopIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    }
-    .swal2-hide {
-        animation: swalPopOut 0.25s ease-in !important;
-    }
-    @keyframes swalPopIn {
-        0% { opacity: 0; transform: scale(0.7) translateY(20px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes swalPopOut {
-        0% { opacity: 1; transform: scale(1); }
-        100% { opacity: 0; transform: scale(0.85); }
-    }
-
-    /* Animasi Denyut Ikon Logout */
-    @keyframes iconPulseRing {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.5); }
-        70% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(244, 63, 94, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
-    }
-    .pulse-ring-danger {
-        animation: iconPulseRing 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
-    }
-    </style>
 </head>
 
 <body x-data="{ 
+    sidebarOpen: false,
     activeMenu: new URLSearchParams(window.location.search).get('menu') || 'Beranda',
     subTab: new URLSearchParams(window.location.search).get('status') || '{{ status_aktif|default:"Menunggu Konfirmasi" }}',
     subLaporan: (new URLSearchParams(window.location.search).get('menu') === 'Laporan') ? 'DataPenjualan' : '',
@@ -135,22 +50,34 @@
     selectedOrder: new URLSearchParams(window.location.search).get('order_id') || null 
 }">
 
-<header class="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-8 shadow-sm no-print">
+<!-- BACKDROP MOBILE SIDEBAR -->
+<div x-show="sidebarOpen" 
+     @click="sidebarOpen = false" 
+     x-cloak
+     class="fixed inset-0 bg-slate-900/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"></div>
+
+<!-- HEADER BAR -->
+<header class="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4 lg:px-8 shadow-sm no-print">
     <div class="flex items-center gap-3">
-        <div class="w-10 h-10 flex items-center justify-center overflow-hidden">
+        <!-- Toggle Button Mobile -->
+        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors">
+            <i class="bi bi-list text-2xl"></i>
+        </button>
+
+        <div class="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
             <img src="{% static 'images/logo-icesand.png' %}" alt="Logo Icesand" class="h-full w-auto object-contain">
         </div>
-        <h1 class="text-[15px] font-extrabold text-slate-900 tracking-tight uppercase flex items-center gap-2">
+        <h1 class="text-[13px] sm:text-[15px] font-extrabold text-slate-900 tracking-tight uppercase flex items-center gap-2">
             DASHBOARD
-            <span class="w-[1.5px] h-4 bg-slate-300 mx-1 inline-block rotate-12"></span>
-            <span>PT. ICESAND KRISTAL PERKASA</span>
+            <span class="header-company-title w-[1.5px] h-4 bg-slate-300 mx-1 inline-block rotate-12"></span>
+            <span class="header-company-title">PT. ICESAND KRISTAL PERKASA</span>
         </h1>
     </div>
 
     <div x-data="{ open: false }" class="relative">
-        <button @click="open = !open" @click.away="open = false" class="flex items-center gap-3 p-1.5 pr-4 rounded-full hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100">
-            <div class="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm ring-1 ring-blue-100">
-                <i class="bi bi-person-fill text-lg"></i>
+        <button @click="open = !open" @click.away="open = false" class="flex items-center gap-2 sm:gap-3 p-1.5 pr-2 sm:pr-4 rounded-full hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 bg-blue-500 rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm ring-1 ring-blue-100">
+                <i class="bi bi-person-fill text-base sm:text-lg"></i>
             </div>
             <div class="text-left hidden md:block">
                 <p class="text-[11px] font-black text-slate-800 uppercase leading-none">{{ request.user.username }}</p>
@@ -167,9 +94,8 @@
             
             <div class="px-4 py-3 border-b border-slate-50 mb-1">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Akun Terdaftar</p>
-                <p class="text-xs font-black text-slate-700 truncate">{{ request.user.username|default:request.user.username }}</p>
+                <p class="text-xs font-black text-slate-700 truncate">{{ request.user.username }}</p>
             </div>
-            <hr class="my-1 border-slate-50">
             <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
                 {% csrf_token %}
             </form>
@@ -180,364 +106,363 @@
     </div>
 </header>
 
-    <aside class="sidebar fixed left-0 top-14 h-full bg-white border-r border-slate-200 z-40 no-print">
-        <nav class="mt-6 space-y-1">
-            <div @click="activeMenu = 'Beranda'" :class="activeMenu === 'Beranda' ? 'active' : ''" class="sidebar-item">
-                <div class="flex items-center"><i class="bi bi-speedometer2 mr-3 text-lg"></i> Beranda</div>
-            </div>
+<!-- SIDEBAR NAVIGATION -->
+<aside class="sidebar fixed left-0 top-16 h-[calc(100vh-4rem)] bg-white border-r border-slate-200 z-40 overflow-y-auto no-print"
+       :class="sidebarOpen ? 'mobile-open' : ''">
+    <nav class="mt-4 pb-20 space-y-1">
+        <div @click="activeMenu = 'Beranda'; sidebarOpen = false" :class="activeMenu === 'Beranda' ? 'active' : ''" class="sidebar-item">
+            <div class="flex items-center"><i class="bi bi-speedometer2 mr-3 text-lg"></i> Beranda</div>
+        </div>
 
-            {% if not is_owner %}
-            <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Transaksi</p>
+        {% if not is_owner %}
+        <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Transaksi</p>
+        
+        <div @click="openTransaksi = !openTransaksi; activeMenu = 'Transaksi'" 
+             :class="activeMenu === 'Transaksi' ? 'active' : ''" 
+             class="sidebar-item">
+            <div class="flex items-center">
+                <i class="bi bi-receipt mr-3 text-lg"></i> 
+                Detail Transaksi
+            </div>
+            <i class="bi bi-chevron-down text-[10px] transition-transform" 
+               :class="openTransaksi ? 'rotate-180' : ''"></i>
+        </div>
+
+        <div x-show="openTransaksi && activeMenu === 'Transaksi'" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-cloak 
+             class="bg-slate-50/50 py-1 border-b border-slate-100">
+
+            <a href="?menu=Transaksi&status=Menunggu Konfirmasi" 
+                :class="new URLSearchParams(window.location.search).get('status') === 'Menunggu Konfirmasi' ? 'text-blue-600 font-black' : 'text-slate-500'" 
+                class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
+                Menunggu Konfirmasi {% if transaksi_menunggu > 0 %}<span class="ml-auto badge-red">{{ transaksi_menunggu }}</span>{% endif %}
+            </a>
             
-            <div @click="openTransaksi = !openTransaksi; activeMenu = 'Transaksi'" 
-                 :class="activeMenu === 'Transaksi' ? 'active' : ''" 
-                 class="sidebar-item">
-                <div class="flex items-center">
-                    <i class="bi bi-receipt mr-3 text-lg"></i> 
-                    Detail Transaksi
-                </div>
-                <i class="bi bi-chevron-down text-[10px] transition-transform" 
-                   :class="openTransaksi ? 'rotate-180' : ''"></i>
-            </div>
-
-            <div x-show="openTransaksi && activeMenu === 'Transaksi'" 
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 -translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 x-cloak 
-                 class="bg-slate-50/50 py-1 border-b border-slate-100">
-
-                <a href="?menu=Transaksi&status=Menunggu Konfirmasi" 
-                    :class="new URLSearchParams(window.location.search).get('status') === 'Menunggu Konfirmasi' ? 'text-blue-600 font-black' : 'text-slate-500'" 
-                    class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
-                    Menunggu Konfirmasi {% if transaksi_menunggu > 0 %}<span class="ml-auto badge-red">{{ transaksi_menunggu }}</span>{% endif %}
-                </a>
-                
-                <a href="?menu=Transaksi&status=Sedang Diproses" 
-                    :class="new URLSearchParams(window.location.search).get('status') === 'Sedang Diproses' ? 'text-blue-600 font-black' : 'text-slate-500'" 
-                    class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
-                    Sedang Diproses {% if transaksi_diproses > 0 %}<span class="ml-auto badge-red">{{ transaksi_diproses }}</span>{% endif %}
-                </a>
-                
-                <a href="?menu=Transaksi&status=Dikirim" 
-                    :class="new URLSearchParams(window.location.search).get('status') === 'Dikirim' ? 'text-blue-600 font-black' : 'text-slate-500'" 
-                    class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
-                    Dikirim {% if transaksi_dikirim > 0 %}<span class="ml-auto badge-red">{{ transaksi_dikirim }}</span>{% endif %}
-                </a>
-                <a href="?menu=Transaksi&status=Selesai" 
-                    :class="new URLSearchParams(window.location.search).get('status') === 'Selesai' ? 'text-blue-600 font-black' : 'text-slate-500'" 
-                    class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
-                    Selesai {% if transaksi_selesai > 0 %}<span class="ml-auto badge-red">{{ transaksi_selesai }}</span>{% endif %}
-                </a>
-                
-                <a href="?menu=Transaksi&status=Dibatalkan" 
-                    :class="new URLSearchParams(window.location.search).get('status') === 'Dibatalkan' ? 'text-blue-600 font-black' : 'text-slate-500'" 
-                    class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
-                    Dibatalkan 
-                </a>
-            </div>
-
-            <div @click="activeMenu = 'ulasan'" :class="activeMenu === 'ulasan' ? 'active' : ''" class="sidebar-item">
-                <div class="flex items-center">
-                    <i class="bi bi-star-half mr-3 text-lg"></i> 
-                    Ulasan & Saran
-                </div>
-            </div>
-
-            <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Produk</p>
-            <div @click="activeMenu = 'Produk'" :class="activeMenu === 'Produk' ? 'active' : ''" class="sidebar-item">
-                <div class="flex items-center"><i class="bi bi-box mr-3 text-lg"></i> Produk Es</div>
-                {% if stok_habis > 0 %}<span class="badge-red">{{ stok_habis }}</span>{% endif %}
-            </div>
-            <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Profil Pengguna</p>
-            <div @click="activeMenu = 'Pelanggan'" :class="activeMenu === 'Pelanggan' ? 'active' : ''" class="sidebar-item">
-                <div class="flex items-center"><i class="bi bi-people mr-3 text-lg"></i> Pengguna</div>
-            </div>
-            {% endif %}
+            <a href="?menu=Transaksi&status=Sedang Diproses" 
+                :class="new URLSearchParams(window.location.search).get('status') === 'Sedang Diproses' ? 'text-blue-600 font-black' : 'text-slate-500'" 
+                class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
+                Sedang Diproses {% if transaksi_diproses > 0 %}<span class="ml-auto badge-red">{{ transaksi_diproses }}</span>{% endif %}
+            </a>
             
-            {% if is_owner %}
-            <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Laporan Perusahaan</p>
+            <a href="?menu=Transaksi&status=Dikirim" 
+                :class="new URLSearchParams(window.location.search).get('status') === 'Dikirim' ? 'text-blue-600 font-black' : 'text-slate-500'" 
+                class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
+                Dikirim {% if transaksi_dikirim > 0 %}<span class="ml-auto badge-red">{{ transaksi_dikirim }}</span>{% endif %}
+            </a>
+            <a href="?menu=Transaksi&status=Selesai" 
+                :class="new URLSearchParams(window.location.search).get('status') === 'Selesai' ? 'text-blue-600 font-black' : 'text-slate-500'" 
+                class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
+                Selesai {% if transaksi_selesai > 0 %}<span class="ml-auto badge-red">{{ transaksi_selesai }}</span>{% endif %}
+            </a>
+            
+            <a href="?menu=Transaksi&status=Dibatalkan" 
+                :class="new URLSearchParams(window.location.search).get('status') === 'Dibatalkan' ? 'text-blue-600 font-black' : 'text-slate-500'" 
+                class="w-full flex items-center pl-14 pr-6 py-2.5 text-[11px] uppercase tracking-wider hover:bg-blue-50 transition-all">
+                Dibatalkan 
+            </a>
+        </div>
 
-            <div @click="openLaporan = !openLaporan; activeMenu = 'Laporan'" 
-                 :class="activeMenu === 'Laporan' ? 'bg-blue-50 text-blue-600' : 'text-slate-600'" 
-                 class="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-slate-50 transition-all rounded-lg mx-2">
-                <div class="flex items-center">
-                    <i class="bi bi-graph-up-arrow mr-3"></i>
-                    <span class="text-sm font-bold">Laporan Utama</span>
-                </div>
-                <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openLaporan ? 'rotate-180' : ''"></i>
-            </div>
-
-            <div x-show="openLaporan" x-transition x-cloak class="ml-4 border-l-2 border-slate-100 mb-2">
-                <div>
-                    <div @click="openSubPenjualan = !openSubPenjualan" class="flex items-center justify-between pl-10 pr-6 py-2 cursor-pointer hover:text-blue-600 text-slate-500 transition-all">
-                        <span class="text-[11px] font-black uppercase tracking-wider">Laporan Penjualan</span>
-                        <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openSubPenjualan ? 'rotate-180' : ''"></i>
-                    </div>
-                    <div x-show="openSubPenjualan" x-transition class="bg-slate-50/50 ml-8 rounded-l-lg">
-                        <button @click="tabLaporan = 'penjualan'; activeMenu = 'Laporan'" 
-                                :class="tabLaporan === 'penjualan' && activeMenu === 'Laporan' ? 'text-blue-600 font-bold' : 'text-slate-400'"
-                                class="w-full text-left pl-6 py-2 text-[10px] uppercase">
-                            <i class="bi bi-table mr-2"></i> Melihat Laporan
-                        </button>
-                        <button @click="tabLaporan = 'penjualan'; activeMenu = 'Laporan'; setTimeout(() => window.print(), 500)" 
-                                class="w-full text-left pl-6 py-2 text-[10px] uppercase text-slate-400 hover:text-emerald-600 pb-3">
-                            <i class="bi bi-printer mr-2"></i> Cetak Laporan
-                        </button>
-                    </div>
-                </div>
-
-                <div>
-                    <div @click="openSubPendapatan = !openSubPendapatan" class="flex items-center justify-between pl-10 pr-6 py-2 cursor-pointer hover:text-blue-600 text-slate-500 transition-all">
-                        <span class="text-[11px] font-black uppercase tracking-wider">Laporan Pendapatan</span>
-                        <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openSubPendapatan ? 'rotate-180' : ''"></i>
-                    </div>
-                    <div x-show="openSubPendapatan" x-transition class="bg-slate-50/50 ml-8 rounded-l-lg">
-                        <button @click="tabLaporan = 'pendapatan'; activeMenu = 'Laporan'" 
-                                :class="tabLaporan === 'pendapatan' && activeMenu === 'Laporan' ? 'text-blue-600 font-bold' : 'text-slate-400'"
-                                class="w-full text-left pl-6 py-2 text-[10px] uppercase">
-                            <i class="bi bi-pie-chart mr-2"></i> Melihat Laporan
-                        </button> 
-                        <button @click="tabLaporan = 'pendapatan'; activeMenu = 'Laporan'; setTimeout(() => window.print(), 500)"
-                                class="w-full text-left pl-6 py-2 text-[10px] uppercase text-slate-400 hover:text-emerald-600 pb-3">
-                            <i class="bi bi-printer mr-2"></i> Cetak Laporan
-                        </button> 
-                    </div>
-                </div>
-                <div>
-                    <div @click="openSubStok = !openSubStok" class="flex items-center justify-between pl-10 pr-6 py-2 cursor-pointer hover:text-blue-600 text-slate-500 transition-all">
-                        <span class="text-[11px] font-black uppercase tracking-wider">Laporan Stok</span>
-                        <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openSubStok ? 'rotate-180' : ''"></i>
-                    </div>
-                    <div x-show="openSubStok" x-transition class="bg-slate-50/50 ml-8 rounded-l-lg">
-                        <button @click="tabLaporan = 'stok'; activeMenu = 'Laporan'" 
-                                :class="tabLaporan === 'stok' && activeMenu === 'Laporan' ? 'text-blue-600 font-bold' : 'text-slate-400'"
-                                class="w-full text-left pl-6 py-2 text-[10px] uppercase">
-                            <i class="bi bi-box mr-2"></i> Melihat Laporan
-                        </button> 
-                        <button @click="tabLaporan = 'stok'; activeMenu = 'Laporan'; setTimeout(() => window.print(), 500)"
-                                class="w-full text-left pl-6 py-2 text-[10px] uppercase text-slate-400 hover:text-emerald-600 pb-3">
-                            <i class="bi bi-printer mr-2"></i> Cetak Laporan
-                        </button> 
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-        </nav>
-    </aside>
-
-    <main class="main-content pt-20 p-8 min-h-screen">
-        <div x-show="activeMenu === 'Beranda'" x-transition class="space-y-6">
-            <div>
-                {% if stok_menipis > 0 %}  
-                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-2xl shadow-sm animate-pulse">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-amber-100 rounded-lg">
-                            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-xs font-black text-amber-800 uppercase tracking-widest">Peringatan Stok Menipis!</h3>
-                            <p class="text-[10px] text-amber-700 font-bold">Ada {{stok_menipis}} produk yang harus segera di-restock agar pengiriman tetap lancar.</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                <h4 class="text-sm font-bold text-slate-800 mb-1">Aktifitas Penting</h4>
-                <p class="text-xs text-slate-500 mb-4 font-medium">Klik kotak untuk memproses pesanan.</p>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <a href="?menu=Transaksi&status=Menunggu Konfirmasi"
-                       :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
-                       class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group">
-                        <div>
-                            <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Menunggu Konfirmasi</p>
-                            <p class="text-2xl font-black text-slate-800">{{ transaksi_menunggu }}</p>
-                        </div>
-                        <i class="fa-solid fa-clock-rotate-left text-2xl text-amber-500 opacity-20" :class="!is_owner && 'group-hover:opacity-100'"></i>
-                    </a>
-
-                    <a href="?menu=Transaksi&status=Sedang Diproses"
-                       :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
-                       class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group">
-                        <div>
-                            <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Sedang Diproses</p>
-                            <p class="text-2xl font-black text-slate-800">{{ transaksi_diproses }}</p>
-                        </div>
-                        <i class="fa-solid fa-share text-2xl text-blue-500 opacity-20" :class="!is_owner && 'group-hover:opacity-100'"></i>
-                    </a>
-
-                    <a href="?menu=Transaksi&status=Dikirim"
-                       :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
-                       class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group">
-                        <div>
-                            <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Dikirim</p>
-                            <p class="text-2xl font-black text-slate-800">{{ transaksi_dikirim }}</p>
-                        </div>
-                        <i class="fa-solid fa-truck-fast text-2xl text-blue-500 opacity-20" :class="!is_owner && 'group-hover:opacity-100'"></i>
-                    </a>
-
-                    <div @click="!is_owner ? activeMenu = 'Produk' : null"
-                         :class="!is_owner ? 'cursor-pointer hover:border-amber-500 hover:shadow-md' : 'cursor-default opacity-80'"
-                         class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group">
-                        <div>
-                            <p class="text-[11px] font-bold text-amber-500 uppercase mb-1">Stok Menipis</p>
-                            <p class="text-2xl font-black text-amber-600">{{ stok_menipis }}</p>
-                        </div>
-                        <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-500 opacity-20" :class="!is_owner && 'group-hover:opacity-100'"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h4 class="text-sm font-bold text-slate-800 mb-6 tracking-wider">Status Keuangan</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 divide-x divide-slate-100">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="bi bi-cart-check"></i></div>
-                        <div><p class="text-[11px] font-bold text-slate-500 uppercase">Transaksi Hari Ini</p><p class="text-xl font-bold text-slate-800">{{ transaksi_hari_ini }} Transaksi</p></div>
-                    </div>
-                    <div class="flex items-center gap-4 pl-8">
-                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="bi bi-wallet2"></i></div>
-                        <div><p class="text-[11px] font-bold text-slate-500 uppercase">Total Pendapatan</p><p class="text-xl font-bold text-emerald-600">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h4 class="text-sm font-bold text-slate-800 mb-2 tracking-wider">Performa Perusahaan</h4>
-                <div class="grid grid-cols-3 gap-4 border-t pt-4 mb-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-users text-lg"></i></div>
-                        <div><p class="text-[10px] font-bold text-slate-400 uppercase">Jumlah Pembeli</p><p class="text-xl font-black text-slate-800">{{ total_pelanggan }}</p></div>
-                    </div>
-                    <div class="flex items-center gap-3 border-x px-4">
-                        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-circle-check text-lg"></i></div>
-                        <div><p class="text-[10px] font-bold text-slate-400 uppercase">Pesanan Selesai</p><p class="text-xl font-black text-emerald-600">{{ pesanan_selesai }}</p></div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-circle-xmark text-lg"></i></div>
-                        <div><p class="text-[10px] font-bold text-slate-400 uppercase">Dibatalkan</p><p class="text-xl font-black text-rose-500">{{ pesanan_dibatalkan }}</p></div>
-                    </div>
-                </div>
-                <div class="h-64"><canvas id="performanceChart"></canvas></div>
+        <div @click="activeMenu = 'ulasan'; sidebarOpen = false" :class="activeMenu === 'ulasan' ? 'active' : ''" class="sidebar-item">
+            <div class="flex items-center">
+                <i class="bi bi-star-half mr-3 text-lg"></i> 
+                Ulasan & Saran
             </div>
         </div>
 
+        <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Produk</p>
+        <div @click="activeMenu = 'Produk'; sidebarOpen = false" :class="activeMenu === 'Produk' ? 'active' : ''" class="sidebar-item">
+            <div class="flex items-center"><i class="bi bi-box mr-3 text-lg"></i> Produk Es</div>
+            {% if stok_habis > 0 %}<span class="badge-red">{{ stok_habis }}</span>{% endif %}
+        </div>
+        
+        <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Profil Pengguna</p>
+        <div @click="activeMenu = 'Pelanggan'; sidebarOpen = false" :class="activeMenu === 'Pelanggan' ? 'active' : ''" class="sidebar-item">
+            <div class="flex items-center"><i class="bi bi-people mr-3 text-lg"></i> Pengguna</div>
+        </div>
+        {% endif %}
+        
+        {% if is_owner %}
+        <p class="px-6 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">Laporan Perusahaan</p>
 
-        {% comment %} TAB TRANSAKSI {% endcomment %}
-       <div x-show="activeMenu === 'Transaksi'" x-transition x-cloak class="space-y-4">
-    <!-- Header Title Status Transaksi -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between mb-2">
+        <div @click="openLaporan = !openLaporan; activeMenu = 'Laporan'" 
+             :class="activeMenu === 'Laporan' ? 'bg-blue-50 text-blue-600' : 'text-slate-600'" 
+             class="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-slate-50 transition-all rounded-lg mx-2">
+            <div class="flex items-center">
+                <i class="bi bi-graph-up-arrow mr-3"></i>
+                <span class="text-sm font-bold">Laporan Utama</span>
+            </div>
+            <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openLaporan ? 'rotate-180' : ''"></i>
+        </div>
+
+        <div x-show="openLaporan" x-transition x-cloak class="ml-4 border-l-2 border-slate-100 mb-2">
+            <div>
+                <div @click="openSubPenjualan = !openSubPenjualan" class="flex items-center justify-between pl-10 pr-6 py-2 cursor-pointer hover:text-blue-600 text-slate-500 transition-all">
+                    <span class="text-[11px] font-black uppercase tracking-wider">Laporan Penjualan</span>
+                    <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openSubPenjualan ? 'rotate-180' : ''"></i>
+                </div>
+                <div x-show="openSubPenjualan" x-transition class="bg-slate-50/50 ml-8 rounded-l-lg">
+                    <button @click="tabLaporan = 'penjualan'; activeMenu = 'Laporan'; sidebarOpen = false" 
+                            :class="tabLaporan === 'penjualan' && activeMenu === 'Laporan' ? 'text-blue-600 font-bold' : 'text-slate-400'"
+                            class="w-full text-left pl-6 py-2 text-[10px] uppercase">
+                        <i class="bi bi-table mr-2"></i> Melihat Laporan
+                    </button>
+                    <button @click="tabLaporan = 'penjualan'; activeMenu = 'Laporan'; sidebarOpen = false; setTimeout(() => window.print(), 500)" 
+                            class="w-full text-left pl-6 py-2 text-[10px] uppercase text-slate-400 hover:text-emerald-600 pb-3">
+                        <i class="bi bi-printer mr-2"></i> Cetak Laporan
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <div @click="openSubPendapatan = !openSubPendapatan" class="flex items-center justify-between pl-10 pr-6 py-2 cursor-pointer hover:text-blue-600 text-slate-500 transition-all">
+                    <span class="text-[11px] font-black uppercase tracking-wider">Laporan Pendapatan</span>
+                    <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openSubPendapatan ? 'rotate-180' : ''"></i>
+                </div>
+                <div x-show="openSubPendapatan" x-transition class="bg-slate-50/50 ml-8 rounded-l-lg">
+                    <button @click="tabLaporan = 'pendapatan'; activeMenu = 'Laporan'; sidebarOpen = false" 
+                            :class="tabLaporan === 'pendapatan' && activeMenu === 'Laporan' ? 'text-blue-600 font-bold' : 'text-slate-400'"
+                            class="w-full text-left pl-6 py-2 text-[10px] uppercase">
+                        <i class="bi bi-pie-chart mr-2"></i> Melihat Laporan
+                    </button> 
+                    <button @click="tabLaporan = 'pendapatan'; activeMenu = 'Laporan'; sidebarOpen = false; setTimeout(() => window.print(), 500)"
+                            class="w-full text-left pl-6 py-2 text-[10px] uppercase text-slate-400 hover:text-emerald-600 pb-3">
+                        <i class="bi bi-printer mr-2"></i> Cetak Laporan
+                    </button> 
+                </div>
+            </div>
+            <div>
+                <div @click="openSubStok = !openSubStok" class="flex items-center justify-between pl-10 pr-6 py-2 cursor-pointer hover:text-blue-600 text-slate-500 transition-all">
+                    <span class="text-[11px] font-black uppercase tracking-wider">Laporan Stok</span>
+                    <i class="bi bi-chevron-down text-[10px] transition-transform" :class="openSubStok ? 'rotate-180' : ''"></i>
+                </div>
+                <div x-show="openSubStok" x-transition class="bg-slate-50/50 ml-8 rounded-l-lg">
+                    <button @click="tabLaporan = 'stok'; activeMenu = 'Laporan'; sidebarOpen = false" 
+                            :class="tabLaporan === 'stok' && activeMenu === 'Laporan' ? 'text-blue-600 font-bold' : 'text-slate-400'"
+                            class="w-full text-left pl-6 py-2 text-[10px] uppercase">
+                        <i class="bi bi-box mr-2"></i> Melihat Laporan
+                    </button> 
+                    <button @click="tabLaporan = 'stok'; activeMenu = 'Laporan'; sidebarOpen = false; setTimeout(() => window.print(), 500)"
+                            class="w-full text-left pl-6 py-2 text-[10px] uppercase text-slate-400 hover:text-emerald-600 pb-3">
+                        <i class="bi bi-printer mr-2"></i> Cetak Laporan
+                    </button> 
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
+</aside>
+
+<!-- MAIN CONTENT AREA -->
+<main class="main-content pt-20 min-h-screen">
+    <!-- BERANDA TAB -->
+    <div x-show="activeMenu === 'Beranda'" x-transition class="space-y-6">
         <div>
-            <h4 class="text-sm font-black text-slate-800">
-                <span class="text-blue-600" x-text="subTab"></span>
-            </h4>
-            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Status pesanan es kristal PT. ICESAND</p>
+            {% if stok_menipis > 0 %}  
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-2xl shadow-sm animate-pulse">
+                <div class="flex items-center">
+                    <div class="p-2 bg-amber-100 rounded-lg">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-xs font-black text-amber-800 uppercase tracking-widest">Peringatan Stok Menipis!</h3>
+                        <p class="text-[10px] text-amber-700 font-bold">Ada {{stok_menipis}} produk yang harus segera di-restock agar pengiriman tetap lancar.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <h4 class="text-sm font-bold text-slate-800 mb-1">Aktivitas Penting</h4>
+            <p class="text-xs text-slate-500 mb-4 font-medium">Klik kotak untuk memproses pesanan.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 grid-stats-mobile">
+                <a href="?menu=Transaksi&status=Menunggu Konfirmasi"
+                   :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
+                   class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group dash-card">
+                    <div>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Menunggu Konfirmasi</p>
+                        <p class="text-2xl font-black text-slate-800">{{ transaksi_menunggu }}</p>
+                    </div>
+                    <i class="fa-solid fa-clock-rotate-left text-2xl text-amber-500 opacity-30" :class="!is_owner && 'group-hover:opacity-100'"></i>
+                </a>
+
+                <a href="?menu=Transaksi&status=Sedang Diproses"
+                   :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
+                   class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group dash-card">
+                    <div>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Sedang Diproses</p>
+                        <p class="text-2xl font-black text-slate-800">{{ transaksi_diproses }}</p>
+                    </div>
+                    <i class="fa-solid fa-share text-2xl text-blue-500 opacity-30" :class="!is_owner && 'group-hover:opacity-100'"></i>
+                </a>
+
+                <a href="?menu=Transaksi&status=Dikirim"
+                   :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
+                   class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group dash-card">
+                    <div>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Dikirim</p>
+                        <p class="text-2xl font-black text-slate-800">{{ transaksi_dikirim }}</p>
+                    </div>
+                    <i class="fa-solid fa-truck-fast text-2xl text-blue-500 opacity-30" :class="!is_owner && 'group-hover:opacity-100'"></i>
+                </a>
+
+                <div @click="!is_owner ? activeMenu = 'Produk' : null"
+                     :class="!is_owner ? 'cursor-pointer hover:border-amber-500 hover:shadow-md' : 'cursor-default opacity-80'"
+                     class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group dash-card">
+                    <div>
+                        <p class="text-[11px] font-bold text-amber-500 uppercase mb-1">Stok Menipis</p>
+                        <p class="text-2xl font-black text-amber-600">{{ stok_menipis }}</p>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-500 opacity-30" :class="!is_owner && 'group-hover:opacity-100'"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-800 mb-6 tracking-wider">Status Keuangan</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:divide-x md:divide-slate-100">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-sm shrink-0"><i class="bi bi-cart-check"></i></div>
+                    <div><p class="text-[11px] font-bold text-slate-500 uppercase">Transaksi Hari Ini</p><p class="text-xl font-bold text-slate-800">{{ transaksi_hari_ini }} Transaksi</p></div>
+                </div>
+                <div class="flex items-center gap-4 md:pl-8">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-sm shrink-0"><i class="bi bi-wallet2"></i></div>
+                    <div><p class="text-[11px] font-bold text-slate-500 uppercase">Total Pendapatan</p><p class="text-xl font-bold text-emerald-600">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-800 mb-2 tracking-wider">Performa Perusahaan</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t pt-4 mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center shrink-0"><i class="fa-solid fa-users text-lg"></i></div>
+                    <div><p class="text-[10px] font-bold text-slate-400 uppercase">Jumlah Pembeli</p><p class="text-xl font-black text-slate-800">{{ total_pelanggan }}</p></div>
+                </div>
+                <div class="flex items-center gap-3 sm:border-x sm:px-4">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shrink-0"><i class="fa-solid fa-circle-check text-lg"></i></div>
+                    <div><p class="text-[10px] font-bold text-slate-400 uppercase">Pesanan Selesai</p><p class="text-xl font-black text-emerald-600">{{ pesanan_selesai }}</p></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center shrink-0"><i class="fa-solid fa-circle-xmark text-lg"></i></div>
+                    <div><p class="text-[10px] font-bold text-slate-400 uppercase">Dibatalkan</p><p class="text-xl font-black text-rose-500">{{ pesanan_dibatalkan }}</p></div>
+                </div>
+            </div>
+            <div class="h-64"><canvas id="performanceChart"></canvas></div>
         </div>
     </div>
 
-    <div class="space-y-5">
-        {% for t in transaksi_semua %}
-        <div x-show="(subTab === 'Menunggu Konfirmasi' && '{{ t.status_bayar }}' === 'Menunggu Konfirmasi') || 
-                    (subTab === 'Sedang Diproses' && '{{ t.status_bayar }}' === 'Sedang Diproses') || 
-                    (subTab === 'Dikirim' && '{{ t.status_bayar }}' === 'Dikirim') || 
-                    (subTab === 'Selesai' && '{{ t.status_bayar }}' === 'Selesai') || 
-                    (subTab === 'Dibatalkan' && '{{ t.status_bayar }}' === 'Dibatalkan')"
-             x-transition
-             class="interactive-card bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm group">
-            
-            <!-- HEADER NOTA (STATUS + NOTA) -->
-            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-                <div class="flex items-center gap-3">
-                    <span class="text-[9px] font-black px-3 py-1 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 uppercase">{{ t.status_bayar }}</span>
-                    <span class="text-[10px] text-slate-900 font-bold uppercase tracking-widest whitespace-nowrap">{{ t.tanggal|date:"d M Y" }} <span class="mx-1 text-slate-200">|</span> {{ t.tanggal|date:"H:i" }} WIB</span>
-                </div>
-                
-                <div class="flex items-center gap-3">
-                    <h3 class="font-black text-slate-800 text-xs tracking-tight font-mono">{{ t.kode_transaksi }}</h3>
-                    <a href="{% url 'cetak_nota' t.id %}" target="_blank" 
-                       class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-800 text-slate-700 hover:text-white rounded-xl text-[10px] font-black tracking-wider transition-all duration-200 border border-slate-200 shadow-sm">
-                        <i class="fas fa-print text-xs"></i>
-                        <span>Cetak Nota</span>
-                    </a>
-                </div>
+    <!-- TAB TRANSAKSI -->
+    <div x-show="activeMenu === 'Transaksi'" x-transition x-cloak class="space-y-4">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between mb-2">
+            <div>
+                <h4 class="text-sm font-black text-slate-800">
+                    <span class="text-blue-600" x-text="subTab"></span>
+                </h4>
+                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Status pesanan es kristal PT. ICESAND</p>
             </div>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 font-bold">
-                <!-- KOLOM 1: PRODUK PESANAN -->
-                <div class="flex flex-col justify-between">
-                    <div>
-                        <p class="text-[10px] text-slate-900 uppercase mb-3 font-black tracking-widest border-l-2 border-blue-500 pl-2">Produk Pesanan</p>
-                        <div class="space-y-1.5">
-                            {% for detail in t.details.all %}
-                            <div class="flex justify-between items-center bg-slate-50 px-3 py-2 rounded-xl text-xs">
-                                <span class="text-slate-700 font-bold whitespace-nowrap">{{ detail.produk.nama }}</span>
-                                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md font-black text-[11px]">x{{ detail.jumlah_pesanan }}</span>
+        <div class="space-y-5">
+            {% for t in transaksi_semua %}
+            <div x-show="(subTab === 'Menunggu Konfirmasi' && '{{ t.status_bayar }}' === 'Menunggu Konfirmasi') || 
+                        (subTab === 'Sedang Diproses' && '{{ t.status_bayar }}' === 'Sedang Diproses') || 
+                        (subTab === 'Dikirim' && '{{ t.status_bayar }}' === 'Dikirim') || 
+                        (subTab === 'Selesai' && '{{ t.status_bayar }}' === 'Selesai') || 
+                        (subTab === 'Dibatalkan' && '{{ t.status_bayar }}' === 'Dibatalkan')"
+                 x-transition
+                 class="interactive-card bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm group">
+                
+                <!-- HEADER NOTA -->
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-[9px] font-black px-3 py-1 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 uppercase">{{ t.status_bayar }}</span>
+                        <span class="text-[10px] text-slate-900 font-bold uppercase tracking-widest whitespace-nowrap">{{ t.tanggal|date:"d M Y" }} <span class="mx-1 text-slate-200">|</span> {{ t.tanggal|date:"H:i" }} WIB</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between sm:justify-end gap-3">
+                        <h3 class="font-black text-slate-800 text-xs tracking-tight font-mono">{{ t.kode_transaksi }}</h3>
+                        <a href="{% url 'cetak_nota' t.id %}" target="_blank" 
+                           class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-800 text-slate-700 hover:text-white rounded-xl text-[10px] font-black tracking-wider transition-all border border-slate-200 shadow-sm">
+                            <i class="fas fa-print text-xs"></i>
+                            <span>Cetak Nota</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 font-bold">
+                    <!-- KOLOM 1: PRODUK PESANAN -->
+                    <div class="flex flex-col justify-between">
+                        <div>
+                            <p class="text-[10px] text-slate-900 uppercase mb-3 font-black tracking-widest border-l-2 border-blue-500 pl-2">Produk Pesanan</p>
+                            <div class="space-y-1.5">
+                                {% for detail in t.details.all %}
+                                <div class="flex justify-between items-center bg-slate-50 px-3 py-2 rounded-xl text-xs">
+                                    <span class="text-slate-700 font-bold whitespace-nowrap">{{ detail.produk.nama }}</span>
+                                    <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md font-black text-[11px]">x{{ detail.jumlah_pesanan }}</span>
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
+                        </div>
+                        <div class="pt-4">
+                            <p class="text-[9px] text-slate-400 uppercase font-black mb-0.5">Total Pembayaran</p>
+                            <p class="text-base font-black text-blue-600 tracking-tight">Rp {{ t.total_harga|floatformat:0|intcomma }}</p>
                         </div>
                     </div>
-                    <div class="pt-4">
-                        <p class="text-[9px] text-slate-400 uppercase font-black mb-0.5">Total Pembayaran</p>
-                        <p class="text-base font-black text-blue-600 tracking-tight">Rp {{ t.total_harga|floatformat:0|intcomma }}</p>
+
+                    <!-- KOLOM 2: DATA PELANGGAN -->
+                    <div class="lg:border-x border-slate-100 lg:px-6">
+                        <p class="text-[10px] text-slate-900 uppercase mb-3 font-black tracking-widest border-l-2 border-blue-500 pl-2">Data Pelanggan</p>
+                        <h4 class="text-xs text-slate-900 font-extrabold uppercase"><i class="bi bi-person mr-1 text-slate-400"></i>{{ t.nama_penerima }}</h4>
+                        <p class="text-[11px] text-blue-600 font-bold mt-0.5"><i class="bi bi-shop mr-1 text-slate-400"></i>{{ t.user.nama_usaha|default:"Personal Mitra" }}</p>
+                        <p class="text-[11px] text-slate-500 font-medium leading-relaxed mt-2"><i class="bi bi-geo-alt mr-1 text-slate-400"></i>{{ t.alamat_lengkap|default:"Alamat tidak lengkap" }}</p>
+                        <a href="https://wa.me/62{{ t.telepon|slice:'1:' }}" target="_blank" class="inline-flex items-center gap-1.5 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl text-[11px] font-black mt-3 transition-colors">
+                            <i class="bi bi-whatsapp"></i> {{ t.telepon }}
+                        </a>
                     </div>
-                </div>
 
-                <!-- KOLOM 2: DATA PELANGGAN -->
-                <div class="md:border-x border-slate-100 md:px-6">
-                    <p class="text-[10px] text-slate-900 uppercase mb-3 font-black tracking-widest border-l-2 border-blue-500 pl-2">Data Pelanggan</p>
-                    <h4 class="text-xs text-slate-900 font-extrabold uppercase"><i class="bi bi-person mr-1 text-slate-400"></i>{{ t.nama_penerima }}</h4>
-                    <p class="text-[11px] text-blue-600 font-bold mt-0.5"><i class="bi bi-shop mr-1 text-slate-400"></i>{{ t.user.nama_usaha|default:"Personal Mitra" }}</p>
-                    <p class="text-[11px] text-slate-500 font-medium leading-relaxed mt-2"><i class="bi bi-geo-alt mr-1 text-slate-400"></i>{{ t.alamat_lengkap|default:"Alamat tidak lengkap" }}</p>
-                    <a href="https://wa.me/62{{ t.telepon|slice:'1:' }}" target="_blank" class="inline-flex items-center gap-1.5 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl text-[11px] font-black mt-3 transition-colors">
-                        <i class="bi bi-whatsapp"></i> {{ t.telepon }}
-                    </a>
-                </div>
-
-                <!-- KOLOM 3: BUKTI PEMBAYARAN & AKSI -->
-                <div class="flex flex-col justify-between min-h-full">
-                    <div>
-                        <p class="text-[10px] text-slate-900 uppercase mb-3 font-black tracking-widest border-l-2 border-blue-500 pl-2">Metode & Bukti</p>
-                        
-                        {% if t.metode_pembayaran|lower == 'cash' or t.metode_pembayaran|lower == 'tunai' %}
-                            <!-- Banner Pembayaran Tunai (Cash) -->
-                            <div class="w-full p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex items-center gap-3 shadow-sm mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md">
-                                    <i class="fa-solid fa-money-bill-wave text-lg"></i>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] font-black uppercase text-emerald-800 tracking-wider block">Pembayaran Tunai (Cash)</span>
-                                    <span class="text-[9px] text-emerald-600 font-semibold">Pembayaran dilakukan ketika Es Kristal sampai di Pelanggan / Outlet</span>
-                                </div>
-                            </div>
-                        {% else %}
-                            <!-- Bukti Transfer / Non-Tunai Langsung Kelihatan -->
-                            {% if t.bukti_pembayaran %}
-                                <div class="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 group/img shadow-sm mb-3">
-                                    <div class="h-28 w-full bg-slate-900/5 flex items-center justify-center overflow-hidden">
-                                        <img src="{{ t.bukti_pembayaran.url }}" alt="Struk Pembayaran" class="w-full h-full object-cover group-hover/img:scale-105 transition-all duration-300">
+                    <!-- KOLOM 3: BUKTI & AKSI -->
+                    <div class="flex flex-col justify-between min-h-full">
+                        <div>
+                            <p class="text-[10px] text-slate-900 uppercase mb-3 font-black tracking-widest border-l-2 border-blue-500 pl-2">Metode & Bukti</p>
+                            
+                            {% if t.metode_pembayaran|lower == 'cash' or t.metode_pembayaran|lower == 'tunai' %}
+                                <div class="w-full p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex items-center gap-3 shadow-sm mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                                        <i class="fa-solid fa-money-bill-wave text-lg"></i>
                                     </div>
-                                    <!-- Overlay Tombol Zoom -->
-                                    <div @click="modalImg = '{{ t.bukti_pembayaran.url }}'; modalTitle = 'Bukti Pembayaran - {{ t.kode_transaksi }}'; showModal = true" 
-                                         class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center gap-1.5 text-white cursor-pointer transition-opacity backdrop-blur-[2px]">
-                                        <i class="bi bi-zoom-in text-base"></i>
-                                        <span class="text-[10px] font-black uppercase tracking-wider">Perbesar Bukti</span>
-                                    </div>
-                                    <div class="px-3 py-1.5 bg-white border-t border-slate-100 flex items-center justify-between">
-                                        <span class="text-[9px] font-bold text-slate-800 uppercase">Transfer Bank</span>
-                                        <span class="text-[9px] font-black text-blue-600">Klik Gambar Untuk Zoom</span>
+                                    <div>
+                                        <span class="text-[10px] font-black uppercase text-emerald-800 tracking-wider block">Pembayaran Tunai (Cash)</span>
+                                        <span class="text-[9px] text-emerald-600 font-semibold">Bayar saat es tiba di outlet</span>
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="w-full py-4 bg-amber-50/60 border border-dashed border-amber-300 rounded-2xl flex flex-col items-center justify-center gap-1 text-amber-600 mb-3">
-                                    <i class="bi bi-hourglass-split text-base animate-spin"></i>
-                                    <span class="text-[10px] uppercase font-black tracking-wider">Menunggu Upload Bukti</span>
-                                </div>
+                                {% if t.bukti_pembayaran %}
+                                    <div class="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 group/img shadow-sm mb-3">
+                                        <div class="h-28 w-full bg-slate-900/5 flex items-center justify-center overflow-hidden">
+                                            <img src="{{ t.bukti_pembayaran.url }}" alt="Struk Pembayaran" class="w-full h-full object-cover group-hover/img:scale-105 transition-all duration-300">
+                                        </div>
+                                        <div @click="modalImg = '{{ t.bukti_pembayaran.url }}'; modalTitle = 'Bukti Pembayaran - {{ t.kode_transaksi }}'; showModal = true" 
+                                             class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center gap-1.5 text-white cursor-pointer transition-opacity backdrop-blur-[2px]">
+                                            <i class="bi bi-zoom-in text-base"></i>
+                                            <span class="text-[10px] font-black uppercase tracking-wider">Perbesar Bukti</span>
+                                        </div>
+                                        <div class="px-3 py-1.5 bg-white border-t border-slate-100 flex items-center justify-between">
+                                            <span class="text-[9px] font-bold text-slate-800 uppercase">Transfer BCA</span>
+                                            <span class="text-[9px] font-black text-blue-600">Klik Gambar</span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="w-full py-4 bg-amber-50/60 border border-dashed border-amber-300 rounded-2xl flex flex-col items-center justify-center gap-1 text-amber-600 mb-3">
+                                        <i class="bi bi-hourglass-split text-base animate-spin"></i>
+                                        <span class="text-[10px] uppercase font-black tracking-wider">Menunggu Upload Bukti</span>
+                                    </div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                        
-                        <!-- Foto Terima Barang (Status Selesai) -->
-                        {% if t.status_bayar == 'Selesai' %}
-                            {% if t.foto_bukti %}
+                            
+                            {% if t.status_bayar == 'Selesai' and t.foto_bukti %}
                                 <div class="relative w-full rounded-xl overflow-hidden border border-emerald-200 bg-emerald-50 mb-2 cursor-pointer"
                                      @click="modalImg = '{{ t.foto_bukti.url }}'; modalTitle = 'Bukti Terima Barang'; showModal = true">
                                     <div class="flex items-center gap-2 p-2 text-emerald-700 hover:text-emerald-800">
@@ -546,605 +471,571 @@
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    </div>
+                        </div>
 
-                    <!-- TOMBOL AKSI -->
-                    <div class="pt-2 flex flex-col gap-2 w-full">
-                        {% if not is_owner %}
-                        <form action="{% url 'update_status_transaksi' t.id %}" method="POST" class="w-full">
-                            {% csrf_token %}
-                            <input type="hidden" name="menu" value="Transaksi">
-                            <input type="hidden" name="order_id" value="{{ t.id }}">
-                            
-                            <div class="flex flex-col gap-2 w-full">
-                                {% if t.status_bayar == 'Menunggu Konfirmasi' %}
-                                    <input type="hidden" name="status_tujuan" value="Sedang Diproses">
-                                    
-                                    <button name="aksi" value="terima" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[11px] font-black uppercase tracking-wider shadow-md shadow-blue-200 hover:shadow-blue-300 transition-all flex items-center justify-center gap-1.5">
-                                        <i class="bi bi-check-circle-fill text-sm"></i> Konfirmasi Pesanan
-                                    </button>
-                                    <button type="button" @click="confirmBatal('{{ t.id }}', '{{ t.kode_transaksi }}')" class="w-full py-2 bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1">
-                                        <i class="bi bi-x-circle text-xs"></i> Batalkan Pesanan
-                                    </button>
-                                    
-                                {% elif t.status_bayar == 'Sedang Diproses' %}
-                                    <input type="hidden" name="status_tujuan" value="Dikirim">
-                                    
-                                    <button name="aksi" value="kirim" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[11px] font-black uppercase tracking-wider shadow-md shadow-indigo-200 transition-all flex items-center justify-center gap-1.5">
-                                        <i class="fa-solid fa-truck-fast text-xs"></i> Kirim Pesanan
-                                    </button>
-                                {% endif %}
-                            </div>
-                        </form>
-                        
-                        <form id="form-batal-{{ t.id }}" action="{% url 'update_status_transaksi' t.id %}" method="POST" style="display: none;">
-                            {% csrf_token %}
-                            <input type="hidden" name="menu" value="Transaksi">
-                            <input type="hidden" name="aksi" value="batalkan">
-                            <input type="hidden" name="status_tujuan" value="Dibatalkan">
-                        </form>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <div class="py-20 text-center bg-white rounded-3xl border-2 border-dashed border-slate-200">
-            <i class="bi bi-inbox text-4xl text-slate-300 mb-2 block"></i>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Tidak ada pesanan di kategori ini.</p>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-<!-- PAGINATION (Hanya Tampil di Menu Transaksi & Jika Total Halaman Lebih Dari 1) -->
-{% if request.GET.menu == 'Transaksi' or menu_aktif == 'Transaksi' %}
-    {% if transaksi_semua.paginator.num_pages > 1 %}
-    <div class="mt-8 flex justify-center no-print">
-        <nav class="flex items-center bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
-            {% if transaksi_semua.has_previous %}
-                <a href="?page={{ transaksi_semua.previous_page_number }}&menu=Transaksi&status={{ status_aktif }}" 
-                   class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                    <i class="bi bi-chevron-left"></i>
-                </a>
-            {% else %}
-                <div class="w-8 h-8 flex items-center justify-center text-slate-200 cursor-not-allowed">
-                    <i class="bi bi-chevron-left"></i>
-                </div>
-            {% endif %}
-
-            <div class="flex items-center gap-1 px-2">
-                <span class="text-[11px] font-black text-blue-600 bg-blue-50 w-7 h-7 flex items-center justify-center rounded-xl">{{ transaksi_semua.number }}</span>
-            </div>
-
-            {% if transaksi_semua.has_next %}
-                <a href="?page={{ transaksi_semua.next_page_number }}&menu=Transaksi&status={{ status_aktif }}" 
-                   class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-            {% else %}
-                <div class="w-8 h-8 flex items-center justify-center text-slate-200 cursor-not-allowed">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            {% endif %}
-        </nav>
-    </div>
-    {% endif %}
-{% endif %}
-        </div> 
-    </div>
-
-        <div x-show="activeMenu === 'ulasan'" x-transition>
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        
-        <!-- Header -->
-        <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-            <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
-                <i class="fas fa-comment-dots text-blue-500 text-base"></i> 
-                <span>Ulasan Pelanggan</span>
-            </h3>
-        </div>
-
-        <!-- Tabel Responsif -->
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-wider">
-                    <tr>
-                        <th class="px-6 py-4 whitespace-nowrap">Pelanggan</th>
-                        <th class="px-6 py-4 whitespace-nowrap">Produk</th>
-                        <th class="px-6 py-4 whitespace-nowrap">Rating</th>
-                        <th class="px-6 py-4">Saran / Komentar</th>
-                        <th class="px-6 py-4 whitespace-nowrap text-right">Tanggal</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50">
-                    {% for u in ulasan_list %}
-                    <tr class="hover:bg-slate-50/60 transition-colors">
-                        <!-- Pelanggan -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-xs font-black text-blue-600 uppercase">{{ u.user.username }}</span>
-                        </td>
-                        
-                        <!-- Nama Produk -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-xs font-semibold text-slate-700">{{ u.produk.nama }}</span>
-                        </td>
-                        
-                        <!-- Rating Bintang -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex text-amber-400 text-xs gap-0.5">
-                                {% for i in "12345" %}
-                                    <i class="fas fa-star {% if forloop.counter > u.rating %}text-slate-200{% endif %}"></i>
-                                {% endfor %}
-                            </div>
-                        </td>
-                        
-                        <!-- Saran / Komentar -->
-                        <td class="px-6 py-4">
-                            <p class="text-xs text-slate-600 font-medium leading-relaxed max-w-xl">"{{ u.komentar }}"</p>
-                        </td>
-                        
-                        <!-- Tanggal (1 Baris Rapi) -->
-                        <td class="px-6 py-4 whitespace-nowrap text-right">
-                            <span class="text-[11px] font-black text-slate-700 uppercase tracking-tight">{{ u.tanggal|date:"d M Y" }}</span>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-20 text-center">
-                            <i class="fas fa-comment-slash text-4xl text-slate-200 mb-3 block"></i>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Belum ada ulasan masuk.</p>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-        <div x-show="activeMenu === 'Produk'" x-transition x-cloak class="space-y-6">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h4 class="text-lg font-black text-slate-800 uppercase tracking-tighter">Katalog <span class="text-blue-600">Es Kristal</span></h4>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Kelola stok dan harga publikasi</p>
-                </div>
-                <a href="{% url 'product_add' %}" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-[11px] font-black shadow-lg shadow-blue-200 uppercase tracking-wider transition-all hover:-translate-y-1">
-                    <i class="bi bi-plus-lg mr-1"></i> Tambah Produk
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {% for p in produk_semua %}
-                <div class="bg-white rounded-[2.5rem] border border-slate-200 p-5 shadow-sm hover:shadow-xl transition-all relative flex flex-col group">
-                    <div class="absolute top-4 right-4 flex gap-2 z-10 no-print">
-                        <a href="{% url 'product_edit' p.id %}" class="w-9 h-9 rounded-full bg-white shadow-md text-blue-600 flex items-center justify-center border border-slate-100 hover:bg-blue-600 hover:text-white transition-all">
-                            <i class="bi bi-pencil-square text-sm"></i>
-                        </a>
-                        <button onclick="confirmDelete('{{ p.id }}', '{{ p.nama }}')" class="w-9 h-9 rounded-full bg-white shadow-md text-rose-600 flex items-center justify-center border border-slate-100 hover:bg-rose-600 hover:text-white transition-all">
-                            <i class="bi bi-trash3-fill text-sm"></i>
-                        </button>
-                    </div>
-
-                    <div class="w-full h-48 bg-slate-50 rounded-[2rem] overflow-hidden mb-4 flex items-center justify-center p-3 border border-slate-100">
-                        {% if p.foto %}
-                            <img src="{{ p.foto.url }}" class="h-full object-contain group-hover:scale-110 transition-transform duration-500">
-                        {%   else %}
-                            <i class="fa-solid fa-image text-4xl text-slate-200"></i>
-                        {% endif %}
-                    </div>
-
-                    <div class="flex-1 px-1">
-                        <h5 class="font-black uppercase mb-1 text-slate-800 text-xs tracking-tight">{{ p.nama }}</h5>
-                        <p class="text-blue-600 font-black text-lg mb-4">Rp {{ p.harga|floatformat:0|intcomma }}</p>
-                        
-                        <div class="mt-auto bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-slate-400 text-[8px] font-black uppercase tracking-tighter">Status Stok</p>
-                                    <p class="font-black text-xs uppercase {% if p.stok <= 0 %}text-rose-600{% elif p.stok < 20 %}text-amber-500 animate-pulse{% else %}text-emerald-600{% endif %}">
-                                        {{ p.stok }} 
-                                        {% if p.stok <= 0 %}
-                                            Habis
-                                        {% elif p.stok < 20 %}
-                                            Bal Menipis
-                                        {% else %}
-                                            Bal Tersedia
-                                        {% endif %}
-                                    </p>
+                        <!-- TOMBOL AKSI -->
+                        <div class="pt-2 flex flex-col gap-2 w-full">
+                            {% if not is_owner %}
+                            <form action="{% url 'update_status_transaksi' t.id %}" method="POST" class="w-full">
+                                {% csrf_token %}
+                                <input type="hidden" name="menu" value="Transaksi">
+                                <input type="hidden" name="order_id" value="{{ t.id }}">
+                                
+                                <div class="flex flex-col gap-2 w-full">
+                                    {% if t.status_bayar == 'Menunggu Konfirmasi' %}
+                                        <input type="hidden" name="status_tujuan" value="Sedang Diproses">
+                                        <button name="aksi" value="terima" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[11px] font-black uppercase tracking-wider shadow-md shadow-blue-200 transition-all flex items-center justify-center gap-1.5">
+                                            <i class="bi bi-check-circle-fill text-sm"></i> Konfirmasi Pesanan
+                                        </button>
+                                        <button type="button" @click="confirmBatal('{{ t.id }}', '{{ t.kode_transaksi }}')" class="w-full py-2 bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1">
+                                            <i class="bi bi-x-circle text-xs"></i> Batalkan Pesanan
+                                        </button>
+                                    {% elif t.status_bayar == 'Sedang Diproses' %}
+                                        <input type="hidden" name="status_tujuan" value="Dikirim">
+                                        <button name="aksi" value="kirim" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[11px] font-black uppercase tracking-wider shadow-md shadow-indigo-200 transition-all flex items-center justify-center gap-1.5">
+                                            <i class="fa-solid fa-truck-fast text-xs"></i> Kirim Pesanan
+                                        </button>
+                                    {% endif %}
                                 </div>
-                                <i class="bi bi-box-seam {% if p.stok < 20 %}text-rose-400{% else %}text-slate-300{% endif %}"></i>
-                            </div>
-
-                            <div class="border-t border-slate-200/60 pt-2">
-                                <button @click="showModalMutasi = true; prodId = '{{ p.id }}'; prodNama = '{{ p.nama }}'" 
-                                        class="w-full py-2 bg-white hover:bg-blue-600 hover:text-white text-slate-700 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border border-slate-200 shadow-sm flex items-center justify-center gap-1">
-                                    <i class="bi bi-pencil-square"></i> Kelola Mutasi Stok
-                                </button>
-                            </div>
+                            </form>
+                            
+                            <form id="form-batal-{{ t.id }}" action="{% url 'update_status_transaksi' t.id %}" method="POST" style="display: none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="menu" value="Transaksi">
+                                <input type="hidden" name="aksi" value="batalkan">
+                                <input type="hidden" name="status_tujuan" value="Dibatalkan">
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="col-span-3 py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-slate-200">
-                    <p class="text-slate-400 font-bold uppercase text-xs tracking-widest">Belum ada produk yang ditambahkan</p>
-                </div>
-                {% endfor %}
             </div>
+            {% empty %}
+            <div class="py-20 text-center bg-white rounded-3xl border-2 border-dashed border-slate-200">
+                <i class="bi bi-inbox text-4xl text-slate-300 mb-2 block"></i>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Tidak ada pesanan di kategori ini.</p>
+            </div>
+            {% endfor %}
         </div>
 
-        <div x-show="activeMenu === 'Pelanggan'" x-transition x-cloak>
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                <div class="p-6 border-b border-slate-50 bg-white flex justify-between items-center">
-                    <div>
-                        <h4 class="text-sm font-black text-slate-800 uppercase tracking-tighter">Manajemen Pengguna</h4>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Daftar Akun PT. ICESAND KRISTAL PERKASA</p>
+        <!-- PAGINATION -->
+        {% if transaksi_semua.paginator.num_pages > 1 %}
+        <div class="mt-8 flex justify-center no-print">
+            <nav class="flex items-center bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+                {% if transaksi_semua.has_previous %}
+                    <a href="?page={{ transaksi_semua.previous_page_number }}&menu=Transaksi&status={{ status_aktif }}" 
+                       class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <div class="w-8 h-8 flex items-center justify-center text-slate-200 cursor-not-allowed">
+                        <i class="bi bi-chevron-left"></i>
                     </div>
-                    <div class="px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100">
-                        <span class="text-[10px] font-black text-slate-400 uppercase">Total: {{ total_pelanggan }} User</span>
-                    </div>
+                {% endif %}
+
+                <div class="flex items-center gap-1 px-2">
+                    <span class="text-[11px] font-black text-blue-600 bg-blue-50 w-7 h-7 flex items-center justify-center rounded-xl">{{ transaksi_semua.number }}</span>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left table-fixed"> 
-                        <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest border-b">
-                            <tr>
-                                <th class="px-6 py-4 w-1/4">Pengguna / Outlet</th>
-                                <th class="px-6 py-4 w-40 text-center">Akses</th>
-                                <th class="px-6 py-4 w-1/4">Kontak</th>
-                                <th class="px-6 py-4 w-1/4">Alamat</th>
-                                <th class="px-6 py-4 w-20 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            {% for u in pelanggan_list %}
-                            <tr class="hover:bg-slate-50/50 transition-all">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-9 h-9 shrink-0 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black uppercase text-xs">
-                                            {{ u.username|slice:":1" }}
-                                        </div>
-                                        <div class="truncate">
-                                            <span class="text-slate-800 font-black text-[13px] block truncate uppercase">{{ u.get_full_name|default:u.username }}</span>
-                                            <span class="text-[10px] text-blue-500 font-bold block truncate">{{ u.nama_usaha|default:"-" }}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    {% if u.is_superuser %}
-                                        <span class="px-3 py-1 rounded-lg bg-purple-50 text-purple-600 text-[9px] font-black uppercase">Admin</span>
-                                    {%     elif u.is_staff %}
-                                        <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-600 text-[9px] font-black uppercase">Owner</span>
+                {% if transaksi_semua.has_next %}
+                    <a href="?page={{ transaksi_semua.next_page_number }}&menu=Transaksi&status={{ status_aktif }}" 
+                       class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <div class="w-8 h-8 flex items-center justify-center text-slate-200 cursor-not-allowed">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- TAB ULASAN -->
+    <div x-show="activeMenu === 'ulasan'" x-transition>
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-2">
+                    <i class="fas fa-comment-dots text-blue-500 text-base"></i> 
+                    <span>Ulasan Pelanggan</span>
+                </h3>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                        <tr>
+                            <th class="px-6 py-4 whitespace-nowrap">Pelanggan</th>
+                            <th class="px-6 py-4 whitespace-nowrap">Produk</th>
+                            <th class="px-6 py-4 whitespace-nowrap">Rating</th>
+                            <th class="px-6 py-4">Saran / Komentar</th>
+                            <th class="px-6 py-4 whitespace-nowrap text-right">Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for u in ulasan_list %}
+                        <tr class="hover:bg-slate-50/60 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs font-black text-blue-600 uppercase">{{ u.user.username }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs font-semibold text-slate-700">{{ u.produk.nama }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex text-amber-400 text-xs gap-0.5">
+                                    {% for i in "12345" %}
+                                        <i class="fas fa-star {% if forloop.counter > u.rating %}text-slate-200{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-xs text-slate-600 font-medium leading-relaxed max-w-xl">"{{ u.komentar }}"</p>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right">
+                                <span class="text-[11px] font-black text-slate-700 uppercase tracking-tight">{{ u.tanggal|date:"d M Y" }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-20 text-center">
+                                <i class="fas fa-comment-slash text-4xl text-slate-200 mb-3 block"></i>
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Belum ada ulasan masuk.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB PRODUK -->
+    <div x-show="activeMenu === 'Produk'" x-transition x-cloak class="space-y-6">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h4 class="text-lg font-black text-slate-800 uppercase tracking-tighter">Katalog <span class="text-blue-600">Es Kristal</span></h4>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Kelola stok dan harga publikasi</p>
+            </div>
+            <a href="{% url 'product_add' %}" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-[11px] font-black shadow-lg shadow-blue-200 uppercase tracking-wider transition-all hover:-translate-y-1">
+                <i class="bi bi-plus-lg mr-1"></i> Tambah Produk
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for p in produk_semua %}
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 p-5 shadow-sm hover:shadow-xl transition-all relative flex flex-col group">
+                <div class="absolute top-4 right-4 flex gap-2 z-10 no-print">
+                    <a href="{% url 'product_edit' p.id %}" class="w-9 h-9 rounded-full bg-white shadow-md text-blue-600 flex items-center justify-center border border-slate-100 hover:bg-blue-600 hover:text-white transition-all">
+                        <i class="bi bi-pencil-square text-sm"></i>
+                    </a>
+                    <button onclick="confirmDelete('{{ p.id }}', '{{ p.nama }}')" class="w-9 h-9 rounded-full bg-white shadow-md text-rose-600 flex items-center justify-center border border-slate-100 hover:bg-rose-600 hover:text-white transition-all">
+                        <i class="bi bi-trash3-fill text-sm"></i>
+                    </button>
+                </div>
+
+                <div class="w-full h-48 bg-slate-50 rounded-[2rem] overflow-hidden mb-4 flex items-center justify-center p-3 border border-slate-100">
+                    {% if p.foto %}
+                        <img src="{{ p.foto.url }}" class="h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                    {% else %}
+                        <i class="fa-solid fa-image text-4xl text-slate-200"></i>
+                    {% endif %}
+                </div>
+
+                <div class="flex-1 px-1">
+                    <h5 class="font-black uppercase mb-1 text-slate-800 text-xs tracking-tight">{{ p.nama }}</h5>
+                    <p class="text-blue-600 font-black text-lg mb-4">Rp {{ p.harga|floatformat:0|intcomma }}</p>
+                    
+                    <div class="mt-auto bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-slate-400 text-[8px] font-black uppercase tracking-tighter">Status Stok</p>
+                                <p class="font-black text-xs uppercase {% if p.stok <= 0 %}text-rose-600{% elif p.stok < 20 %}text-amber-500 animate-pulse{% else %}text-emerald-600{% endif %}">
+                                    {{ p.stok }} 
+                                    {% if p.stok <= 0 %}
+                                        Habis
+                                    {% elif p.stok < 20 %}
+                                        Bal Menipis
                                     {% else %}
-                                        <span class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase">Pelanggan</span>
+                                        Bal Tersedia
                                     {% endif %}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-col gap-0.5 min-w-0">
-                                        <span class="text-slate-500 text-[11px] font-bold truncate">
-                                            <i class="bi bi-envelope mr-1"></i>{{ u.email|default:"-" }}
-                                        </span>
-                                        {% if u.no_telepon %}
-                                        <a href="https://wa.me/{{ u.no_telepon }}" target="_blank" class="text-emerald-500 font-black text-[11px] hover:underline">
-                                            <i class="bi bi-whatsapp mr-1"></i>{{ u.no_telepon }}
-                                        </a>
-                                        {% else %}
-                                        <span class="text-slate-300 text-[10px] uppercase font-bold tracking-tighter italic">Belum Terhubung</span>
-                                        {% endif %}
+                                </p>
+                            </div>
+                            <i class="bi bi-box-seam {% if p.stok < 20 %}text-rose-400{% else %}text-slate-300{% endif %}"></i>
+                        </div>
+
+                        <div class="border-t border-slate-200/60 pt-2">
+                            <button @click="showModalMutasi = true; prodId = '{{ p.id }}'; prodNama = '{{ p.nama }}'" 
+                                    class="w-full py-2 bg-white hover:bg-blue-600 hover:text-white text-slate-700 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border border-slate-200 shadow-sm flex items-center justify-center gap-1">
+                                <i class="bi bi-pencil-square"></i> Kelola Mutasi Stok
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-slate-200">
+                <p class="text-slate-400 font-bold uppercase text-xs tracking-widest">Belum ada produk yang ditambahkan</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- TAB PELANGGAN -->
+    <div x-show="activeMenu === 'Pelanggan'" x-transition x-cloak>
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-50 bg-white flex justify-between items-center">
+                <div>
+                    <h4 class="text-sm font-black text-slate-800 uppercase tracking-tighter">Manajemen Pengguna</h4>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Daftar Akun PT. ICESAND KRISTAL PERKASA</p>
+                </div>
+                <div class="px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100">
+                    <span class="text-[10px] font-black text-slate-400 uppercase">Total: {{ total_pelanggan }} User</span>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left min-w-[700px]"> 
+                    <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest border-b">
+                        <tr>
+                            <th class="px-6 py-4 w-1/4">Pengguna / Outlet</th>
+                            <th class="px-6 py-4 text-center">Akses</th>
+                            <th class="px-6 py-4 w-1/4">Kontak</th>
+                            <th class="px-6 py-4 w-1/4">Alamat</th>
+                            <th class="px-6 py-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for u in pelanggan_list %}
+                        <tr class="hover:bg-slate-50/50 transition-all">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 shrink-0 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black uppercase text-xs">
+                                        {{ u.username|slice:":1" }}
                                     </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-500 text-[11px] leading-snug break-words">
-                                        <i class="bi bi-geo-alt text-slate-300"></i> {{ u.alamat|default:"-" }}
-                                    </p>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <a href="{% url 'profil_dashboard' u.id %}" class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 transition-all inline-flex items-center justify-center shadow-sm">
-                                        <i class="bi bi-pencil-square"></i>
+                                    <div class="truncate">
+                                        <span class="text-slate-800 font-black text-[13px] block truncate uppercase">{{ u.get_full_name|default:u.username }}</span>
+                                        <span class="text-[10px] text-blue-500 font-bold block truncate">{{ u.nama_usaha|default:"-" }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {% if u.is_superuser %}
+                                    <span class="px-3 py-1 rounded-lg bg-purple-50 text-purple-600 text-[9px] font-black uppercase">Admin</span>
+                                {% elif u.is_staff %}
+                                    <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-600 text-[9px] font-black uppercase">Owner</span>
+                                {% else %}
+                                    <span class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase">Pelanggan</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col gap-0.5 min-w-0">
+                                    <span class="text-slate-500 text-[11px] font-bold truncate">
+                                        <i class="bi bi-envelope mr-1"></i>{{ u.email|default:"-" }}
+                                    </span>
+                                    {% if u.no_telepon %}
+                                    <a href="https://wa.me/{{ u.no_telepon }}" target="_blank" class="text-emerald-500 font-black text-[11px] hover:underline">
+                                        <i class="bi bi-whatsapp mr-1"></i>{{ u.no_telepon }}
                                     </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                    {% else %}
+                                    <span class="text-slate-300 text-[10px] uppercase font-bold tracking-tighter italic">Belum Terhubung</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-slate-500 text-[11px] leading-snug break-words">
+                                    <i class="bi bi-geo-alt text-slate-300"></i> {{ u.alamat|default:"-" }}
+                                </p>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <a href="{% url 'profil_dashboard' u.id %}" class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 transition-all inline-flex items-center justify-center shadow-sm">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-        
-        <div x-show="activeMenu === 'Laporan'" x-transition x-cloak class="space-y-6">
-            <div x-show="tabLaporan === 'penjualan'" class="space-y-6">
-                <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Penjualan</label>
-                <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                    <form method="GET" class="flex items-end gap-4">
-                        <input type="hidden" name="menu" value="Laporan">
-                        <input type="hidden" name="sub" value="penjualan">
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
-                            <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
-                            <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER</button>
-                        <a href="?menu=Laporan&sub=penjualan" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
-                    </form>
-                </div>
-
-                <div class="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-sm relative">
-                    <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
-                        <h1 class="text-2xl font-black">LAPORAN PENJUALAN ES KRISTAL</h1>
-                        <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
-                        <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
+    </div>
+    
+    <!-- TAB LAPORAN (OWNER) -->
+    <div x-show="activeMenu === 'Laporan'" x-transition x-cloak class="space-y-6">
+        <!-- Laporan Penjualan -->
+        <div x-show="tabLaporan === 'penjualan'" class="space-y-6">
+            <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Penjualan</label>
+            <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-4 form-filter-responsive">
+                    <input type="hidden" name="menu" value="Laporan">
+                    <input type="hidden" name="sub" value="penjualan">
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
+                        <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    
-                    <table class="w-full text-left text-xs font-bold">
-                        <thead class="bg-slate-50 uppercase text-slate-400 border-b">
-                            <tr>
-                                <th class="p-4">Tanggal</th>
-                                <th class="p-4">Nota</th>
-                                <th class="p-4">Pelanggan</th>
-                                <th class="p-4 text-right">Nominal</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            {% for t in transaksi_laporan %}
-                            <tr class="text-slate-700">
-                                <td class="p-4">{{ t.tanggal|date:"d/m/Y" }}</td>
-                                <td class="p-4 text-blue-600">{{ t.kode_transaksi }}</td>
-                                <td class="p-4 uppercase">{{ t.nama_penerima }}</td>
-                                <td class="p-4 text-right">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr><td colspan="4" class="p-10 text-center text-slate-400 italic">Data tidak ditemukan.</td></tr>
-                            {% endfor %}
-                        </tbody>
-
-                        {% if transaksi_laporan %}
-                        <tfoot class="bg-blue-50/50 border-t-2 border-blue-100">
-                            <tr class="text-blue-900">
-                                <td colspan="3" class="p-4 text-[10px] font-black uppercase tracking-widest text-center">Total Penjualan Seluruhnya</td>
-                                <td class="p-4 text-right text-sm font-black">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
-                            </tr>
-                        </tfoot>
-                        {% endif %}
-                    </table>
-                </div>
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
+                        <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER</button>
+                    <a href="?menu=Laporan&sub=penjualan" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
+                </form>
             </div>
 
-            <div x-show="tabLaporan === 'pendapatan'" class="space-y-6">
-                <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Pendapatan</label>
-                <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                    <form method="GET" class="flex items-end gap-4">
-                        <input type="hidden" name="menu" value="Laporan">
-                        <input type="hidden" name="sub" value="pendapatan">
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
-                            <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
-                            <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER DATA</button>
-                        <a href="?menu=Laporan&sub=pendapatan" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
-                    </form>
+            <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-x-auto">
+                <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
+                    <h1 class="text-2xl font-black">LAPORAN PENJUALAN ES KRISTAL</h1>
+                    <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
+                    <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
                 </div>
-                <div class="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-sm relative">
-                    <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
-                        <h1 class="text-2xl font-black">LAPORAN PENDAPATAN</h1>
-                        <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
-                        <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
-                    </div>
-                    <table class="w-full text-left text-xs font-bold">
-                        <thead class="bg-slate-50 uppercase text-slate-400 border-b">
-                            <tr>
-                                <th class="p-4">Tanggal</th> 
-                                <th class="p-4">Nota</th>
-                                <th class="p-4">Rincian Produk</th>
-                                <th class="p-4 text-center">Metode</th>
-                                <th class="p-4 text-right">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            {% for t in transaksi_laporan %}
-                            <tr class="text-slate-700 hover:bg-slate-50/50 transition-colors">
-                                <td class="p-4">
-                                    <div class="text-slate-900">{{ t.tanggal|date:"d M Y" }}</div>
-                                </td>
-                                <td class="p-4">
-                                    <span class="text-blue-600 block mb-0.5">{{ t.kode_transaksi }}</span>
-                                    <span class="text-[10px] text-slate-400 font-black uppercase tracking-tight">{{ t.nama_penerima }}</span>
-                                </td>
-                                <td class="p-4">
-                                    <div class="text-[11px] text-slate-500 leading-relaxed font-medium">
-                                        {% for detail in t.details.all %} 
-                                            <div class="flex justify-between max-w-[180px]">
-                                                <span>{{ detail.produk.nama }}</span>
-                                                <span class="text-slate-900 ml-2">x{{ detail.jumlah_pesanan }}</span>
-                                            </div>
-                                        {% empty %}
-                                            <span class="italic text-slate-300 text-[9px]">Tanpa rincian</span>
-                                        {% endfor %}
-                                    </div>
-                                </td>
-                                <td class="p-4 text-center">
-                                    {% if t.metode_pembayaran == 'Tunai' %}
-                                        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">CASH</span>
-                                    {% else %}
-                                        <span class="px-2.5 py-1 bg-blue-100 text-blue-600 rounded-lg text-[9px] font-black uppercase">TRANSFER</span>
-                                    {% endif %}
-                                </td>
-                                <td class="p-4 text-right font-black text-slate-900">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot class="bg-blue-50/50 border-t-2 border-blue-100 font-black text-blue-900">
-                            <tr class="print:border-b">
-                                <td colspan="4" class="p-5 text-center uppercase tracking-[0.2em] text-[10px] whitespace-nowrap">Total Pendapatan Terhitung</td>
-                                <td class="p-5 text-right text-sm whitespace-nowrap">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div x-show="tabLaporan === 'stok'" class="space-y-6">
-                <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Stok Es Kristal</label>
                 
-                <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                    <form method="GET" class="flex items-end gap-4">
-                        <input type="hidden" name="menu" value="Laporan">
-                        <input type="hidden" name="sub" value="stok">
-                        
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
-                            <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
-                            <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                        </div>
+                <table class="w-full text-left text-xs font-bold min-w-[600px]">
+                    <thead class="bg-slate-50 uppercase text-slate-400 border-b">
+                        <tr>
+                            <th class="p-4">Tanggal</th>
+                            <th class="p-4">Nota</th>
+                            <th class="p-4">Pelanggan</th>
+                            <th class="p-4 text-right">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for t in transaksi_laporan %}
+                        <tr class="text-slate-700">
+                            <td class="p-4">{{ t.tanggal|date:"d/m/Y" }}</td>
+                            <td class="p-4 text-blue-600">{{ t.kode_transaksi }}</td>
+                            <td class="p-4 uppercase">{{ t.nama_penerima }}</td>
+                            <td class="p-4 text-right">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="p-10 text-center text-slate-400 italic">Data tidak ditemukan.</td></tr>
+                        {% endfor %}
+                    </tbody>
 
-                        <div class="flex-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Pilih Jenis Produk</label>
-                            <select name="produk_filter" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
-                                <option value="all" {% if produk_filter == 'all' or not produk_filter %}selected{% endif %}>Semua Produk</option>
-                                {% for prod in produk_semua %}
-                                    <option value="{{ prod.id }}" {% if produk_filter == prod.id|stringformat:"s" %}selected{% endif %}>{{ prod.nama }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        
-                        <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER</button>
-                        <a href="?menu=Laporan&sub=stok" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
-                    </form>
+                    {% if transaksi_laporan %}
+                    <tfoot class="bg-blue-50/50 border-t-2 border-blue-100">
+                        <tr class="text-blue-900">
+                            <td colspan="3" class="p-4 text-[10px] font-black uppercase tracking-widest text-center">Total Penjualan Seluruhnya</td>
+                            <td class="p-4 text-right text-sm font-black">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
+                        </tr>
+                    </tfoot>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        <!-- Laporan Pendapatan -->
+        <div x-show="tabLaporan === 'pendapatan'" class="space-y-6">
+            <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Pendapatan</label>
+            <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-4 form-filter-responsive">
+                    <input type="hidden" name="menu" value="Laporan">
+                    <input type="hidden" name="sub" value="pendapatan">
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
+                        <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
+                        <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER DATA</button>
+                    <a href="?menu=Laporan&sub=pendapatan" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
+                </form>
+            </div>
+            
+            <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-x-auto">
+                <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
+                    <h1 class="text-2xl font-black">LAPORAN PENDAPATAN</h1>
+                    <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
+                    <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
                 </div>
+                <table class="w-full text-left text-xs font-bold min-w-[700px]">
+                    <thead class="bg-slate-50 uppercase text-slate-400 border-b">
+                        <tr>
+                            <th class="p-4">Tanggal</th> 
+                            <th class="p-4">Nota</th>
+                            <th class="p-4">Rincian Produk</th>
+                            <th class="p-4 text-center">Metode</th>
+                            <th class="p-4 text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for t in transaksi_laporan %}
+                        <tr class="text-slate-700 hover:bg-slate-50/50 transition-colors">
+                            <td class="p-4">
+                                <div class="text-slate-900">{{ t.tanggal|date:"d M Y" }}</div>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-blue-600 block mb-0.5">{{ t.kode_transaksi }}</span>
+                                <span class="text-[10px] text-slate-400 font-black uppercase tracking-tight">{{ t.nama_penerima }}</span>
+                            </td>
+                            <td class="p-4">
+                                <div class="text-[11px] text-slate-500 leading-relaxed font-medium">
+                                    {% for detail in t.details.all %} 
+                                        <div class="flex justify-between max-w-[180px]">
+                                            <span>{{ detail.produk.nama }}</span>
+                                            <span class="text-slate-900 ml-2">x{{ detail.jumlah_pesanan }}</span>
+                                        </div>
+                                    {% empty %}
+                                        <span class="italic text-slate-300 text-[9px]">Tanpa rincian</span>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="p-4 text-center">
+                                {% if t.metode_pembayaran == 'Tunai' %}
+                                    <span class="px-2.5 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">CASH</span>
+                                {% else %}
+                                    <span class="px-2.5 py-1 bg-blue-100 text-blue-600 rounded-lg text-[9px] font-black uppercase">TRANSFER</span>
+                                {% endif %}
+                            </td>
+                            <td class="p-4 text-right font-black text-slate-900">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="bg-blue-50/50 border-t-2 border-blue-100 font-black text-blue-900">
+                        <tr class="print:border-b">
+                            <td colspan="4" class="p-5 text-center uppercase tracking-[0.2em] text-[10px] whitespace-nowrap">Total Pendapatan Terhitung</td>
+                            <td class="p-5 text-right text-sm whitespace-nowrap">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
 
-                <div class="no-print grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-start">
-                            <p class="text-[9px] text-slate-400 font-black uppercase">Stok Awal</p>
-                            <div class="p-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs"><i class="bi bi-hourglass-start"></i></div>
-                        </div>
-                        <h3 class="text-lg font-black text-slate-700 mt-2">{{ total_stok_awal|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+        <!-- Laporan Stok -->
+        <div x-show="tabLaporan === 'stok'" class="space-y-6">
+            <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Stok Es Kristal</label>
+            
+            <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-4 form-filter-responsive">
+                    <input type="hidden" name="menu" value="Laporan">
+                    <input type="hidden" name="sub" value="stok">
+                    
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
+                        <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-start">
-                            <p class="text-[9px] text-slate-400 font-black uppercase">Stok Masuk (+)</p>
-                            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs"><i class="bi bi-arrow-down-left-circle"></i></div>
-                        </div>
-                        <h3 class="text-lg font-black text-emerald-600 mt-2">+ {{ total_masuk|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
-                    </div>
-                    
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-start">
-                            <p class="text-[9px] text-slate-400 font-black uppercase">Stok Keluar (-)</p>
-                            <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs"><i class="bi bi-arrow-up-right-circle"></i></div>
-                        </div>
-                        <h3 class="text-lg font-black text-rose-600 mt-2">- {{ total_keluar|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
+                        <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
 
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex justify-between items-start">
-                            <p class="text-[9px] text-slate-400 font-black uppercase">Stok Barang Rusak (-)</p>
-                            <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg text-xs"><i class="bi bi-x-circle"></i></div>
-                        </div>
-                        <h3 class="text-lg font-black text-amber-600 mt-2">- {{ total_reject|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between col-span-2 md:col-span-1">
-                        <div class="flex justify-between items-start">
-                            <p class="text-[9px] text-slate-400 font-black uppercase">Stok Akhir</p>
-                            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs"><i class="bi bi-boxes"></i></div>
-                        </div>
-                        <h3 class="text-lg font-black text-blue-600 mt-2">{{ total_stok_gudang|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden p-6">
-                    <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
-                        <h1 class="text-2xl font-black">LAPORAN MUTASI STOK ES KRISTAL</h1>
-                        <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
-                        <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
-                        {% if produk_nama_terpilih %}
-                            <p class="text-[11px] font-black text-blue-600 mt-1">Filter Komoditas: {{ produk_nama_terpilih }}</p>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="hidden print:grid grid-cols-5 gap-2 mb-8 text-center text-[11px]">
-                        <div class="p-2 border rounded-xl bg-slate-50">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase">Stok Awal</p>
-                            <p class="font-black text-slate-700 mt-1">{{ total_stok_awal|default:"0" }} Bal</p>
-                        </div>
-                        <div class="p-2 border rounded-xl bg-emerald-50/30">
-                            <p class="text-[9px] font-bold text-emerald-600 uppercase">Stok Masuk (+)</p>
-                            <p class="font-black text-emerald-600 mt-1">+{{ total_masuk|default:"0" }} Bal</p>
-                        </div>
-                        <div class="p-2 border rounded-xl bg-rose-50/30">
-                            <p class="text-[9px] font-bold text-rose-600 uppercase">Stok Keluar (-)</p>
-                            <p class="font-black text-rose-600 mt-1">-{{ total_keluar|default:"0" }} Bal</p>
-                        </div>
-                        <div class="p-2 border rounded-xl bg-amber-50/30">
-                            <p class="text-[9px] font-bold text-amber-600 uppercase">Stok Barang Rusak (-)</p>
-                            <p class="font-black text-amber-600 mt-1">-{{ total_reject|default:"0" }} Bal</p>
-                        </div>
-                        <div class="p-2 border rounded-xl bg-blue-50/40">
-                            <p class="text-[9px] font-bold text-blue-600 uppercase">Stok Akhir</p>
-                            <p class="font-black text-blue-600 mt-1">{{ total_stok_gudang|default:"0" }} Bal</p>
-                        </div>
-                    </div>
-                    
-                    <table class="w-full text-left text-xs font-bold">
-                        <thead class="bg-slate-50 uppercase text-slate-400 border-b">
-                            <tr>
-                                <th class="p-4">Tanggal</th>
-                                <th class="p-4">Nama Produk</th>
-                                <th class="p-4 text-center">Status Transaksi</th>
-                                <th class="p-4 text-right">Jumlah Mutasi</th>
-                                <th class="p-4 text-left pl-8">Keterangan / Nota</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            {% for m in mutasi_stok %}
-                            <tr class="text-slate-700 hover:bg-slate-50 transition-colors">
-                                <td class="p-4 text-slate-900">{{ m.tanggal|date:"d/m/Y" }}</td>
-                                <td class="p-4 text-slate-900 uppercase">{{ m.produk.nama }}</td>
-                                <td class="p-4 text-center">
-                                    {% if m.tipe == 'MASUK' %}
-                                        <span class="px-2 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">Stok Masuk</span>
-                                    {% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}
-                                        <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[9px] font-black uppercase">Stok Barang Rusak</span>
-                                    {% else %}
-                                        <span class="px-2 py-1 bg-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase">Stok Keluar</span>
-                                    {% endif %}
-                                </td>
-                                <td class="p-4 text-right font-mono {% if m.tipe == 'MASUK' %}text-emerald-600{% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}text-amber-600{% else %}text-rose-600{% endif %} font-black">
-                                    {% if m.tipe == 'MASUK' %}+{% else %}-{% endif %} {{ m.jumlah }} Bal
-                                </td>
-                                <td class="p-4 text-slate-500 font-medium pl-8">{{ m.keterangan|default:"-" }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="5" class="p-10 text-center italic text-slate-400">Belum ada riwayat mutasi stok pada periode ini.</td>
-                            </tr>
+                    <div class="flex-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Pilih Jenis Produk</label>
+                        <select name="produk_filter" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
+                            <option value="all" {% if produk_filter == 'all' or not produk_filter %}selected{% endif %}>Semua Produk</option>
+                            {% for prod in produk_semua %}
+                                <option value="{{ prod.id }}" {% if produk_filter == prod.id|stringformat:"s" %}selected{% endif %}>{{ prod.nama }}</option>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER</button>
+                    <a href="?menu=Laporan&sub=stok" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
+                </form>
+            </div>
+
+            <div class="no-print grid grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[9px] text-slate-400 font-black uppercase">Stok Awal</p>
+                        <div class="p-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs"><i class="bi bi-hourglass-start"></i></div>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-700 mt-2">{{ total_stok_awal|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                </div>
+                
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[9px] text-slate-400 font-black uppercase">Stok Masuk (+)</p>
+                        <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs"><i class="bi bi-arrow-down-left-circle"></i></div>
+                    </div>
+                    <h3 class="text-lg font-black text-emerald-600 mt-2">+ {{ total_masuk|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                </div>
+                
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[9px] text-slate-400 font-black uppercase">Stok Keluar (-)</p>
+                        <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs"><i class="bi bi-arrow-up-right-circle"></i></div>
+                    </div>
+                    <h3 class="text-lg font-black text-rose-600 mt-2">- {{ total_keluar|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[9px] text-slate-400 font-black uppercase">Barang Rusak (-)</p>
+                        <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg text-xs"><i class="bi bi-x-circle"></i></div>
+                    </div>
+                    <h3 class="text-lg font-black text-amber-600 mt-2">- {{ total_reject|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between col-span-2 lg:col-span-1">
+                    <div class="flex justify-between items-start">
+                        <p class="text-[9px] text-slate-400 font-black uppercase">Stok Akhir</p>
+                        <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs"><i class="bi bi-boxes"></i></div>
+                    </div>
+                    <h3 class="text-lg font-black text-blue-600 mt-2">{{ total_stok_gudang|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
                 </div>
             </div>
-        </div>    
-    </main>
 
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden p-6 overflow-x-auto">
+                <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
+                    <h1 class="text-2xl font-black">LAPORAN MUTASI STOK ES KRISTAL</h1>
+                    <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
+                    <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
+                    {% if produk_nama_terpilih %}
+                        <p class="text-[11px] font-black text-blue-600 mt-1">Filter Komoditas: {{ produk_nama_terpilih }}</p>
+                    {% endif %}
+                </div>
+                
+                <table class="w-full text-left text-xs font-bold min-w-[750px]">
+                    <thead class="bg-slate-50 uppercase text-slate-400 border-b">
+                        <tr>
+                            <th class="p-4">Tanggal</th>
+                            <th class="p-4">Nama Produk</th>
+                            <th class="p-4 text-center">Status Transaksi</th>
+                            <th class="p-4 text-right">Jumlah Mutasi</th>
+                            <th class="p-4 text-left pl-8">Keterangan / Nota</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for m in mutasi_stok %}
+                        <tr class="text-slate-700 hover:bg-slate-50 transition-colors">
+                            <td class="p-4 text-slate-900">{{ m.tanggal|date:"d/m/Y" }}</td>
+                            <td class="p-4 text-slate-900 uppercase">{{ m.produk.nama }}</td>
+                            <td class="p-4 text-center">
+                                {% if m.tipe == 'MASUK' %}
+                                    <span class="px-2 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">Stok Masuk</span>
+                                {% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}
+                                    <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[9px] font-black uppercase">Stok Barang Rusak</span>
+                                {% else %}
+                                    <span class="px-2 py-1 bg-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase">Stok Keluar</span>
+                                {% endif %}
+                            </td>
+                            <td class="p-4 text-right font-mono {% if m.tipe == 'MASUK' %}text-emerald-600{% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}text-amber-600{% else %}text-rose-600{% endif %} font-black">
+                                {% if m.tipe == 'MASUK' %}+{% else %}-{% endif %} {{ m.jumlah }} Bal
+                            </td>
+                            <td class="p-4 text-slate-500 font-medium pl-8">{{ m.keterangan|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="p-10 text-center italic text-slate-400">Belum ada riwayat mutasi stok pada periode ini.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>    
+</main>
+
+<!-- MODAL IMAGE PREVIEW -->
 <div x-show="showModal" 
-     class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+     class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm modal-overlay"
      x-cloak
      style="display: none;">
     <div class="absolute inset-0 cursor-pointer" @click="showModal = false"></div>
-    <div class="relative bg-white rounded-3xl p-2 max-w-lg w-full shadow-2xl" @click.away="showModal = false">
+    <div class="relative bg-white rounded-3xl p-2 max-w-lg w-full shadow-2xl modal-content-mobile" @click.away="showModal = false">
         <div class="flex justify-between items-center p-4 border-b border-slate-100">
             <h5 class="text-xs font-black uppercase" x-text="modalTitle"></h5>
             <button @click="showModal = false" class="text-slate-400 hover:text-rose-500 text-xl">
@@ -1157,12 +1048,13 @@
     </div>
 </div>
 
+<!-- MODAL ENTRY MUTASI -->
 <div x-show="showModalMutasi"
-     class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+     class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm modal-overlay"
      x-cloak
      style="display: none;">
     <div class="absolute inset-0 cursor-pointer" @click="showModalMutasi = false"></div>
-    <div class="relative bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl" @click.away="showModalMutasi = false">
+    <div class="relative bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl modal-content-mobile" @click.away="showModalMutasi = false">
         <div class="flex justify-between items-center pb-4 border-b border-slate-100 mb-4">
             <h5 class="text-xs font-black uppercase text-slate-800">Entry Mutasi: <span class="text-blue-600" x-text="prodNama"></span></h5>
             <button @click="showModalMutasi = false" class="text-slate-400 hover:text-rose-500 text-xl">
@@ -1196,185 +1088,177 @@
     </div>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function handleLogout() {
-    Swal.fire({
-        html: `
-            <div class="p-3 text-center">
-                <!-- Icon Animasi Pulse Ring & Bounce -->
-                <div class="relative w-20 h-20 mx-auto mb-5">
-                    <div class="pulse-ring-danger absolute inset-0 rounded-3xl bg-rose-500/20"></div>
-                    <div class="relative w-full h-full rounded-3xl bg-gradient-to-tr from-rose-600 to-rose-400 text-white flex items-center justify-center text-3xl shadow-xl shadow-rose-500/30 animate__animated animate__tada animate__infinite animate__slower">
-                        <i class="fa-solid fa-power-off"></i>
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function handleLogout() {
+        Swal.fire({
+            html: `
+                <div class="p-3 text-center">
+                    <div class="relative w-20 h-20 mx-auto mb-5">
+                        <div class="pulse-ring-danger absolute inset-0 rounded-3xl bg-rose-500/20"></div>
+                        <div class="relative w-full h-full rounded-3xl bg-gradient-to-tr from-rose-600 to-rose-400 text-white flex items-center justify-center text-3xl shadow-xl shadow-rose-500/30 animate__animated animate__tada animate__infinite animate__slower">
+                            <i class="fa-solid fa-power-off"></i>
+                        </div>
                     </div>
+                    <h3 class="text-xl font-black text-slate-800 tracking-tight uppercase mb-2">LOGOUT?</h3>
+                    <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px] mx-auto">
+                        Aktivitas dashboard akan dijeda dan Anda perlu login kembali untuk melanjutkan.
+                    </p>
                 </div>
-                
-                <h3 class="text-xl font-black text-slate-800 tracking-tight uppercase mb-2">
-                    LOGOUT?
-                </h3>
-                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px] mx-auto">
-                    Aktivitas dashboard akan dijeda dan Anda perlu login kembali untuk melanjutkan.
-                </p>
-            </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: '<span class="flex items-center justify-center gap-2"><i class="fa-solid fa-arrow-right-from-bracket"></i> YA, LOGOUT</span>',
-        cancelButtonText: 'BATAL',
-        reverseButtons: true,
-        buttonsStyling: false,
-        backdrop: `rgba(15, 23, 42, 0.65)`,
-        customClass: {
-            popup: 'rounded-[2.5rem] p-6 border border-slate-100 shadow-2xl bg-white/95 backdrop-blur-md',
-            confirmButton: 'w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-700 hover:to-red-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-lg shadow-rose-500/30 hover:scale-105 active:scale-95 transition-all duration-200 ml-2',
-            cancelButton: 'w-full sm:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl text-xs font-black uppercase tracking-wider hover:scale-105 active:scale-95 transition-all duration-200 mr-2'
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('logout-form').submit();
-        }
-    });
-}
+            `,
+            showCancelButton: true,
+            confirmButtonText: '<span class="flex items-center justify-center gap-2"><i class="fa-solid fa-arrow-right-from-bracket"></i> YA, LOGOUT</span>',
+            cancelButtonText: 'BATAL',
+            reverseButtons: true,
+            buttonsStyling: false,
+            backdrop: `rgba(15, 23, 42, 0.65)`,
+            customClass: {
+                popup: 'rounded-[2.5rem] p-6 border border-slate-100 shadow-2xl bg-white/95 backdrop-blur-md',
+                confirmButton: 'w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-700 hover:to-red-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-lg shadow-rose-500/30 hover:scale-105 active:scale-95 transition-all duration-200 ml-2',
+                cancelButton: 'w-full sm:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl text-xs font-black uppercase tracking-wider hover:scale-105 active:scale-95 transition-all duration-200 mr-2'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+
+    function confirmDelete(id, nama) {
+        Swal.fire({
+            title: 'Hapus Produk?',
+            text: "Apakah Anda yakin ingin menghapus " + nama + "?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            confirmButtonText: 'YA, HAPUS',
+            cancelButtonText: 'BATAL',
+            borderRadius: '1.2rem'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/produk/hapus/" + id + "/";
+            }
+        });
+    }
+
+    function confirmBatal(id, kode) {
+        Swal.fire({
+            title: 'Batalkan Pesanan?',
+            text: "Pesanan " + kode + " akan dibatalkan. Pastikan Anda sudah menghubungi pelanggan jika diperlukan.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#64748b', 
+            confirmButtonText: 'YA, BATALKAN',
+            cancelButtonText: 'KEMBALI',
+            borderRadius: '1.5rem',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('form-batal-' + id).submit();
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const chartElem = document.getElementById('performanceChart');
+        if (!chartElem) return;
+        const ctx = chartElem.getContext('2d');
         
-        function printNota(kode) {
-            window.print();
-        }
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
+        gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
 
-        function confirmDelete(id, nama) {
-            Swal.fire({
-                title: 'Hapus Produk?',
-                text: "Apakah Anda yakin ingin menghapus " + nama + "?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e11d48',
-                confirmButtonText: 'YA, HAPUS',
-                cancelButtonText: 'BATAL',
-                borderRadius: '1.2rem'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "/produk/hapus/" + id + "/";
-                }
-            })
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
-            gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: {{ labels_grafik|safe }},
-                    datasets: [{
-                        label: 'Omzet Penjualan',
-                        data: {{ data_grafik|safe }},
-                        borderColor: '#2563eb',
-                        borderWidth: 4,
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: gradient,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#2563eb',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 7,
-                        pointHoverBackgroundColor: '#2563eb',
-                        pointHoverBorderColor: '#fff',
-                        pointHoverBorderWidth: 2,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#fff',
-                            titleColor: '#000',
-                            bodyColor: '#2563eb', 
-                            padding: 12,
-                            titleFont: { size: 10, weight: 'bold', family: 'Poppins' },
-                            bodyFont: { size: 13, family: 'Poppins' },
-                            displayColors: false,
-                            callbacks: {
-                                title: function(context) {
-                                    let label = context[0].label;
-                                    let dateObj = new Date(label + ' 2026'); 
-                                    let options = { weekday: 'long', day: 'numeric', month: 'short' };
-                                    return dateObj.toLocaleDateString('id-ID', options);
-                                },
-                                label: function(context) {
-                                    let value = context.parsed.y;
-                                    return ' Pendapatan Bersih: Rp ' + new Intl.NumberFormat('id-ID').format(value);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { 
-                                color: 'rgba(226, 232, 240, 0.5)',
-                                drawBorder: false 
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels_grafik|safe }},
+                datasets: [{
+                    label: 'Omzet Penjualan',
+                    data: {{ data_grafik|safe }},
+                    borderColor: '#2563eb',
+                    borderWidth: 4,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: gradient,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#2563eb',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: '#2563eb',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#000',
+                        bodyColor: '#2563eb', 
+                        padding: 12,
+                        titleFont: { size: 10, weight: 'bold', family: 'Poppins' },
+                        bodyFont: { size: 13, family: 'Poppins' },
+                        displayColors: false,
+                        callbacks: {
+                            title: function(context) {
+                                let label = context[0].label;
+                                let dateObj = new Date(label + ' 2026'); 
+                                let options = { weekday: 'long', day: 'numeric', month: 'short' };
+                                return dateObj.toLocaleDateString('id-ID', options);
                             },
-                            ticks: {
-                                font: { size: 10, family: 'Poppins' },
-                                callback: function(value) {
-                                    return 'Rp ' + value.toLocaleString('id-ID');
-                                }
+                            label: function(context) {
+                                let value = context.parsed.y;
+                                return ' Pendapatan Bersih: Rp ' + new Intl.NumberFormat('id-ID').format(value);
                             }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 10, family: 'Poppins' } }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(226, 232, 240, 0.5)', drawBorder: false },
+                        ticks: {
+                            font: { size: 10, family: 'Poppins' },
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
                         }
                     },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart'
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10, family: 'Poppins' } }
                     }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
                 }
-            });
+            }
         });
+    });
+</script>
 
-        function confirmBatal(id, kode) {
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for message in messages %}
             Swal.fire({
-                title: 'Batalkan Pesanan?',
-                text: "Pesanan " + kode + " akan dibatalkan. Pastikan Anda sudah menghubungi pelanggan jika diperlukan.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e11d48',
-                cancelButtonColor: '#64748b', 
-                confirmButtonText: 'YA, BATALKAN',
-                cancelButtonText: 'KEMBALI',
+                icon: '{% if message.tags == "error" %}error{% else %}success{% endif %}',
+                title: '{% if "Selamat datang" in message.message %}Selamat Datang!{% elif "Status" in message.message %}Status Update{% else %}Berhasil!{% endif %}',
+                text: '{{ message|escapejs }}',
                 borderRadius: '1.5rem',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('form-batal-' + id).submit();
-                }
-            })
-        }
-    </script>
-
-    {% if messages %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            {% for message in messages %}
-                Swal.fire({
-                    icon: '{% if message.tags == "error" %}error{% else %}success{% endif %}',
-                    title: '{% if "Selamat datang" in message.message %}Selamat Datang!{% elif "Status" in message.message %}Status Update{% else %}Berhasil!{% endif %}',
-                    text: '{{ message|escapejs }}',
-                    borderRadius: '1.5rem',
-                    confirmButtonColor: '#2563eb',
-                    confirmButtonText: 'OKE'
-                });
-            {% endfor %}
-        });
-    </script>
-    {% endif %}
+                confirmButtonColor: '#2563eb',
+                confirmButtonText: 'OKE'
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
 </body>
 </html>
