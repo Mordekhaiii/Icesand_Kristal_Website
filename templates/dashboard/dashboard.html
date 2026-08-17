@@ -20,7 +20,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Custom CSS Terpisah -->
-    <link rel="stylesheet" href="{% static 'css/dashboard_admin.css' %}?v={{ timestamp|default:'1.0' }}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v={{ timestamp|default:'1.0' }}">
     
     <!-- Core JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -64,14 +64,19 @@
             <i class="bi bi-list text-2xl"></i>
         </button>
 
-        <div class="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0">
-            <img src="{% static 'images/logo-icesand.png' %}" alt="Logo Icesand" class="h-full w-auto object-contain">
-        </div>
-        <h1 class="text-[13px] sm:text-[15px] font-extrabold text-slate-900 tracking-tight uppercase flex items-center gap-2">
-            DASHBOARD
-            <span class="header-company-title w-[1.5px] h-4 bg-slate-300 mx-1 inline-block rotate-12"></span>
-            <span class="header-company-title">PT. ICESAND KRISTAL PERKASA</span>
-        </h1>
+        <!-- Link Logo & Judul Dashboard -->
+        <a href="?menu=Beranda" 
+           @click="activeMenu = 'Beranda'; sidebarOpen = false" 
+           class="flex items-center gap-3 cursor-pointer group select-none">
+            <div class="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-105 transition-transform duration-200">
+                <img src="{% static 'images/logo-icesand.png' %}" alt="Logo Icesand" class="h-full w-auto object-contain">
+            </div>
+            <h1 class="text-[13px] sm:text-[15px] font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight uppercase flex items-center gap-2">
+                DASHBOARD
+                <span class="header-company-title w-[1.5px] h-4 bg-slate-300 mx-1 inline-block rotate-12"></span>
+                <span class="header-company-title text-slate-900">PT. ICESAND KRISTAL PERKASA</span>
+            </h1>
+        </a>
     </div>
 
     <div x-data="{ open: false }" class="relative">
@@ -614,7 +619,7 @@
     <div x-show="activeMenu === 'Produk'" x-transition x-cloak class="space-y-6">
         <div class="flex justify-between items-center mb-4">
             <div>
-                <h4 class="text-lg font-black text-slate-800 uppercase tracking-tighter">Katalog <span class="text-blue-600">Es Kristal</span></h4>
+                <h4 class="text-lg font-black text-slate-800 uppercase tracking-tighter">Katalog Es Kristal</span></h4>
                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Kelola stok dan harga publikasi</p>
             </div>
             <a href="{% url 'product_add' %}" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-[11px] font-black shadow-lg shadow-blue-200 uppercase tracking-wider transition-all hover:-translate-y-1">
