@@ -38,18 +38,10 @@
                         </p>
                     </div>
                     
-                    <!-- Badge Status Dinamis Berdasarkan Nilai Status -->
-                    {% if trx.status_bayar|lower == 'selesai' %}
-                        <span class="status-badge status-selesai">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
-                    {% elif trx.status_bayar|lower == 'sedang diproses' or trx.status_bayar|lower == 'diproses' %}
-                        <span class="status-badge status-proses">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
-                    {% elif trx.status_bayar|lower == 'dikirim' %}
-                        <span class="status-badge status-dikirim">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
-                    {% elif trx.status_bayar|lower == 'dibatalkan' or trx.status_bayar|lower == 'batal' %}
-                        <span class="status-badge status-batal">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
-                    {% else %}
-                        <span class="status-badge status-menunggu">{{ trx.get_status_bayar_display|default:trx.status_bayar }}</span>
-                    {% endif %}
+                    <!-- Badge Status dengan Auto Color Targetting -->
+                    <span class="status-badge auto-badge" data-status="{{ trx.status_bayar }}">
+                        {{ trx.get_status_bayar_display|default:trx.status_bayar }}
+                    </span>
                 </div>
                 
                 <div class="info-grid">
@@ -223,17 +215,9 @@
                                 <td>{{ item.tanggal|date:"d F Y" }}</td>
                                 <td>Rp {{ item.total_harga|floatformat:0|intcomma }}</td>
                                 <td>
-                                    {% if item.status_bayar|lower == 'selesai' %}
-                                        <span class="status-badge badge-sm status-selesai">{{ item.status_bayar }}</span>
-                                    {% elif item.status_bayar|lower == 'sedang diproses' or item.status_bayar|lower == 'diproses' %}
-                                        <span class="status-badge badge-sm status-proses">{{ item.status_bayar }}</span>
-                                    {% elif item.status_bayar|lower == 'dikirim' %}
-                                        <span class="status-badge badge-sm status-dikirim">{{ item.status_bayar }}</span>
-                                    {% elif item.status_bayar|lower == 'dibatalkan' or item.status_bayar|lower == 'batal' %}
-                                        <span class="status-badge badge-sm status-batal">{{ item.status_bayar }}</span>
-                                    {% else %}
-                                        <span class="status-badge badge-sm status-menunggu">{{ item.status_bayar }}</span>
-                                    {% endif %}
+                                    <span class="status-badge badge-sm auto-badge" data-status="{{ item.status_bayar }}">
+                                        {{ item.status_bayar }}
+                                    </span>
                                 </td>
                             </tr>
                             {% empty %}
@@ -255,6 +239,43 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Pewarnaan Otomatis Badge Status secara Universal
+        function applyStatusColors() {
+            document.querySelectorAll('.auto-badge').forEach(badge => {
+                const text = (badge.getAttribute('data-status') || badge.innerText || '').toLowerCase().trim();
+                
+                badge.classList.remove('status-selesai', 'status-proses', 'status-dikirim', 'status-batal', 'status-menunggu');
+                
+                if (text.includes('selesai')) {
+                    badge.classList.add('status-selesai');
+                } else if (text.includes('proses')) {
+                    badge.classList.add('status-proses');
+                } else if (text.includes('kirim') || text.includes('dikirim')) {
+                    badge.classList.add('status-dikirim');
+                } else if (text.includes('batal') || text.includes('dibatalkan')) {
+                    badge.classList.add('status-batal');
+                } else {
+                    badge.classList.add('status-menunggu');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyStatusColors();
+
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{% if message.tags == "success" %}success{% else %}info{% endif %}',
+                    title: 'Transaksi Berhasil!',
+                    text: '{{ message|escapejs }}',
+                    confirmButtonColor: '#00a8e8',
+                    borderRadius: '20px',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            {% endfor %}
+        });
+
         function openModalSelesai(trxId) {
             Swal.fire({
                 title: '<span style="font-size: 20px; font-weight: 800; color: #1e293b;">Selesaikan Pesanan?</span>',
@@ -490,20 +511,6 @@
                 }
             });
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            {% for message in messages %}
-                Swal.fire({
-                    icon: '{% if message.tags == "success" %}success{% else %}info{% endif %}',
-                    title: 'Transaksi Berhasil!',
-                    text: '{{ message|escapejs }}',
-                    confirmButtonColor: '#2563eb',
-                    borderRadius: '20px',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            {% endfor %}
-        });
     </script>
 </body>
 </html>

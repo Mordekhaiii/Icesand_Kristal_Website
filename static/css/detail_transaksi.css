@@ -42,6 +42,7 @@ body {
     color: var(--text-dark);
     padding: 30px 16px;
     margin: 0;
+    overflow-x: hidden;
 }
 
 .container {
@@ -54,6 +55,7 @@ body {
 .top-nav-wrapper {
     max-width: 1100px;
     margin: 0 auto 20px auto;
+    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-back {
@@ -69,13 +71,14 @@ body {
     border-radius: 14px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     font-size: 13px;
-    transition: 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-back:hover {
     background: var(--primary-blue);
     color: #fff;
-    transform: translateX(-3px);
+    transform: translateX(-4px);
+    box-shadow: 0 6px 18px rgba(0, 168, 232, 0.3);
 }
 
 .section-title {
@@ -85,6 +88,7 @@ body {
     margin-bottom: 25px;
     color: #0f172a;
     letter-spacing: -0.5px;
+    animation: fadeInDown 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Card Container */
@@ -95,6 +99,12 @@ body {
     margin-bottom: 22px;
     box-shadow: 0 10px 30px rgba(0, 168, 232, 0.07);
     border: 1px solid rgba(226, 232, 240, 0.9);
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.invoice-card:hover {
+    box-shadow: 0 14px 35px rgba(0, 168, 232, 0.12);
 }
 
 /* Header Invoice Card */
@@ -127,7 +137,7 @@ body {
 }
 
 /* ===================================================
-   BADGE STATUS DINAMIS & WARNA-WARNA KHUSUS
+   BADGE STATUS & WARNA-WARNA KHUSUS
    =================================================== */
 .status-badge {
     display: inline-flex !important;
@@ -141,6 +151,7 @@ body {
     white-space: nowrap;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
 }
 
 .status-badge.badge-sm {
@@ -148,7 +159,7 @@ body {
     padding: 5px 12px;
 }
 
-/* Class Warna Status */
+/* Class Modifier Warna Status */
 .status-menunggu {
     background-color: var(--status-menunggu-bg) !important;
     color: var(--status-menunggu-text) !important;
@@ -189,6 +200,12 @@ body {
     font-weight: 800;
     font-style: italic;
     white-space: nowrap;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.link-invoice:hover {
+    color: var(--primary-dark);
+    transform: scale(1.03);
 }
 
 .link-invoice i {
@@ -207,6 +224,11 @@ body {
     align-items: center;
     gap: 16px;
     padding: 8px 0;
+    transition: transform 0.2s ease;
+}
+
+.info-row:hover {
+    transform: translateX(4px);
 }
 
 .info-icon {
@@ -220,6 +242,13 @@ body {
     justify-content: center;
     flex-shrink: 0;
     font-size: 1.1rem;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.info-row:hover .info-icon {
+    background: var(--primary-blue);
+    color: white;
+    transform: rotate(6deg) scale(1.05);
 }
 
 .label-text {
@@ -324,6 +353,7 @@ body {
     font-size: 22px;
     font-weight: 900;
     font-style: italic;
+    animation: pulseTotal 2s infinite ease-in-out;
 }
 
 /* Stepper Status Pesanan (Desktop) */
@@ -354,13 +384,14 @@ body {
     margin: 0 auto 10px;
     color: #94a3b8;
     font-size: 1.1rem;
-    transition: 0.3s;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .step.active i {
     background: var(--primary-blue);
     color: white;
     box-shadow: 0 4px 14px rgba(0, 168, 232, 0.35);
+    transform: scale(1.08);
 }
 
 .step p {
@@ -403,7 +434,7 @@ body {
     justify-content: center;
     gap: 10px;
     text-decoration: none;
-    transition: 0.25s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
 }
 
@@ -439,8 +470,8 @@ body {
 .btn-print:hover,
 .btn-action-cancel:hover,
 .btn-action-complete:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.06);
+    transform: translateY(-3px);
+    filter: brightness(1.08);
 }
 
 /* Ulasan & Rating */
@@ -465,7 +496,12 @@ body {
     font-size: 13px;
     text-transform: uppercase;
     box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
-    transition: 0.3s;
+    transition: all 0.3s ease;
+}
+
+.btn-review:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
 }
 
 .review-done {
@@ -502,6 +538,40 @@ body {
 }
 
 /* ===================================================
+   KEYFRAME ANIMATIONS
+   =================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseTotal {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+/* ===================================================
    RESPONSIVE BREAKPOINTS KHUSUS MOBILE
    =================================================== */
 
@@ -529,9 +599,8 @@ body {
     }
 }
 
-/* Tampilan Khusus Mobile Phone (Card List & Header Vertikal) */
+/* Tampilan Khusus Mobile Phone (Card List) */
 @media (max-width: 640px) {
-    /* Header Card di Mobile agar rapi & tidak terpotong */
     .card-header-flex {
         flex-direction: column;
         align-items: flex-start;
@@ -542,7 +611,6 @@ body {
         font-size: 20px;
     }
 
-    /* Transformasi Tabel Riwayat Transaksi ke Card List */
     .history-card {
         background: transparent !important;
         border: none !important;
@@ -579,6 +647,12 @@ body {
         border: 1px solid #e2e8f0;
         border-radius: 18px;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+
+    .history-card .table-custom tr:hover {
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 8px 20px rgba(0, 168, 232, 0.08);
     }
 
     .history-card .table-custom td {
@@ -611,7 +685,7 @@ body {
         text-align: right;
     }
 
-    /* Stepper Status Pesanan Vertikal dengan Garis Alur */
+    /* Stepper Status Vertikal di Layar HP */
     .status-container {
         flex-direction: column;
         gap: 0;
