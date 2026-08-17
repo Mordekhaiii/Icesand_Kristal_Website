@@ -34,6 +34,7 @@ body {
   overflow-x: hidden;
 }
 
+
 /* =========================================
    NAVBAR & DROPDOWN
    ========================================= */
@@ -337,7 +338,7 @@ body {
 .hero-wrapper {
   display: flex;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1370px;
   margin: 0 auto;
   align-items: center;
   padding: 0 7%;
