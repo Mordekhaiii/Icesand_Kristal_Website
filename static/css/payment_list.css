@@ -76,51 +76,46 @@ body {
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
 }
 
-/* BOX PEMBAYARAN & TRANSFER REKENING */
-.bank-transfer-box,
-.qris-box {
+/* Box Rekening Transfer BCA */
+.bca-card {
     background: #f8fbff;
     border: 1px solid #d1e3ff;
-    padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px;
+    padding: 16px 18px;
     margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(26, 115, 232, 0.05);
 }
 
-.bank-header {
+.bca-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-.bank-badge {
-    background: #1a73e8;
+.bca-badge {
+    background-color: #00529c;
     color: #ffffff;
-    font-size: 0.8rem;
     font-weight: 700;
+    font-size: 0.8rem;
     padding: 4px 10px;
     border-radius: 6px;
+    letter-spacing: 0.5px;
     display: inline-flex;
     align-items: center;
+    gap: 6px;
 }
 
-.bank-instruction {
-    font-size: 0.88rem;
-    color: #5f6368;
-    margin-bottom: 14px;
-    line-height: 1.4;
-}
-
-/* Card Box Nomor Rekening */
-.rekening-card {
+.bca-account-box {
     background: #ffffff;
-    border: 1px solid #d1e3ff;
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
+    margin-top: 10px;
 }
 
 .rekening-detail {
@@ -129,59 +124,47 @@ body {
     min-width: 0;
 }
 
-.norek-val {
-    font-size: 1.25rem;
+.rekening-num {
+    font-family: monospace, sans-serif;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: #202124;
-    letter-spacing: 0.5px;
+    color: #1e293b;
+    letter-spacing: 0.8px;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
-.norek-an {
-    font-size: 0.82rem;
-    color: #70757a;
+.rekening-an {
+    font-size: 0.78rem;
+    color: #64748b;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.norek-an span {
-    font-weight: 600;
-    color: #333;
-}
-
-/* Tombol Salin */
-.btn-copy-norek {
+.btn-copy {
     flex-shrink: 0;
-    background-color: #1a73e8;
+    background: #1a73e8;
     color: #ffffff;
     border: none;
+    padding: 8px 14px;
     border-radius: 8px;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.2s ease;
 }
 
-.btn-copy-norek:hover {
-    background-color: #1557b0;
+.btn-copy:hover {
+    background: #1557b0;
 }
 
-.btn-copy-norek.copied {
-    background-color: #1e8e3e;
-}
-
-.qris-img {
-    max-width: 200px;
-    margin: 15px 0;
-    border: 2px solid #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.btn-copy.copied {
+    background: #16a34a !important;
+    color: #ffffff !important;
 }
 
 /* Tombol Utama Submit */
@@ -203,44 +186,52 @@ body {
     background-color: #1557b0;
 }
 
-/* SIDEBAR STYLING */
+/* SIDEBAR STYLING (RINGKASAN PESANAN) */
 .checkout-sidebar {
     flex: 1;
     position: sticky;
     top: 30px;
+    min-width: 340px;
 }
 
 .sidebar-card {
     background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #edf2f7;
 }
 
 .sidebar-title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     margin-bottom: 20px;
-    font-weight: 600;
-    color: #202124;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.2px;
+}
+
+.order-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .item-row {
     display: flex;
-    gap: 15px;
     align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f1f3f4;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .item-img-container {
-    width: 65px;
-    height: 65px;
-    border-radius: 6px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
     overflow: hidden;
-    background: #f8f9fa;
+    background: #f8fafc;
     flex-shrink: 0;
-    border: 1px solid #eee;
+    border: 1px solid #e2e8f0;
 }
 
 .checkout-item-img {
@@ -250,55 +241,73 @@ body {
 }
 
 .item-info {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
+    padding-right: 6px;
 }
 
 .item-name {
-    font-weight: 500;
-    font-size: 0.85rem;
-    color: #000;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1e293b;
     display: block;
-    line-height: 1.4;
+    line-height: 1.35;
+    margin-bottom: 3px;
 }
 
 .item-qty {
     font-size: 0.8rem;
-    color: #70757a;
+    color: #64748b;
+    display: block;
 }
 
+/* KUNCI: nowrap agar nominal Rp 20.000 tidak patah baris */
 .item-subtotal {
-    font-weight: 600;
+    flex-shrink: 0;
+    text-align: right;
+    white-space: nowrap;
+    font-weight: 700;
     color: #1a73e8;
     font-size: 0.95rem;
 }
 
-/* Bagian Total */
+/* Bagian Total Bawah */
 .order-total-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 15px;
+    background: #f8fafc;
+    padding: 16px 18px;
+    border-radius: 12px;
+    margin-top: 18px;
+    border: 1px solid #e2e8f0;
 }
 
 .total-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #5f6368;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.88rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.total-row:last-child {
+    margin-bottom: 0;
 }
 
 .main-total {
-    border-top: 1px solid #dadce0;
-    padding-top: 15px;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 12px;
     margin-top: 10px;
     font-weight: 700;
-    color: #202124;
+    color: #0f172a;
+    font-size: 1rem;
 }
 
 .price-tag {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    font-weight: 800;
     color: #1a73e8;
+    white-space: nowrap;
 }
 
 .back-to-shop a {
@@ -315,35 +324,7 @@ body {
     text-decoration: underline;
 }
 
-/* TOAST POPUP NOTIFIKASI (MOBILE & DESKTOP) */
-.toast-container {
-    position: fixed;
-    top: 25px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-40px);
-    background-color: #202124;
-    color: #ffffff;
-    padding: 12px 22px;
-    border-radius: 50px;
-    font-size: 0.88rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-}
-
-.toast-container.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-    pointer-events: auto;
-}
-
-/* MEDIA QUERIES (RESPONSIVE BREAKPOINTS) */
+/* MEDIA QUERIES RESPONSIVE */
 @media (max-width: 1024px) {
     .checkout-container {
         max-width: 95%;
@@ -362,56 +343,55 @@ body {
     }
     .checkout-sidebar {
         width: 100%;
+        min-width: 100%;
         position: static;
     }
 }
 
-/* Optimasi Layar HP (Poco / Android) */
 @media (max-width: 480px) {
     .checkout-container {
         padding: 0 10px;
         margin: 12px auto;
     }
-
     .checkout-form-section {
         padding: 20px 14px;
         border-radius: 10px;
     }
-
     .checkout-title {
         font-size: 1.3rem;
         margin-bottom: 20px;
     }
-
-    .bank-transfer-box {
+    .bca-card {
         padding: 14px 12px;
     }
-
-    .rekening-card {
-        padding: 12px 10px;
+    .bca-account-box {
+        padding: 10px 12px;
         gap: 8px;
     }
-
-    .norek-val {
-        font-size: 1.1rem;
+    .rekening-num {
+        font-size: 1.05rem;
     }
-
-    .norek-an {
+    .rekening-an {
+        font-size: 0.72rem;
+    }
+    .btn-copy {
+        padding: 7px 11px;
         font-size: 0.75rem;
     }
-
-    .btn-copy-norek {
-        padding: 8px 12px;
-        font-size: 0.78rem;
+    .sidebar-card {
+        padding: 18px 14px;
     }
-
-    .toast-container {
-        width: 90%;
-        max-width: 320px;
-        justify-content: center;
-        text-align: center;
-        top: 15px;
-        font-size: 0.8rem;
-        padding: 10px 16px;
+    .item-img-container {
+        width: 50px;
+        height: 50px;
+    }
+    .item-name {
+        font-size: 0.85rem;
+    }
+    .item-subtotal {
+        font-size: 0.88rem;
+    }
+    .price-tag {
+        font-size: 1.15rem;
     }
 }
