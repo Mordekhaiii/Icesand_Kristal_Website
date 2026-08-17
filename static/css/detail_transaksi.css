@@ -9,7 +9,7 @@
 
     /* Palette Warna Badge Status */
     --status-menunggu-bg: #fef3c7;
-    --status-menunggu-text: #b45309;
+    --status-menunggu-text: #92400e;
     --status-menunggu-border: #fcd34d;
 
     --status-proses-bg: #e0f2fe;
@@ -17,15 +17,15 @@
     --status-proses-border: #bae6fd;
 
     --status-dikirim-bg: #ede9fe;
-    --status-dikirim-text: #6d28d9;
+    --status-dikirim-text: #5b21b6;
     --status-dikirim-border: #ddd6fe;
 
     --status-selesai-bg: #dcfce7;
-    --status-selesai-text: #15803d;
+    --status-selesai-text: #166534;
     --status-selesai-border: #86efac;
 
     --status-batal-bg: #fee2e2;
-    --status-batal-text: #b91c1c;
+    --status-batal-text: #991b1b;
     --status-batal-border: #fca5a5;
 }
 
@@ -55,7 +55,7 @@ body {
 .top-nav-wrapper {
     max-width: 1100px;
     margin: 0 auto 20px auto;
-    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeInDown 0.5s ease-out;
 }
 
 .btn-back {
@@ -88,7 +88,7 @@ body {
     margin-bottom: 25px;
     color: #0f172a;
     letter-spacing: -0.5px;
-    animation: fadeInDown 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeInDown 0.6s ease-out;
 }
 
 /* Card Container */
@@ -99,15 +99,10 @@ body {
     margin-bottom: 22px;
     box-shadow: 0 10px 30px rgba(0, 168, 232, 0.07);
     border: 1px solid rgba(226, 232, 240, 0.9);
-    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.6s ease-out both;
 }
 
-.invoice-card:hover {
-    box-shadow: 0 14px 35px rgba(0, 168, 232, 0.12);
-}
-
-/* Header Invoice Card */
+/* Header Card Detail */
 .card-header-flex {
     display: flex;
     justify-content: space-between;
@@ -136,58 +131,59 @@ body {
     color: #cbd5e1;
 }
 
-/* ===================================================
-   BADGE STATUS & WARNA-WARNA KHUSUS
-   =================================================== */
+/* Status Badge */
 .status-badge {
     display: inline-flex !important;
     align-items: center;
-    justify-content: center;
-    padding: 7px 18px;
+    gap: 7px;
+    padding: 8px 18px;
     border-radius: 50px;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 800;
     text-transform: uppercase;
     white-space: nowrap;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .status-badge.badge-sm {
-    font-size: 10px;
-    padding: 5px 12px;
+    font-size: 10.5px;
+    padding: 6px 14px;
 }
 
-/* Class Modifier Warna Status */
+.status-badge i {
+    font-size: 1.1em;
+}
+
+/* Modifier Warna Khusus Tiap Status */
 .status-menunggu {
     background-color: var(--status-menunggu-bg) !important;
     color: var(--status-menunggu-text) !important;
-    border: 1px solid var(--status-menunggu-border) !important;
+    border: 1.5px solid var(--status-menunggu-border) !important;
 }
 
 .status-proses {
     background-color: var(--status-proses-bg) !important;
     color: var(--status-proses-text) !important;
-    border: 1px solid var(--status-proses-border) !important;
+    border: 1.5px solid var(--status-proses-border) !important;
 }
 
 .status-dikirim {
     background-color: var(--status-dikirim-bg) !important;
     color: var(--status-dikirim-text) !important;
-    border: 1px solid var(--status-dikirim-border) !important;
+    border: 1.5px solid var(--status-dikirim-border) !important;
 }
 
 .status-selesai {
     background-color: var(--status-selesai-bg) !important;
     color: var(--status-selesai-text) !important;
-    border: 1px solid var(--status-selesai-border) !important;
+    border: 1.5px solid var(--status-selesai-border) !important;
 }
 
 .status-batal {
     background-color: var(--status-batal-bg) !important;
     color: var(--status-batal-text) !important;
-    border: 1px solid var(--status-batal-border) !important;
+    border: 1.5px solid var(--status-batal-border) !important;
 }
 
 /* Link ID Invoice */
@@ -205,7 +201,7 @@ body {
 
 .link-invoice:hover {
     color: var(--primary-dark);
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
 .link-invoice i {
@@ -224,11 +220,6 @@ body {
     align-items: center;
     gap: 16px;
     padding: 8px 0;
-    transition: transform 0.2s ease;
-}
-
-.info-row:hover {
-    transform: translateX(4px);
 }
 
 .info-icon {
@@ -242,13 +233,6 @@ body {
     justify-content: center;
     flex-shrink: 0;
     font-size: 1.1rem;
-    transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.info-row:hover .info-icon {
-    background: var(--primary-blue);
-    color: white;
-    transform: rotate(6deg) scale(1.05);
 }
 
 .label-text {
@@ -353,10 +337,9 @@ body {
     font-size: 22px;
     font-weight: 900;
     font-style: italic;
-    animation: pulseTotal 2s infinite ease-in-out;
 }
 
-/* Stepper Status Pesanan (Desktop) */
+/* Status Pesanan Detail Transaksi */
 .status-container {
     display: flex;
     justify-content: space-between;
@@ -375,27 +358,47 @@ body {
 
 .step i {
     background: #e2e8f0;
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 10px;
     color: #94a3b8;
-    font-size: 1.1rem;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 1.15rem;
+    transition: all 0.35s ease;
 }
 
 .step.active i {
     background: var(--primary-blue);
     color: white;
-    box-shadow: 0 4px 14px rgba(0, 168, 232, 0.35);
-    transform: scale(1.08);
+    box-shadow: 0 0 0 0 rgba(0, 168, 232, 0.6);
+    animation: activeStepPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+.step.active.step-menunggu i {
+    background: #f59e0b;
+    animation: waitingPulse 2s infinite ease-in-out;
+}
+
+.step.active.step-proses i {
+    background: #0284c7;
+    animation: rotateSlow 4s linear infinite;
+}
+
+.step.active.step-dikirim i {
+    background: #7c3aed;
+    animation: driveTruck 1.8s infinite ease-in-out;
+}
+
+.step.active.step-selesai i {
+    background: #10b981;
+    animation: popSuccess 0.6s ease-out;
 }
 
 .step p {
-    font-size: 11px;
+    font-size: 11.5px;
     color: var(--text-muted);
     margin: 0;
     font-weight: 700;
@@ -404,6 +407,7 @@ body {
 
 .step.active p {
     color: var(--primary-blue);
+    font-weight: 800;
 }
 
 /* Tombol Aksi */
@@ -501,7 +505,6 @@ body {
 
 .btn-review:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
 }
 
 .review-done {
@@ -525,11 +528,6 @@ body {
     text-decoration: none;
     font-weight: 700;
     font-size: 13px;
-    transition: 0.2s;
-}
-
-.bottom-nav-link a:hover {
-    color: var(--primary-blue);
 }
 
 .empty-state {
@@ -538,8 +536,61 @@ body {
 }
 
 /* ===================================================
-   KEYFRAME ANIMATIONS
+   ANIMATION KEYFRAMES
    =================================================== */
+@keyframes activeStepPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 168, 232, 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(0, 168, 232, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 168, 232, 0);
+    }
+}
+
+@keyframes waitingPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+}
+
+@keyframes rotateSlow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes driveTruck {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(4px);
+    }
+}
+
+@keyframes popSuccess {
+    0% {
+        transform: scale(0.7);
+    }
+    70% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -562,19 +613,9 @@ body {
     }
 }
 
-@keyframes pulseTotal {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.02);
-    }
-}
-
 /* ===================================================
    RESPONSIVE BREAKPOINTS KHUSUS MOBILE
    =================================================== */
-
 @media (max-width: 768px) {
     body {
         padding: 20px 14px;
@@ -599,7 +640,6 @@ body {
     }
 }
 
-/* Tampilan Khusus Mobile Phone (Card List) */
 @media (max-width: 640px) {
     .card-header-flex {
         flex-direction: column;
@@ -611,6 +651,7 @@ body {
         font-size: 20px;
     }
 
+    /* Card List Riwayat Transaksi */
     .history-card {
         background: transparent !important;
         border: none !important;
@@ -651,7 +692,7 @@ body {
     }
 
     .history-card .table-custom tr:hover {
-        transform: translateY(-3px) scale(1.01);
+        transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(0, 168, 232, 0.08);
     }
 
@@ -706,8 +747,8 @@ body {
     .step:not(:last-child)::after {
         content: '';
         position: absolute;
-        left: 20px;
-        top: 48px;
+        left: 21px;
+        top: 50px;
         width: 2px;
         height: calc(100% - 30px);
         background: #e2e8f0;
@@ -720,15 +761,15 @@ body {
 
     .step i {
         margin: 0;
-        width: 42px;
-        height: 42px;
-        font-size: 1rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.05rem;
         flex-shrink: 0;
         z-index: 2;
     }
 
     .step p {
-        font-size: 12px;
+        font-size: 12.5px;
     }
 }
 

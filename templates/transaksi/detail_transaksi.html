@@ -38,7 +38,7 @@
                         </p>
                     </div>
                     
-                    <!-- Badge Status dengan Auto Color Targetting -->
+                    <!-- Badge Status dengan Icon Otomatis -->
                     <span class="status-badge auto-badge" data-status="{{ trx.status_bayar }}">
                         {{ trx.get_status_bayar_display|default:trx.status_bayar }}
                     </span>
@@ -133,17 +133,17 @@
                 <p class="section-subtitle"><i class="fas fa-truck-fast" style="color: var(--primary-blue);"></i> Status Pesanan</p>
                 
                 <div class="status-container">
-                    <div class="step active">
-                        <i class="fas fa-clock"></i>
-                        <p>Menunggu Konfirmasi</p>
+                    <div class="step active step-menunggu">
+                        <i class="fas fa-hourglass-half"></i>
+                        <p class="menunggu">Menunggu Konfirmasi</p>
                     </div>
 
-                    <div class="step {% if trx.status_bayar|lower == 'sedang diproses' or trx.status_bayar|lower == 'diproses' or trx.status_bayar|lower == 'dikirim' or trx.status_bayar|lower == 'selesai' %}active{% endif %}">
+                    <div class="step {% if trx.status_bayar|lower == 'sedang diproses' or trx.status_bayar|lower == 'diproses' or trx.status_bayar|lower == 'dikirim' or trx.status_bayar|lower == 'selesai' %}active step-proses{% endif %}">
                         <i class="fas fa-box-open"></i>
                         <p>Sedang Diproses</p>
                     </div>
 
-                    <div class="step {% if trx.status_bayar|lower == 'dikirim' or trx.status_bayar|lower == 'selesai' %}active{% endif %}">
+                    <div class="step {% if trx.status_bayar|lower == 'dikirim' or trx.status_bayar|lower == 'selesai' %}active step-dikirim{% endif %}">
                         <i class="fas fa-truck"></i>
                         <p>Dikirim</p>
                     </div>
@@ -154,7 +154,7 @@
                             <p style="color: #ef4444;">Dibatalkan</p>
                         </div>
                     {% else %}
-                        <div class="step {% if trx.status_bayar|lower == 'selesai' %}active{% endif %}">
+                        <div class="step {% if trx.status_bayar|lower == 'selesai' %}active step-selesai{% endif %}">
                             <i class="fas fa-check-circle"></i>
                             <p>Selesai</p>
                         </div>
@@ -215,6 +215,7 @@
                                 <td>{{ item.tanggal|date:"d F Y" }}</td>
                                 <td>Rp {{ item.total_harga|floatformat:0|intcomma }}</td>
                                 <td>
+                                    <!-- Badge Status dengan Icon Otomatis -->
                                     <span class="status-badge badge-sm auto-badge" data-status="{{ item.status_bayar }}">
                                         {{ item.status_bayar }}
                                     </span>
@@ -239,29 +240,39 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Pewarnaan Otomatis Badge Status secara Universal
-        function applyStatusColors() {
+        // Pewarnaan & Penyisipan Icon Otomatis pada Badge
+        function applyStatusColorsAndIcons() {
             document.querySelectorAll('.auto-badge').forEach(badge => {
                 const text = (badge.getAttribute('data-status') || badge.innerText || '').toLowerCase().trim();
                 
                 badge.classList.remove('status-selesai', 'status-proses', 'status-dikirim', 'status-batal', 'status-menunggu');
                 
+                let iconHtml = '';
+                let label = badge.innerText.trim();
+
                 if (text.includes('selesai')) {
                     badge.classList.add('status-selesai');
+                    iconHtml = '<i class="fas fa-check-circle"></i>';
                 } else if (text.includes('proses')) {
                     badge.classList.add('status-proses');
+                    iconHtml = '<i class="fas fa-box-open"></i>';
                 } else if (text.includes('kirim') || text.includes('dikirim')) {
                     badge.classList.add('status-dikirim');
+                    iconHtml = '<i class="fas fa-truck-fast"></i>';
                 } else if (text.includes('batal') || text.includes('dibatalkan')) {
                     badge.classList.add('status-batal');
+                    iconHtml = '<i class="fas fa-circle-xmark"></i>';
                 } else {
                     badge.classList.add('status-menunggu');
+                    iconHtml = '<i class="fas fa-hourglass-half"></i>';
                 }
+
+                badge.innerHTML = `${iconHtml} <span>${label}</span>`;
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            applyStatusColors();
+            applyStatusColorsAndIcons();
 
             {% for message in messages %}
                 Swal.fire({
