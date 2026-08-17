@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkout | PT. ICESAND KRISTAL PERKASA</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'css/payment_list.css' %}?v={{ timestamp }}"/>
     <link rel="icon" href="{% static 'images/logo-icesand.png' %}">
 
@@ -15,34 +15,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
     <style>
-        /* Styling khusus untuk Kotak Rekening Transfer BCA yang diperbagus */
+        /* Styling Box Rekening BCA Responsive */
         .bca-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
-            border: 1px solid #bae6fd;
-            border-radius: 16px;
-            padding: 18px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.08);
-            transition: all 0.3s ease;
+            background: #f8fbff;
+            border: 1px solid #d1e3ff;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px rgba(26, 115, 232, 0.05);
         }
 
         .bca-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
-            border-bottom: 1px border-dashed #e0f2fe;
-            padding-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .bca-badge {
             background-color: #00529c;
             color: #ffffff;
-            font-weight: 800;
-            font-size: 0.85rem;
-            padding: 3px 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 4px 10px;
             border-radius: 6px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -51,40 +48,83 @@
         .bca-account-box {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px 16px;
+            border-radius: 10px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 8px;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .rekening-detail {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
 
         .rekening-num {
             font-family: monospace, sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #0f172a;
-            letter-spacing: 1px;
+            color: #1e293b;
+            letter-spacing: 0.8px;
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .rekening-an {
+            font-size: 0.78rem;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .btn-copy {
-            background: #e0f2fe;
-            color: #0284c7;
+            flex-shrink: 0;
+            background: #1a73e8;
+            color: #ffffff;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .btn-copy:hover {
-            background: #0284c7;
-            color: #ffffff;
+            background: #1557b0;
+        }
+
+        .btn-copy.copied {
+            background: #16a34a !important;
+            color: #ffffff !important;
+        }
+
+        /* Penyesuaian Khusus Layar Smartphone */
+        @media (max-width: 480px) {
+            .bca-card {
+                padding: 14px 12px;
+            }
+            .bca-account-box {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .rekening-num {
+                font-size: 1.05rem;
+            }
+            .rekening-an {
+                font-size: 0.72rem;
+            }
+            .btn-copy {
+                padding: 7px 11px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -107,12 +147,6 @@
                     {{ form.telepon }}
                 </div>
 
-                {% comment %} UNTUK WILAYAH SEMISAL KAB. BOGOR dll <div class="form-group">
-                    <label for="id_wilayah_tujuan">Wilayah Tujuan Pengiriman</label>
-                    {{ form.wilayah_tujuan }}
-                </div>
-                {% endcomment %}
-                
                 <div class="form-group">
                     <label for="id_alamat_lengkap">Alamat Pengiriman</label>
                     {{ form.alamat_lengkap }}
@@ -123,30 +157,31 @@
                     {{ form.metode_pembayaran }}
                 </div>
 
-                <!-- TAMPILAN REKENING TRANSFER BANK BCA DENGAN DESAIN BARU -->
+                <!-- BOX REKENING TRANSFER BANK BCA -->
                 <div id="qris-container" class="bca-card" style="display: none;">
                     <div class="bca-header">
                         <span class="bca-badge">
                             <i class="fas fa-university"></i> BCA
                         </span>
-                        <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">
+                        <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">
                             Transfer Bank Manual
                         </span>
                     </div>
 
-                    <p style="font-size: 0.8rem; color: #475569; margin-bottom: 6px; font-weight: 600;">
+                    <p style="font-size: 0.82rem; color: #475569; margin-bottom: 6px;">
                         Silakan transfer sesuai nominal ke rekening berikut:
                     </p>
 
                     <div class="bca-account-box">
-                        <div>
+                        <div class="rekening-detail">
                             <div class="rekening-num" id="nomorRekening">1740589438</div>
-                            <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
-                                A/N: <strong>REZON SUPRIATNA</strong>
+                            <div class="rekening-an">
+                                A/N: <strong style="color: #334155;">REZON SUPRIATNA</strong>
                             </div>
                         </div>
-                        <button type="button" class="btn-copy" onclick="copyRekening()">
-                            <i class="far fa-copy"></i> Salin
+                        <button type="button" class="btn-copy" id="btnCopyRek" onclick="copyRekening()">
+                            <i class="far fa-copy" id="btnCopyIcon"></i> 
+                            <span id="btnCopyText">Salin</span>
                         </button>
                     </div>
                 </div>
@@ -205,21 +240,6 @@
                         <span>Rp {{ trx.total_harga|floatformat:0|intcomma }}</span>
                     </div>
                     
-                    {% comment %} <div class="total-row text-muted" id="row-ongkir" style="font-size: 0.9em; display: none;">
-                        <span>Biaya Ongkos Kirim</span>
-                        <span id="val-ongkir">Rp 0</span>
-                    </div> {% endcomment %}
-                    {% comment %} <div class="total-row text-muted" id="row-kemasan" style="font-size: 0.9em; display: none;">
-                        <span>Biaya Kemasan</span>
-                        <span id="val-kemasan">Rp 0</span>
-                    </div> {% endcomment %}
-                    {% comment %} <div class="total-row text-muted" id="row-layanan" style="font-size: 0.9em; display: none;">
-                        <span>Biaya Layanan</span>
-                        <span id="val-layanan">Rp 2.000</span>
-                    </div> {% endcomment %}
-                    
-                    {% comment %} <hr style="margin: 8px 0; border-top: 1px dashed #ccc;"> {% endcomment %}
-                    
                     <div class="total-row main-total">
                         <span>Total Bayar</span>
                         <span class="price-tag" id="val-total-akhir">Rp {{ trx.total_harga|floatformat:0|intcomma }}</span>
@@ -233,153 +253,143 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        // --- FITUR SALIN NOMOR REKENING ---
-        function copyRekening() {
-            const rekText = document.getElementById('nomorRekening').innerText;
-            navigator.clipboard.writeText(rekText).then(() => {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true
-                });
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Nomor Rekening BCA Berhasil Disalin!'
-                });
+   <script>
+    // --- FITUR SALIN NOMOR REKENING (SUPPORT HTTP/IP & HTTPS HP) ---
+    function copyRekening() {
+        const rekText = document.getElementById('nomorRekening').innerText.trim();
+        const btn = document.getElementById('btnCopyRek');
+        const btnText = document.getElementById('btnCopyText');
+        const btnIcon = document.getElementById('btnCopyIcon');
+
+        const showSuccess = () => {
+            if (btn) btn.classList.add('copied');
+            if (btnText) btnText.innerText = 'Tersalin';
+            if (btnIcon) btnIcon.className = 'fas fa-check';
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.style.zIndex = '99999';
+                }
             });
+            Toast.fire({
+                icon: 'success',
+                title: 'Nomor rekening berhasil disalin!'
+            });
+
+            setTimeout(() => {
+                if (btn) btn.classList.remove('copied');
+                if (btnText) btnText.innerText = 'Salin';
+                if (btnIcon) btnIcon.className = 'far fa-copy';
+            }, 2000);
+        };
+
+        // Menggunakan navigator clipboard jika ada, jika tidak fallback ke execCommand (khusus HTTP lokal / HP)
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(rekText)
+                .then(showSuccess)
+                .catch(() => fallbackCopy(rekText, showSuccess));
+        } else {
+            fallbackCopy(rekText, showSuccess);
         }
+    }
 
-        // --- 1. LOGIKA VALIDASI METODE PEMBAYARAN & BUTTON CANCEL ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const selectMetode = document.querySelector('select[name="metode_pembayaran"]');
-            const qrisBox = document.getElementById('qris-container');
-            const fileInput = document.querySelector('input[name="bukti_pembayaran"]');
-            const helperText = document.getElementById('helper-text');
-            const paymentForm = document.getElementById('mainPaymentForm');
+    function fallbackCopy(text, callback) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        textArea.setAttribute("readonly", "");
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
 
-            const togglePaymentView = () => {
-                if (!selectMetode) return;
-                const val = selectMetode.value.toLowerCase();
-                const isNonTunai = val.includes('transfer') || val.includes('non') || val.includes('qris');
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                callback();
+            } else {
+                prompt("Salin nomor rekening manual:", text);
+            }
+        } catch (err) {
+            prompt("Salin nomor rekening manual:", text);
+        }
+        document.body.removeChild(textArea);
+    }
 
-                if (isNonTunai) {
-                    qrisBox.style.display = 'block';
+    // --- VALIDASI METODE PEMBAYARAN & SUBMIT FORM ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectMetode = document.querySelector('select[name="metode_pembayaran"]');
+        const transferBox = document.getElementById('qris-container');
+        const fileInput = document.querySelector('input[name="bukti_pembayaran"]');
+        const helperText = document.getElementById('helper-text');
+        const paymentForm = document.getElementById('mainPaymentForm');
+
+        const togglePaymentView = () => {
+            if (!selectMetode) return;
+            const val = selectMetode.value.toLowerCase();
+            const isNonTunai = val.includes('transfer') || val.includes('non');
+
+            if (isNonTunai) {
+                if (transferBox) transferBox.style.display = 'block';
+                if (helperText) {
                     helperText.style.color = '#ef4444';
                     helperText.innerHTML = '*Wajib upload bukti transfer';
-                } else {
-                    qrisBox.style.display = 'none';
+                }
+            } else {
+                if (transferBox) transferBox.style.display = 'none';
+                if (helperText) {
                     helperText.style.color = '#94a3b8';
                     helperText.innerHTML = '*Abaikan jika memilih metode Cash';
                 }
-            };
-
-            if (selectMetode) {
-                selectMetode.addEventListener('change', togglePaymentView);
-                togglePaymentView(); 
             }
+        };
 
-            if (paymentForm) {
-                paymentForm.addEventListener('submit', (e) => {
-                    const val = selectMetode.value.toLowerCase();
-                    const isNonTunai = val.includes('transfer') || val.includes('non') || val.includes('qris');
+        if (selectMetode) {
+            selectMetode.addEventListener('change', togglePaymentView);
+            togglePaymentView(); 
+        }
 
-                    if (isNonTunai && (!fileInput.files || fileInput.files.length === 0)) {
-                        e.preventDefault();
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Bukti Pembayaran Kosong',
-                            text: 'Silakan upload bukti transfer Anda terlebih dahulu.',
-                            confirmButtonColor: '#2563eb'
-                        });
-                    }
-                });
-            }
-        });
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', (e) => {
+                const val = selectMetode ? selectMetode.value.toLowerCase() : '';
+                const isNonTunai = val.includes('transfer') || val.includes('non');
 
-        // --- 2. LOGIKA HITUNG RINCIAN BIAYA WILAYAH secara REAL-TIME ---
-        {% comment %} document.addEventListener('DOMContentLoaded', function () {
-            const wilayahSelect = document.getElementById('id_wilayah_tujuan'); 
-            
-            const rowOngkir = document.getElementById('row-ongkir');
-            const rowKemasan = document.getElementById('row-kemasan');
-            const rowLayanan = document.getElementById('row-layanan');
-            
-            const valOngkir = document.getElementById('val-ongkir');
-            const valKemasan = document.getElementById('val-kemasan');
-            const valTotalAkhir = document.getElementById('val-total-akhir');
-            
-            const totalHargaProduk = parseFloat("{{ trx.total_harga|default:0 }}");
-
-            function hitungBiayaOtomatis() {
-                if (!wilayahSelect || wilayahSelect.value === "") {
-                    if (rowOngkir) rowOngkir.style.display = 'none';
-                    if (rowKemasan) rowKemasan.style.display = 'none';
-                    if (rowLayanan) rowLayanan.style.display = 'none';
-                    valTotalAkhir.innerText = "Rp " + totalHargaProduk.toLocaleString('id-ID');
-                    return;
-                }
-
-                const selectedOption = wilayahSelect.options[wilayahSelect.selectedIndex];
-                const textPilihan = selectedOption.text; 
-
-                // 1. Ambil nominal Ongkos Kirim otomatis dari text dropdown
-                let ongkir = 0;
-                const matchOngkir = textPilihan.match(/Rp\s?([\d,.]+)/i);
-                if (matchOngkir) {
-                    ongkir = parseFloat(matchOngkir[1].replace(/[,.]/g, ''));
-                } else {
-                    ongkir = 0; 
-                }
-
-                // 2. Logika Penentuan Biaya Kemasan
-                let biayaKemasan = 0; 
-                if (textPilihan.toLowerCase().includes('luar bogor')) {
-                    biayaKemasan = 25000; 
-                    if (valKemasan) valKemasan.innerText = "Rp " + biayaKemasan.toLocaleString('id-ID') + " (Styrofoam)";
-                } else {
-                    biayaKemasan = 0;
-                    if (valKemasan) valKemasan.innerText = "Gratis (Plastik)";
-                }
-
-                let biayaLayanan = 2000; 
-
-                // 3. Kalkulasi Total Akhir
-                let totalAkhir = totalHargaProduk + ongkir + biayaKemasan + biayaLayanan;
-
-                // 4. Update Tampilan ke Layar
-                if (valOngkir) valOngkir.innerText = "Rp " + ongkir.toLocaleString('id-ID');
-                valTotalAkhir.innerText = "Rp " + totalAkhir.toLocaleString('id-ID');
-
-                if (rowOngkir) rowOngkir.style.display = 'flex';
-                if (rowKemasan) rowKemasan.style.display = 'flex';
-                if (rowLayanan) rowLayanan.style.display = 'flex';
-            }
-
-            if (wilayahSelect) {
-                wilayahSelect.addEventListener('change', hitungBiayaOtomatis);
-                hitungBiayaOtomatis();
-            }
-        }); {% endcomment %}
-
-        function confirmCancel() {
-            Swal.fire({
-                title: 'Batalkan Pesanan?',
-                text: "Jika Anda kembali, data pesanan sementara ini akan dihapus.",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: 'Ya, Batalkan',
-                cancelButtonText: 'Tidak'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('cancelForm').submit();
+                if (isNonTunai && (!fileInput.files || fileInput.files.length === 0)) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Bukti Pembayaran Kosong',
+                        text: 'Silakan upload bukti transfer Anda terlebih dahulu.',
+                        confirmButtonColor: '#1a73e8'
+                    });
                 }
             });
         }
-    </script>
+    });
+
+    // --- KONFIRMASI BATAL PESANAN ---
+    function confirmCancel() {
+        Swal.fire({
+            title: 'Batalkan Pesanan?',
+            text: "Jika Anda kembali, data pesanan sementara ini akan dihapus.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Batalkan',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('cancelForm').submit();
+            }
+        });
+    }
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* CSS untuk Checkout PT. ICESAND KRISTAL PERKASA 
-   Tema: Profesional Blue & Wide Layout
+   Tema: Profesional Blue & Wide Layout (Full Responsive Mobile & Desktop)
 */
 
 * {
@@ -17,7 +17,7 @@ body {
     color: #333;
 }
 
-/* Container dibuat sangat lebar agar tidak terlihat sempit di monitor besar */
+/* Container */
 .checkout-container {
     max-width: 1400px;
     margin: 30px auto;
@@ -29,7 +29,7 @@ body {
 
 /* Bagian Kiri (Form) */
 .checkout-form-section {
-    flex: 2; /* Form lebih lebar */
+    flex: 2;
     background: #ffffff;
     padding: 35px;
     border-radius: 12px;
@@ -39,7 +39,7 @@ body {
 .checkout-title {
     font-size: 1.6rem;
     margin-bottom: 30px;
-    color: #1a73e8; /* Biru Google/Profesional */
+    color: #1a73e8;
     font-weight: 600;
     border-left: 5px solid #1a73e8;
     padding-left: 15px;
@@ -64,7 +64,7 @@ body {
     padding: 14px;
     border: 1px solid #ced4da;
     border-radius: 8px;
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     transition: all 0.2s ease;
 }
@@ -76,13 +76,104 @@ body {
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
 }
 
-/* Box Pembayaran */
+/* BOX PEMBAYARAN & TRANSFER REKENING */
+.bank-transfer-box,
 .qris-box {
-    background: #f8fbff; /* Biru sangat muda */
+    background: #f8fbff;
     border: 1px solid #d1e3ff;
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
+}
+
+.bank-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.bank-badge {
+    background: #1a73e8;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.bank-instruction {
+    font-size: 0.88rem;
+    color: #5f6368;
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+/* Card Box Nomor Rekening */
+.rekening-card {
+    background: #ffffff;
+    border: 1px solid #d1e3ff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.rekening-detail {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.norek-val {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #202124;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.norek-an {
+    font-size: 0.82rem;
+    color: #70757a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.norek-an span {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Tombol Salin */
+.btn-copy-norek {
+    flex-shrink: 0;
+    background-color: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-copy-norek:hover {
+    background-color: #1557b0;
+}
+
+.btn-copy-norek.copied {
+    background-color: #1e8e3e;
 }
 
 .qris-img {
@@ -93,10 +184,10 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Tombol Utama */
+/* Tombol Utama Submit */
 .btn-submit-order {
     width: 100%;
-    background-color: #1a73e8; /* Biru Utama */
+    background-color: #1a73e8;
     color: white;
     padding: 16px;
     border: none;
@@ -109,10 +200,10 @@ body {
 }
 
 .btn-submit-order:hover {
-    background-color: #1557b0; /* Biru lebih gelap saat hover */
+    background-color: #1557b0;
 }
 
-/* SIDEBAR STYLING (Ringkasan Pesanan) */
+/* SIDEBAR STYLING */
 .checkout-sidebar {
     flex: 1;
     position: sticky;
@@ -177,7 +268,7 @@ body {
 
 .item-subtotal {
     font-weight: 600;
-    color: #1a73e8; /* Harga menggunakan warna biru */
+    color: #1a73e8;
     font-size: 0.95rem;
 }
 
@@ -207,7 +298,7 @@ body {
 
 .price-tag {
     font-size: 1.3rem;
-    color: #1a73e8; /* Biru untuk total harga */
+    color: #1a73e8;
 }
 
 .back-to-shop a {
@@ -224,7 +315,35 @@ body {
     text-decoration: underline;
 }
 
-/* Media Query untuk Tablet & HP */
+/* TOAST POPUP NOTIFIKASI (MOBILE & DESKTOP) */
+.toast-container {
+    position: fixed;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-40px);
+    background-color: #202124;
+    color: #ffffff;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.toast-container.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+/* MEDIA QUERIES (RESPONSIVE BREAKPOINTS) */
 @media (max-width: 1024px) {
     .checkout-container {
         max-width: 95%;
@@ -239,9 +358,60 @@ body {
     }
     .checkout-form-section {
         padding: 25px;
+        width: 100%;
     }
     .checkout-sidebar {
         width: 100%;
         position: static;
+    }
+}
+
+/* Optimasi Layar HP (Poco / Android) */
+@media (max-width: 480px) {
+    .checkout-container {
+        padding: 0 10px;
+        margin: 12px auto;
+    }
+
+    .checkout-form-section {
+        padding: 20px 14px;
+        border-radius: 10px;
+    }
+
+    .checkout-title {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+    .bank-transfer-box {
+        padding: 14px 12px;
+    }
+
+    .rekening-card {
+        padding: 12px 10px;
+        gap: 8px;
+    }
+
+    .norek-val {
+        font-size: 1.1rem;
+    }
+
+    .norek-an {
+        font-size: 0.75rem;
+    }
+
+    .btn-copy-norek {
+        padding: 8px 12px;
+        font-size: 0.78rem;
+    }
+
+    .toast-container {
+        width: 90%;
+        max-width: 320px;
+        justify-content: center;
+        text-align: center;
+        top: 15px;
+        font-size: 0.8rem;
+        padding: 10px 16px;
     }
 }
