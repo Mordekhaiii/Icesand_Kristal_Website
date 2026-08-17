@@ -1,11 +1,22 @@
 :root {
     --bg-light: #f4f7f9;
     --primary-blue: #00a8e8;
-    --secondary-yellow: #ffc107;
-    --text-dark: #2c3e50;
-    --text-muted: #7f8c8d;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
     --white: #ffffff;
-    --border-color: #e1e8ed;
+    --border-color: #e2e8f0;
+
+    /* Warna Status */
+    --status-menunggu-bg: #fef3c7;
+    --status-menunggu-text: #b45309;
+    --status-proses-bg: #e0f2fe;
+    --status-proses-text: #0369a1;
+    --status-dikirim-bg: #ede9fe;
+    --status-dikirim-text: #6d28d9;
+    --status-selesai-bg: #dcfce7;
+    --status-selesai-text: #15803d;
+    --status-batal-bg: #fee2e2;
+    --status-batal-text: #b91c1c;
 }
 
 * {
@@ -46,7 +57,7 @@ body {
     font-weight: 700;
     text-decoration: none;
     border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     font-size: 13px;
     transition: 0.3s;
 }
@@ -54,6 +65,7 @@ body {
 .btn-back:hover {
     background: var(--primary-blue);
     color: #fff;
+    transform: translateX(-3px);
 }
 
 .section-title {
@@ -61,18 +73,18 @@ body {
     font-weight: 800;
     font-size: 2.2rem;
     margin-bottom: 25px;
-    color: #000;
-    letter-spacing: -1px;
+    color: #0f172a;
+    letter-spacing: -0.5px;
 }
 
 /* Card Container */
 .invoice-card {
     background: var(--white);
-    border-radius: 26px;
-    padding: 35px;
-    margin-bottom: 25px;
-    box-shadow: 0 15px 35px rgba(0, 168, 232, 0.08);
-    border: 1px solid rgba(0, 168, 232, 0.1);
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 30px rgba(0, 168, 232, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .card-header-flex {
@@ -91,7 +103,7 @@ body {
 }
 
 .invoice-datetime {
-    margin: 5px 0 0 0;
+    margin: 6px 0 0 0;
     font-size: 13px;
     font-weight: 600;
     color: var(--text-muted);
@@ -102,22 +114,56 @@ body {
     color: #cbd5e1;
 }
 
+/* ===================================================
+   WARNA-WARNA BADGE STATUS
+   =================================================== */
 .status-badge {
-    background: var(--secondary-yellow);
-    color: #000;
-    padding: 8px 22px;
+    padding: 8px 18px;
     border-radius: 50px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 800;
     text-transform: uppercase;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     white-space: nowrap;
-    text-align: center;
+    letter-spacing: 0.5px;
 }
 
 .status-badge.badge-sm {
     font-size: 10px;
-    padding: 6px 14px;
+    padding: 5px 12px;
+}
+
+/* Modifier Warna Khusus Tiap Status */
+.status-menunggu {
+    background-color: var(--status-menunggu-bg);
+    color: var(--status-menunggu-text);
+    border: 1px solid #fde68a;
+}
+
+.status-proses {
+    background-color: var(--status-proses-bg);
+    color: var(--status-proses-text);
+    border: 1px solid #bae6fd;
+}
+
+.status-dikirim {
+    background-color: var(--status-dikirim-bg);
+    color: var(--status-dikirim-text);
+    border: 1px solid #ddd6fe;
+}
+
+.status-selesai {
+    background-color: var(--status-selesai-bg);
+    color: var(--status-selesai-text);
+    border: 1px solid #bbf7d0;
+}
+
+.status-batal {
+    background-color: var(--status-batal-bg);
+    color: var(--status-batal-text);
+    border: 1px solid #fecaca;
 }
 
 /* Link ID Invoice & Icon Sejajar */
@@ -147,7 +193,7 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 10px 0;
+    padding: 8px 0;
 }
 
 .info-icon {
@@ -160,20 +206,20 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
 }
 
 .label-text {
-    font-size: 10px;
+    font-size: 10.5px;
     font-weight: 800;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     margin: 0 0 4px 0;
 }
 
 .value-text {
-    font-size: 14.5px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-dark);
     margin: 0;
@@ -186,7 +232,10 @@ body {
     color: var(--text-dark);
     text-transform: uppercase;
     font-size: 13px;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Tabel Utama */
@@ -201,8 +250,8 @@ body {
 
 .table-custom th {
     text-align: left;
-    padding: 16px 12px;
-    border-bottom: 3px solid #f0f7ff;
+    padding: 14px 12px;
+    border-bottom: 2px solid #f1f5f9;
     font-size: 11px;
     color: var(--primary-blue);
     text-transform: uppercase;
@@ -210,20 +259,21 @@ body {
 }
 
 .table-custom td {
-    padding: 16px 12px;
+    padding: 14px 12px;
     border-bottom: 1px solid var(--border-color);
     font-size: 13.5px;
 }
 
 /* Ringkasan Pembayaran */
 .summary-box {
-    margin-top: 25px;
-    padding: 22px;
+    margin-top: 22px;
+    padding: 20px;
     background: #f8fafc;
     border-radius: 18px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    border: 1px solid #f1f5f9;
 }
 
 .summary-row {
@@ -246,7 +296,7 @@ body {
 .summary-divider {
     border: 0;
     border-top: 2px dashed #e2e8f0;
-    margin: 8px 0;
+    margin: 6px 0;
 }
 
 .total-label {
@@ -263,14 +313,15 @@ body {
     font-style: italic;
 }
 
-/* Stepper Status Pesanan */
+/* Stepper Status Pesanan (Desktop Default) */
 .status-container {
     display: flex;
     justify-content: space-between;
-    margin: 25px 0;
-    padding: 20px;
-    background: #fcfdfe;
-    border-radius: 18px;
+    margin: 20px 0 25px;
+    padding: 24px 20px;
+    background: #f8fafc;
+    border-radius: 20px;
+    border: 1px solid #f1f5f9;
 }
 
 .step {
@@ -281,22 +332,22 @@ body {
 
 .step i {
     background: #e2e8f0;
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 10px;
     color: #94a3b8;
-    font-size: 1.15rem;
-    transition: 0.4s;
+    font-size: 1.1rem;
+    transition: 0.3s;
 }
 
 .step.active i {
     background: var(--primary-blue);
     color: white;
-    box-shadow: 0 5px 15px rgba(0, 168, 232, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 168, 232, 0.35);
 }
 
 .step p {
@@ -313,7 +364,7 @@ body {
 
 /* Tombol Aksi */
 .action-buttons-wrapper {
-    margin-top: 30px;
+    margin-top: 25px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -328,10 +379,10 @@ body {
 .btn-action-complete,
 .btn-wa,
 .btn-print {
-    padding: 16px;
-    border-radius: 18px;
+    padding: 15px;
+    border-radius: 16px;
     font-weight: 800;
-    font-size: 13.5px;
+    font-size: 13px;
     text-transform: uppercase;
     cursor: pointer;
     display: flex;
@@ -339,7 +390,7 @@ body {
     justify-content: center;
     gap: 10px;
     text-decoration: none;
-    transition: 0.3s;
+    transition: 0.25s;
     border: none;
 }
 
@@ -347,26 +398,28 @@ body {
     width: 100%;
     background: #ef4444;
     color: white;
-    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
 }
 
 .btn-action-complete {
     width: 100%;
     background: #10b981;
     color: white;
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
 }
 
 .btn-wa {
-    background: #25d366;
+    background: #22c55e;
     color: white;
     flex: 1;
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.2);
 }
 
 .btn-print {
     background: #334155;
     color: white;
     flex: 1;
+    box-shadow: 0 4px 14px rgba(51, 65, 85, 0.2);
 }
 
 .btn-wa:hover,
@@ -374,23 +427,23 @@ body {
 .btn-action-cancel:hover,
 .btn-action-complete:hover {
     transform: translateY(-2px);
-    filter: brightness(1.08);
+    filter: brightness(1.06);
 }
 
 /* Ulasan & Rating */
 .review-card {
-    background: #fffdf0;
-    border: 2px solid #ffec99;
+    background: #fffdf5;
+    border: 2px solid #fde68a;
     text-align: center;
-    padding: 30px 20px;
+    padding: 26px 20px;
 }
 
 .btn-review {
-    background: #f59f00;
+    background: #f59e0b;
     color: white;
     border: none;
-    padding: 14px 35px;
-    border-radius: 18px;
+    padding: 14px 30px;
+    border-radius: 16px;
     font-weight: 800;
     cursor: pointer;
     display: inline-flex;
@@ -398,47 +451,46 @@ body {
     gap: 10px;
     font-size: 13px;
     text-transform: uppercase;
-    box-shadow: 0 6px 18px rgba(245, 159, 0, 0.2);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
     transition: 0.3s;
 }
 
 .review-done {
-    color: #059669;
+    color: #15803d;
     font-weight: 800;
-    font-size: 14.5px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .bottom-nav-link {
     text-align: center;
-    margin-top: 30px;
-    padding-bottom: 50px;
+    margin-top: 25px;
+    padding-bottom: 40px;
 }
 
 .bottom-nav-link a {
     color: var(--text-muted);
     text-decoration: none;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 13px;
+    transition: 0.2s;
+}
+
+.bottom-nav-link a:hover {
+    color: var(--primary-blue);
 }
 
 .empty-state {
     text-align: center;
-    padding: 60px 20px;
+    padding: 50px 20px;
 }
 
 /* ===================================================
-   RESPONSIVE BREAKPOINTS (1366px, 768px, 576px, 450px)
+   RESPONSIVE MOBILE / PHONE BREAKPOINTS
    =================================================== */
-
-@media (max-width: 1366px) {
-    .container {
-        max-width: 1050px;
-    }
-}
 
 @media (max-width: 768px) {
     body {
@@ -465,34 +517,20 @@ body {
         gap: 10px;
     }
 
-    .status-container {
-        flex-direction: column;
-        gap: 16px;
-        padding: 16px 14px;
-    }
-
-    .step {
-        display: flex;
-        align-items: center;
-        text-align: left;
-        gap: 14px;
-    }
-
-    .step i {
-        margin: 0;
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        flex-shrink: 0;
-    }
-
     .action-dual-buttons {
         flex-direction: column;
     }
 }
 
-/* Transformasi Tabel Riwayat Jadi Card List di Layar HP */
+/* Tampilan Mobile Card List Riwayat Transaksi */
 @media (max-width: 640px) {
+    .history-card {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
     .history-card .table-custom {
         display: block;
         width: 100%;
@@ -509,6 +547,7 @@ body {
         width: 100%;
     }
 
+    /* Tiap baris tabel menjadi Card Elegan */
     .history-card .table-custom tr {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -517,10 +556,17 @@ body {
             "date total";
         align-items: center;
         gap: 8px 12px;
-        padding: 16px;
-        background: #f8fafc;
+        padding: 18px 16px;
+        background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 16px;
+        border-radius: 18px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .history-card .table-custom tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 168, 232, 0.08);
     }
 
     .history-card .table-custom td {
@@ -536,13 +582,14 @@ body {
     .history-card .table-custom td:nth-child(2) {
         grid-area: date;
         font-size: 12px;
-        color: #64748b;
+        color: var(--text-muted);
+        font-weight: 500;
     }
 
     .history-card .table-custom td:nth-child(3) {
         grid-area: total;
         text-align: right;
-        font-size: 13.5px;
+        font-size: 14px;
         font-weight: 800;
         color: #0f172a;
     }
@@ -552,46 +599,57 @@ body {
         text-align: right;
     }
 
-    .history-card .status-badge.badge-sm {
-        font-size: 9.5px;
-        padding: 5px 12px;
-        border-radius: 30px;
-    }
-}
-
-@media (max-width: 576px) {
-    .invoice-card {
-        padding: 20px 15px;
+    /* Stepper Status Pesanan Vertikal di Mobile */
+    .status-container {
+        flex-direction: column;
+        gap: 0;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 18px;
     }
 
-    .invoice-number {
-        font-size: 20px;
+    .step {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        gap: 14px;
+        padding: 10px 0;
+        position: relative;
     }
 
-    .info-icon {
-        width: 38px;
-        height: 38px;
+    /* Garis Alur Step Vertikal */
+    .step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 48px;
+        width: 2px;
+        height: calc(100% - 30px);
+        background: #e2e8f0;
+        z-index: 1;
+    }
+
+    .step.active:not(:last-child)::after {
+        background: var(--primary-blue);
+    }
+
+    .step i {
+        margin: 0;
+        width: 42px;
+        height: 42px;
         font-size: 1rem;
+        flex-shrink: 0;
+        z-index: 2;
     }
 
-    .table-custom th,
-    .table-custom td {
-        padding: 12px 8px;
+    .step p {
         font-size: 12.5px;
-    }
-
-    .btn-wa,
-    .btn-print,
-    .btn-action-cancel,
-    .btn-action-complete {
-        padding: 14px;
-        font-size: 13px;
     }
 }
 
 @media (max-width: 450px) {
     body {
-        padding: 16px 10px;
+        padding: 16px 12px;
     }
 
     .top-nav-wrapper {
@@ -608,17 +666,16 @@ body {
     }
 
     .invoice-card {
-        padding: 16px 12px;
-        border-radius: 16px;
+        padding: 18px 14px;
+        border-radius: 18px;
     }
 
-    .status-badge {
-        font-size: 10px;
-        padding: 6px 14px;
+    .invoice-number {
+        font-size: 19px;
     }
 
     .total-val {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     .btn-review {
