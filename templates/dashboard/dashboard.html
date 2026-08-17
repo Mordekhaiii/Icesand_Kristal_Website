@@ -20,7 +20,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Custom CSS Terpisah -->
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v={{ timestamp|default:'1.0' }}">
+    <link rel="stylesheet" href="{% static 'css/dashboard_admin.css' %}?v={{ timestamp|default:'1.0' }}">
     
     <!-- Core JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -64,14 +64,14 @@
             <i class="bi bi-list text-2xl"></i>
         </button>
 
-        <!-- Link Logo & Judul Dashboard -->
+        <!-- Logo & Judul yang bisa diklik kembali ke Dashboard Beranda -->
         <a href="?menu=Beranda" 
            @click="activeMenu = 'Beranda'; sidebarOpen = false" 
-           class="flex items-center gap-3 cursor-pointer group select-none">
+           class="flex items-center gap-2.5 cursor-pointer group select-none">
             <div class="w-9 h-9 flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-105 transition-transform duration-200">
                 <img src="{% static 'images/logo-icesand.png' %}" alt="Logo Icesand" class="h-full w-auto object-contain">
             </div>
-            <h1 class="text-[13px] sm:text-[15px] font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight uppercase flex items-center gap-2">
+            <h1 class="text-[12px] sm:text-[15px] font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight uppercase flex items-center gap-2">
                 DASHBOARD
                 <span class="header-company-title w-[1.5px] h-4 bg-slate-300 mx-1 inline-block rotate-12"></span>
                 <span class="header-company-title text-slate-900">PT. ICESAND KRISTAL PERKASA</span>
@@ -262,7 +262,7 @@
 
 <!-- MAIN CONTENT AREA -->
 <main class="main-content pt-20 min-h-screen">
-    <!-- BERANDA TAB -->
+    <!-- 1. TAB BERANDA -->
     <div x-show="activeMenu === 'Beranda'" x-transition class="space-y-6">
         <div>
             {% if stok_menipis > 0 %}  
@@ -282,7 +282,7 @@
             <h4 class="text-sm font-bold text-slate-800 mb-1">Aktivitas Penting</h4>
             <p class="text-xs text-slate-500 mb-4 font-medium">Klik kotak untuk memproses pesanan.</p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 grid-stats-mobile">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 <a href="?menu=Transaksi&status=Menunggu Konfirmasi"
                    :class="!is_owner ? 'cursor-pointer hover:border-blue-500 hover:shadow-md' : 'cursor-default opacity-80 pointer-events-none'"
                    class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all group dash-card">
@@ -359,7 +359,7 @@
         </div>
     </div>
 
-    <!-- TAB TRANSAKSI -->
+    <!-- 2. TAB TRANSAKSI -->
     <div x-show="activeMenu === 'Transaksi'" x-transition x-cloak class="space-y-4">
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between mb-2">
             <div>
@@ -380,7 +380,7 @@
                  x-transition
                  class="interactive-card bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm group">
                 
-                <!-- HEADER NOTA -->
+                <!-- Header Card Nota -->
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 border-b border-slate-100 pb-4">
                     <div class="flex items-center gap-3">
                         <span class="text-[9px] font-black px-3 py-1 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 uppercase">{{ t.status_bayar }}</span>
@@ -478,7 +478,7 @@
                             {% endif %}
                         </div>
 
-                        <!-- TOMBOL AKSI -->
+                        <!-- Tombol Aksi Pesanan -->
                         <div class="pt-2 flex flex-col gap-2 w-full">
                             {% if not is_owner %}
                             <form action="{% url 'update_status_transaksi' t.id %}" method="POST" class="w-full">
@@ -557,7 +557,7 @@
         {% endif %}
     </div>
 
-    <!-- TAB ULASAN -->
+    <!-- 3. TAB ULASAN (RESPONSIF MOBILE & DESKTOP DENGAN CARD/TABLE HYBRID) -->
     <div x-show="activeMenu === 'ulasan'" x-transition>
         <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
@@ -567,8 +567,9 @@
                 </h3>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+            <!-- Tampilan Desktop & Tablet: Tabel Rapi -->
+            <div class="hidden sm:block overflow-x-auto table-responsive">
+                <table class="w-full text-left border-collapse min-w-[650px]">
                     <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-wider">
                         <tr>
                             <th class="px-6 py-4 whitespace-nowrap">Pelanggan</th>
@@ -612,14 +613,42 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Tampilan Mobile (Card View agar tidak berantakan di layar kecil) -->
+            <div class="block sm:hidden divide-y divide-slate-100">
+                {% for u in ulasan_list %}
+                <div class="p-4 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-blue-600 uppercase">{{ u.user.username }}</span>
+                        <span class="text-[10px] font-bold text-slate-400">{{ u.tanggal|date:"d M Y" }}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">{{ u.produk.nama }}</span>
+                        <div class="flex text-amber-400 text-xs gap-0.5">
+                            {% for i in "12345" %}
+                                <i class="fas fa-star {% if forloop.counter > u.rating %}text-slate-200{% endif %}"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 font-medium leading-relaxed">
+                        "{{ u.komentar }}"
+                    </div>
+                </div>
+                {% empty %}
+                <div class="p-12 text-center">
+                    <i class="fas fa-comment-slash text-3xl text-slate-200 mb-2 block"></i>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Belum ada ulasan masuk.</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    <!-- TAB PRODUK -->
+    <!-- 4. TAB PRODUK -->
     <div x-show="activeMenu === 'Produk'" x-transition x-cloak class="space-y-6">
         <div class="flex justify-between items-center mb-4">
             <div>
-                <h4 class="text-lg font-black text-slate-800 uppercase tracking-tighter">Katalog Es Kristal</span></h4>
+                <h4 class="text-lg font-black text-slate-800 uppercase tracking-tighter">Katalog <span class="text-blue-600">Es Kristal</span></h4>
                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Kelola stok dan harga publikasi</p>
             </div>
             <a href="{% url 'product_add' %}" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-[11px] font-black shadow-lg shadow-blue-200 uppercase tracking-wider transition-all hover:-translate-y-1">
@@ -686,7 +715,7 @@
         </div>
     </div>
 
-    <!-- TAB PELANGGAN -->
+    <!-- 5. TAB PELANGGAN -->
     <div x-show="activeMenu === 'Pelanggan'" x-transition x-cloak>
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-slate-50 bg-white flex justify-between items-center">
@@ -699,7 +728,7 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto table-responsive">
                 <table class="w-full text-left min-w-[700px]"> 
                     <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest border-b">
                         <tr>
@@ -765,169 +794,180 @@
         </div>
     </div>
     
-    <!-- TAB LAPORAN (OWNER) -->
+    <!-- 6. TAB LAPORAN OWNER (FULL RESPONSIVE DI SEMUA PERANGKAT) -->
     <div x-show="activeMenu === 'Laporan'" x-transition x-cloak class="space-y-6">
-        <!-- Laporan Penjualan -->
+        <!-- LAPORAN PENJUALAN -->
         <div x-show="tabLaporan === 'penjualan'" class="space-y-6">
             <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Penjualan</label>
-            <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-4 form-filter-responsive">
+            
+            <div class="no-print bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-3.5 report-filter-form">
                     <input type="hidden" name="menu" value="Laporan">
                     <input type="hidden" name="sub" value="penjualan">
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Mulai Tanggal</label>
                         <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Sampai Tanggal</label>
                         <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER</button>
-                    <a href="?menu=Laporan&sub=penjualan" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <button type="submit" class="flex-1 md:flex-none px-6 sm:px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all report-filter-btn">FILTER</button>
+                        <a href="?menu=Laporan&sub=penjualan" class="flex-1 md:flex-none px-6 sm:px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center report-filter-btn">RESET</a>
+                    </div>
                 </form>
             </div>
 
-            <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-x-auto">
+            <div class="bg-white p-5 sm:p-8 lg:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden report-card-container">
                 <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
                     <h1 class="text-2xl font-black">LAPORAN PENJUALAN ES KRISTAL</h1>
                     <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
                     <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
                 </div>
                 
-                <table class="w-full text-left text-xs font-bold min-w-[600px]">
-                    <thead class="bg-slate-50 uppercase text-slate-400 border-b">
-                        <tr>
-                            <th class="p-4">Tanggal</th>
-                            <th class="p-4">Nota</th>
-                            <th class="p-4">Pelanggan</th>
-                            <th class="p-4 text-right">Nominal</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        {% for t in transaksi_laporan %}
-                        <tr class="text-slate-700">
-                            <td class="p-4">{{ t.tanggal|date:"d/m/Y" }}</td>
-                            <td class="p-4 text-blue-600">{{ t.kode_transaksi }}</td>
-                            <td class="p-4 uppercase">{{ t.nama_penerima }}</td>
-                            <td class="p-4 text-right">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="4" class="p-10 text-center text-slate-400 italic">Data tidak ditemukan.</td></tr>
-                        {% endfor %}
-                    </tbody>
+                <div class="overflow-x-auto table-responsive">
+                    <table class="w-full text-left text-xs font-bold min-w-[550px]">
+                        <thead class="bg-slate-50 uppercase text-slate-400 border-b">
+                            <tr>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Tanggal</th>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Nota</th>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Pelanggan</th>
+                                <th class="p-3.5 sm:p-4 text-right whitespace-nowrap">Nominal</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            {% for t in transaksi_laporan %}
+                            <tr class="text-slate-700 hover:bg-slate-50/50 transition-colors">
+                                <td class="p-3.5 sm:p-4 whitespace-nowrap">{{ t.tanggal|date:"d/m/Y" }}</td>
+                                <td class="p-3.5 sm:p-4 text-blue-600 whitespace-nowrap">{{ t.kode_transaksi }}</td>
+                                <td class="p-3.5 sm:p-4 uppercase whitespace-nowrap">{{ t.nama_penerima }}</td>
+                                <td class="p-3.5 sm:p-4 text-right whitespace-nowrap">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="p-10 text-center text-slate-400 italic">Data tidak ditemukan.</td></tr>
+                            {% endfor %}
+                        </tbody>
 
-                    {% if transaksi_laporan %}
-                    <tfoot class="bg-blue-50/50 border-t-2 border-blue-100">
-                        <tr class="text-blue-900">
-                            <td colspan="3" class="p-4 text-[10px] font-black uppercase tracking-widest text-center">Total Penjualan Seluruhnya</td>
-                            <td class="p-4 text-right text-sm font-black">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
-                        </tr>
-                    </tfoot>
-                    {% endif %}
-                </table>
+                        {% if transaksi_laporan %}
+                        <tfoot class="bg-blue-50/50 border-t-2 border-blue-100">
+                            <tr class="text-blue-900">
+                                <td colspan="3" class="p-3.5 sm:p-4 text-[10px] font-black uppercase tracking-widest text-center">Total Penjualan Seluruhnya</td>
+                                <td class="p-3.5 sm:p-4 text-right text-sm font-black whitespace-nowrap">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
+                            </tr>
+                        </tfoot>
+                        {% endif %}
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- Laporan Pendapatan -->
+        <!-- LAPORAN PENDAPATAN -->
         <div x-show="tabLaporan === 'pendapatan'" class="space-y-6">
             <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Pendapatan</label>
-            <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-4 form-filter-responsive">
+            
+            <div class="no-print bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-3.5 report-filter-form">
                     <input type="hidden" name="menu" value="Laporan">
                     <input type="hidden" name="sub" value="pendapatan">
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Mulai Tanggal</label>
                         <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Sampai Tanggal</label>
                         <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER DATA</button>
-                    <a href="?menu=Laporan&sub=pendapatan" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <button type="submit" class="flex-1 md:flex-none px-6 sm:px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all report-filter-btn">FILTER</button>
+                        <a href="?menu=Laporan&sub=pendapatan" class="flex-1 md:flex-none px-6 sm:px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center report-filter-btn">RESET</a>
+                    </div>
                 </form>
             </div>
             
-            <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-x-auto">
+            <div class="bg-white p-5 sm:p-8 lg:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden report-card-container">
                 <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
                     <h1 class="text-2xl font-black">LAPORAN PENDAPATAN</h1>
                     <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
                     <p class="text-[10px] mt-2">Periode: {{ tgl_mulai|default:"Semua" }} - {{ tgl_akhir|default:"Sekarang" }}</p>
                 </div>
-                <table class="w-full text-left text-xs font-bold min-w-[700px]">
-                    <thead class="bg-slate-50 uppercase text-slate-400 border-b">
-                        <tr>
-                            <th class="p-4">Tanggal</th> 
-                            <th class="p-4">Nota</th>
-                            <th class="p-4">Rincian Produk</th>
-                            <th class="p-4 text-center">Metode</th>
-                            <th class="p-4 text-right">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        {% for t in transaksi_laporan %}
-                        <tr class="text-slate-700 hover:bg-slate-50/50 transition-colors">
-                            <td class="p-4">
-                                <div class="text-slate-900">{{ t.tanggal|date:"d M Y" }}</div>
-                            </td>
-                            <td class="p-4">
-                                <span class="text-blue-600 block mb-0.5">{{ t.kode_transaksi }}</span>
-                                <span class="text-[10px] text-slate-400 font-black uppercase tracking-tight">{{ t.nama_penerima }}</span>
-                            </td>
-                            <td class="p-4">
-                                <div class="text-[11px] text-slate-500 leading-relaxed font-medium">
-                                    {% for detail in t.details.all %} 
-                                        <div class="flex justify-between max-w-[180px]">
-                                            <span>{{ detail.produk.nama }}</span>
-                                            <span class="text-slate-900 ml-2">x{{ detail.jumlah_pesanan }}</span>
-                                        </div>
-                                    {% empty %}
-                                        <span class="italic text-slate-300 text-[9px]">Tanpa rincian</span>
-                                    {% endfor %}
-                                </div>
-                            </td>
-                            <td class="p-4 text-center">
-                                {% if t.metode_pembayaran == 'Tunai' %}
-                                    <span class="px-2.5 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">CASH</span>
-                                {% else %}
-                                    <span class="px-2.5 py-1 bg-blue-100 text-blue-600 rounded-lg text-[9px] font-black uppercase">TRANSFER</span>
-                                {% endif %}
-                            </td>
-                            <td class="p-4 text-right font-black text-slate-900">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tfoot class="bg-blue-50/50 border-t-2 border-blue-100 font-black text-blue-900">
-                        <tr class="print:border-b">
-                            <td colspan="4" class="p-5 text-center uppercase tracking-[0.2em] text-[10px] whitespace-nowrap">Total Pendapatan Terhitung</td>
-                            <td class="p-5 text-right text-sm whitespace-nowrap">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                
+                <div class="overflow-x-auto table-responsive">
+                    <table class="w-full text-left text-xs font-bold min-w-[650px]">
+                        <thead class="bg-slate-50 uppercase text-slate-400 border-b">
+                            <tr>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Tanggal</th> 
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Nota</th>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Rincian Produk</th>
+                                <th class="p-3.5 sm:p-4 text-center whitespace-nowrap">Metode</th>
+                                <th class="p-3.5 sm:p-4 text-right whitespace-nowrap">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            {% for t in transaksi_laporan %}
+                            <tr class="text-slate-700 hover:bg-slate-50/50 transition-colors">
+                                <td class="p-3.5 sm:p-4 whitespace-nowrap">
+                                    <div class="text-slate-900">{{ t.tanggal|date:"d M Y" }}</div>
+                                </td>
+                                <td class="p-3.5 sm:p-4 whitespace-nowrap">
+                                    <span class="text-blue-600 block mb-0.5">{{ t.kode_transaksi }}</span>
+                                    <span class="text-[10px] text-slate-400 font-black uppercase tracking-tight">{{ t.nama_penerima }}</span>
+                                </td>
+                                <td class="p-3.5 sm:p-4">
+                                    <div class="text-[11px] text-slate-500 leading-relaxed font-medium">
+                                        {% for detail in t.details.all %} 
+                                            <div class="flex justify-between max-w-[180px]">
+                                                <span>{{ detail.produk.nama }}</span>
+                                                <span class="text-slate-900 ml-2">x{{ detail.jumlah_pesanan }}</span>
+                                            </div>
+                                        {% empty %}
+                                            <span class="italic text-slate-300 text-[9px]">Tanpa rincian</span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-center whitespace-nowrap">
+                                    {% if t.metode_pembayaran == 'Tunai' %}
+                                        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">CASH</span>
+                                    {% else %}
+                                        <span class="px-2.5 py-1 bg-blue-100 text-blue-600 rounded-lg text-[9px] font-black uppercase">TRANSFER</span>
+                                    {% endif %}
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-right font-black text-slate-900 whitespace-nowrap">Rp {{ t.total_harga|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="bg-blue-50/50 border-t-2 border-blue-100 font-black text-blue-900">
+                            <tr class="print:border-b">
+                                <td colspan="4" class="p-4 sm:p-5 text-center uppercase tracking-[0.2em] text-[10px] whitespace-nowrap">Total Pendapatan Terhitung</td>
+                                <td class="p-4 sm:p-5 text-right text-sm whitespace-nowrap">Rp {{ total_pendapatan_rekap|floatformat:0|intcomma }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- Laporan Stok -->
+        <!-- LAPORAN STOK -->
         <div x-show="tabLaporan === 'stok'" class="space-y-6">
             <label class="text-[14px] font-black text-black uppercase mb-2 block ml-1">Laporan Stok Es Kristal</label>
             
-            <div class="no-print bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-4 form-filter-responsive">
+            <div class="no-print bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <form method="GET" class="flex flex-col md:flex-row items-stretch md:items-end gap-3.5 report-filter-form">
                     <input type="hidden" name="menu" value="Laporan">
                     <input type="hidden" name="sub" value="stok">
                     
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Mulai Tanggal</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Mulai Tanggal</label>
                         <input type="date" name="tgl_mulai" value="{{ tgl_mulai }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Sampai Tanggal</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Sampai Tanggal</label>
                         <input type="date" name="tgl_akhir" value="{{ tgl_akhir }}" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                     </div>
 
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block ml-1">Pilih Jenis Produk</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-1.5 block ml-1">Pilih Jenis Produk</label>
                         <select name="produk_filter" class="w-full p-3 bg-slate-50 rounded-xl text-xs font-bold border-none focus:ring-2 focus:ring-blue-500">
                             <option value="all" {% if produk_filter == 'all' or not produk_filter %}selected{% endif %}>Semua Produk</option>
                             {% for prod in produk_semua %}
@@ -936,18 +976,21 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all">FILTER</button>
-                    <a href="?menu=Laporan&sub=stok" class="px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center">RESET</a>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <button type="submit" class="flex-1 md:flex-none px-6 sm:px-8 py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-600 transition-all report-filter-btn">FILTER</button>
+                        <a href="?menu=Laporan&sub=stok" class="flex-1 md:flex-none px-6 sm:px-8 py-3.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase hover:bg-slate-300 transition-all flex items-center justify-center report-filter-btn">RESET</a>
+                    </div>
                 </form>
             </div>
 
-            <div class="no-print grid grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- Mini Summary Cards Stok -->
+            <div class="no-print grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div class="flex justify-between items-start">
                         <p class="text-[9px] text-slate-400 font-black uppercase">Stok Awal</p>
                         <div class="p-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs"><i class="bi bi-hourglass-start"></i></div>
                     </div>
-                    <h3 class="text-lg font-black text-slate-700 mt-2">{{ total_stok_awal|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                    <h3 class="text-base sm:text-lg font-black text-slate-700 mt-2">{{ total_stok_awal|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
                 </div>
                 
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
@@ -955,7 +998,7 @@
                         <p class="text-[9px] text-slate-400 font-black uppercase">Stok Masuk (+)</p>
                         <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs"><i class="bi bi-arrow-down-left-circle"></i></div>
                     </div>
-                    <h3 class="text-lg font-black text-emerald-600 mt-2">+ {{ total_masuk|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                    <h3 class="text-base sm:text-lg font-black text-emerald-600 mt-2">+ {{ total_masuk|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
                 </div>
                 
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
@@ -963,7 +1006,7 @@
                         <p class="text-[9px] text-slate-400 font-black uppercase">Stok Keluar (-)</p>
                         <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs"><i class="bi bi-arrow-up-right-circle"></i></div>
                     </div>
-                    <h3 class="text-lg font-black text-rose-600 mt-2">- {{ total_keluar|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                    <h3 class="text-base sm:text-lg font-black text-rose-600 mt-2">- {{ total_keluar|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
                 </div>
 
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
@@ -971,19 +1014,20 @@
                         <p class="text-[9px] text-slate-400 font-black uppercase">Barang Rusak (-)</p>
                         <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg text-xs"><i class="bi bi-x-circle"></i></div>
                     </div>
-                    <h3 class="text-lg font-black text-amber-600 mt-2">- {{ total_reject|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                    <h3 class="text-base sm:text-lg font-black text-amber-600 mt-2">- {{ total_reject|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between col-span-2 lg:col-span-1">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between col-span-2 sm:col-span-1">
                     <div class="flex justify-between items-start">
                         <p class="text-[9px] text-slate-400 font-black uppercase">Stok Akhir</p>
                         <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs"><i class="bi bi-boxes"></i></div>
                     </div>
-                    <h3 class="text-lg font-black text-blue-600 mt-2">{{ total_stok_gudang|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
+                    <h3 class="text-base sm:text-lg font-black text-blue-600 mt-2">{{ total_stok_gudang|default:"0" }} <span class="text-[10px] font-normal text-slate-400">Bal</span></h3>
                 </div>
             </div>
 
-            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden p-6 overflow-x-auto">
+            <!-- Tabel Mutasi Stok -->
+            <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] border border-slate-200 shadow-sm p-5 sm:p-8 overflow-hidden report-card-container">
                 <div class="hidden print:block text-center border-b-4 border-slate-900 pb-6 mb-8 uppercase">
                     <h1 class="text-2xl font-black">LAPORAN MUTASI STOK ES KRISTAL</h1>
                     <p class="font-bold">PT. ICESAND KRISTAL PERKASA</p>
@@ -993,42 +1037,44 @@
                     {% endif %}
                 </div>
                 
-                <table class="w-full text-left text-xs font-bold min-w-[750px]">
-                    <thead class="bg-slate-50 uppercase text-slate-400 border-b">
-                        <tr>
-                            <th class="p-4">Tanggal</th>
-                            <th class="p-4">Nama Produk</th>
-                            <th class="p-4 text-center">Status Transaksi</th>
-                            <th class="p-4 text-right">Jumlah Mutasi</th>
-                            <th class="p-4 text-left pl-8">Keterangan / Nota</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        {% for m in mutasi_stok %}
-                        <tr class="text-slate-700 hover:bg-slate-50 transition-colors">
-                            <td class="p-4 text-slate-900">{{ m.tanggal|date:"d/m/Y" }}</td>
-                            <td class="p-4 text-slate-900 uppercase">{{ m.produk.nama }}</td>
-                            <td class="p-4 text-center">
-                                {% if m.tipe == 'MASUK' %}
-                                    <span class="px-2 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">Stok Masuk</span>
-                                {% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}
-                                    <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[9px] font-black uppercase">Stok Barang Rusak</span>
-                                {% else %}
-                                    <span class="px-2 py-1 bg-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase">Stok Keluar</span>
-                                {% endif %}
-                            </td>
-                            <td class="p-4 text-right font-mono {% if m.tipe == 'MASUK' %}text-emerald-600{% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}text-amber-600{% else %}text-rose-600{% endif %} font-black">
-                                {% if m.tipe == 'MASUK' %}+{% else %}-{% endif %} {{ m.jumlah }} Bal
-                            </td>
-                            <td class="p-4 text-slate-500 font-medium pl-8">{{ m.keterangan|default:"-" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="p-10 text-center italic text-slate-400">Belum ada riwayat mutasi stok pada periode ini.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto table-responsive">
+                    <table class="w-full text-left text-xs font-bold min-w-[650px]">
+                        <thead class="bg-slate-50 uppercase text-slate-400 border-b">
+                            <tr>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Tanggal</th>
+                                <th class="p-3.5 sm:p-4 whitespace-nowrap">Nama Produk</th>
+                                <th class="p-3.5 sm:p-4 text-center whitespace-nowrap">Status Transaksi</th>
+                                <th class="p-3.5 sm:p-4 text-right whitespace-nowrap">Jumlah Mutasi</th>
+                                <th class="p-3.5 sm:p-4 text-left pl-6 whitespace-nowrap">Keterangan / Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            {% for m in mutasi_stok %}
+                            <tr class="text-slate-700 hover:bg-slate-50 transition-colors">
+                                <td class="p-3.5 sm:p-4 text-slate-900 whitespace-nowrap">{{ m.tanggal|date:"d/m/Y" }}</td>
+                                <td class="p-3.5 sm:p-4 text-slate-900 uppercase whitespace-nowrap">{{ m.produk.nama }}</td>
+                                <td class="p-3.5 sm:p-4 text-center whitespace-nowrap">
+                                    {% if m.tipe == 'MASUK' %}
+                                        <span class="px-2 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase">Stok Masuk</span>
+                                    {% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}
+                                        <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[9px] font-black uppercase">Stok Barang Rusak</span>
+                                    {% else %}
+                                        <span class="px-2 py-1 bg-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase">Stok Keluar</span>
+                                    {% endif %}
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-right font-mono {% if m.tipe == 'MASUK' %}text-emerald-600{% elif m.tipe == 'REJECT' or m.tipe == 'RUSAK' %}text-amber-600{% else %}text-rose-600{% endif %} font-black whitespace-nowrap">
+                                    {% if m.tipe == 'MASUK' %}+{% else %}-{% endif %} {{ m.jumlah }} Bal
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-slate-500 font-medium pl-6">{{ m.keterangan|default:"-" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="p-10 text-center italic text-slate-400">Belum ada riwayat mutasi stok pada periode ini.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>    
@@ -1040,7 +1086,7 @@
      x-cloak
      style="display: none;">
     <div class="absolute inset-0 cursor-pointer" @click="showModal = false"></div>
-    <div class="relative bg-white rounded-3xl p-2 max-w-lg w-full shadow-2xl modal-content-mobile" @click.away="showModal = false">
+    <div class="relative bg-white rounded-3xl p-2 max-w-lg w-full shadow-2xl" @click.away="showModal = false">
         <div class="flex justify-between items-center p-4 border-b border-slate-100">
             <h5 class="text-xs font-black uppercase" x-text="modalTitle"></h5>
             <button @click="showModal = false" class="text-slate-400 hover:text-rose-500 text-xl">
@@ -1059,7 +1105,7 @@
      x-cloak
      style="display: none;">
     <div class="absolute inset-0 cursor-pointer" @click="showModalMutasi = false"></div>
-    <div class="relative bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl modal-content-mobile" @click.away="showModalMutasi = false">
+    <div class="relative bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl" @click.away="showModalMutasi = false">
         <div class="flex justify-between items-center pb-4 border-b border-slate-100 mb-4">
             <h5 class="text-xs font-black uppercase text-slate-800">Entry Mutasi: <span class="text-blue-600" x-text="prodNama"></span></h5>
             <button @click="showModalMutasi = false" class="text-slate-400 hover:text-rose-500 text-xl">
