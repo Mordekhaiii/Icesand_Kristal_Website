@@ -74,9 +74,8 @@ class Wilayah(models.Model):
         verbose_name_plural = "Master Wilayah Ongkir"
 
 
-# 2. Update Model Transaksi Kamu Jadi Seperti Ini:
 class Transaksi(models.Model):
-    # --- STATUS TRANSAKSI & METODE PEMBAYARAN (Tetap sama seperti kode kamu) ---
+    # --- STATUS TRANSAKSI & METODE PEMBAYARAN 
     STATUS_PILIHAN = [
         ('Menunggu Konfirmasi', 'Menunggu Konfirmasi'),
         ('Sedang Diproses', 'Sedang Diproses'),
@@ -93,8 +92,6 @@ class Transaksi(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tanggal = models.DateTimeField(auto_now_add=True)
     status_bayar = models.CharField(max_length=50, choices=STATUS_PILIHAN, default='Menunggu Konfirmasi')
-    
-    # --- FIELD UPDATE REVISI PENGUJI ---
     wilayah_tujuan = models.ForeignKey(Wilayah, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Wilayah Tujuan")
     biaya_ongkir = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Biaya Ongkir")
     biaya_kemasan = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Biaya Kemasan")
